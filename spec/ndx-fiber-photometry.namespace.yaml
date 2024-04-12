@@ -1,0 +1,15 @@
+namespaces:
+- author:
+  - Alessandra Trapani
+  - Luiz Tauffer
+  - Paul Adkisson
+  - Szonja Weigl
+  contact:
+  - my_email@example.com
+  doc: This is an NWB extension for storing fiber photometry recordings and associated
+    metadata.
+  name: ndx-fiber-photometry
+  schema:
+  - namespace: core
+  - source: ndx-fiber-photometry.extensions.yaml
+  version: 0.1.0
