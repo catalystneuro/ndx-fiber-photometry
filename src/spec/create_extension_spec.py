@@ -71,7 +71,7 @@ def main():
             ),
             NWBAttributeSpec(
                 name="illumination_type",
-                doc="Illumination type, e.g., laser ot LED.",
+                doc="Illumination type, e.g., laser or LED.",
                 dtype="text",
             ),
             NWBAttributeSpec(
@@ -124,20 +124,23 @@ def main():
             ),
             NWBAttributeSpec(
                 name="cut_off_wavelength_in_nm",
-                doc="Wavelength at which transmission shifts back to reflection, for mirrors with complex transmission spectra.",
+                doc="Wavelength at which transmission shifts back to reflection,"
+                        "for mirrors with complex transmission spectra.",
                 dtype="float",
                 required=False,
             ),
             NWBAttributeSpec(
                 name="reflection_bandwidth_in_nm",
-                doc="The range of wavelengths that are primarily reflected. The start and end wavelengths needs to be specified.",
+                doc="The range of wavelengths that are primarily reflected."
+                        "The start and end wavelengths needs to be specified.",
                 dtype="float",
                 required=False,
                 shape=(2,),
             ),
             NWBAttributeSpec(
                 name="transmission_bandwidth_in_nm",
-                doc="The range of wavelengths that are primarily transmitted. The start and end wavelengths needs to be specified.",
+                doc="The range of wavelengths that are primarily transmitted."
+                        "The start and end wavelengths needs to be specified.",
                 dtype="float",
                 required=False,
                 shape=(2,),
@@ -260,7 +263,8 @@ def main():
         datasets=[
             NWBDatasetSpec(
                 name="data",
-                doc="The data values. May be 1D or 2D. The first dimension must be time. The optional second dimension referes to the fiber that record the series.",
+                doc="The data values. May be 1D or 2D. The first dimension must be time."
+                    "The optional second dimension refers to the fiber that record the series.",
                 shape=(None, None),
             ),
             NWBDatasetSpec(
@@ -271,6 +275,9 @@ def main():
             ),
         ],
     )
+
+    # TODO add deconvolved traces
+    # TODO add commanded voltages
 
     # TODO: add all of your new data types to this list
     new_data_types = [

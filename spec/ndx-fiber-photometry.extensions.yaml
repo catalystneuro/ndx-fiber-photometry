@@ -23,7 +23,7 @@ groups:
     required: false
   - name: illumination_type
     dtype: text
-    doc: Illumination type, e.g., laser ot LED.
+    doc: Illumination type, e.g., laser or LED.
   - name: excitation_wavelength_in_nm
     dtype: float
     doc: Excitation wavelength of the stimulation light (nanometers).
@@ -54,21 +54,21 @@ groups:
     doc: Wavelength at which the mirror starts to transmit light more than reflect.
   - name: cut_off_wavelength_in_nm
     dtype: float
-    doc: Wavelength at which transmission shifts back to reflection, for mirrors with
+    doc: Wavelength at which transmission shifts back to reflection,for mirrors with
       complex transmission spectra.
     required: false
   - name: reflection_bandwidth_in_nm
     dtype: float
     shape:
     - 2
-    doc: The range of wavelengths that are primarily reflected. The start and end
-      wavelengths needs to be specified.
+    doc: The range of wavelengths that are primarily reflected.The start and end wavelengths
+      needs to be specified.
     required: false
   - name: transmission_bandwidth_in_nm
     dtype: float
     shape:
     - 2
-    doc: The range of wavelengths that are primarily transmitted. The start and end
+    doc: The range of wavelengths that are primarily transmitted.The start and end
       wavelengths needs to be specified.
     required: false
   - name: angle_of_incidence_in_degrees
@@ -168,8 +168,8 @@ groups:
     shape:
     - null
     - null
-    doc: The data values. May be 1D or 2D. The first dimension must be time. The optional
-      second dimension referes to the fiber that record the series.
+    doc: The data values. May be 1D or 2D. The first dimension must be time.The optional
+      second dimension refers to the fiber that record the series.
   - name: fiber_photometry_table
     neurodata_type_inc: DynamicTableRegion
     doc: References row(s) of FiberPhotometryTable.
