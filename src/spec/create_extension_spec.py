@@ -20,7 +20,10 @@ def main():
             "Szonja Weigl", 
         ],
         contact=[
-            "my_email@example.com", 
+            "alessandra.trapani@catlystneuro.com", 
+            "luiz.tauffer@catlystneuro.com", 
+            "paul.adkisson@catlystneuro.com", 
+            "szonja.weigl@catlystneuro.com", 
         ],
     )
     ns_builder.include_namespace("core")
