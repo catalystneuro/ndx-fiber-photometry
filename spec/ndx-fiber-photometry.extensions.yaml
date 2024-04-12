@@ -128,14 +128,14 @@ groups:
     - null
     doc: Description of system.
     quantity: '?'
-  - name: fiber
+  - name: optical_fiber
     neurodata_type_inc: VectorData
     dtype:
       target_type: Device
       reftype: object
     shape:
     - null
-    doc: Link to the fiber device.
+    doc: Link to the optical fiber device.
   - name: excitation_source
     neurodata_type_inc: VectorData
     dtype:
@@ -160,6 +160,24 @@ groups:
     shape:
     - null
     doc: Link to the dichroic mirror device.
+  - name: emission_filter
+    neurodata_type_inc: VectorData
+    dtype:
+      target_type: Device
+      reftype: object
+    shape:
+    - null
+    doc: Link to the emission filter device.
+    quantity: '?'
+  - name: excitation_filter
+    neurodata_type_inc: VectorData
+    dtype:
+      target_type: Device
+      reftype: object
+    shape:
+    - null
+    doc: Link to the excitation filter device.
+    quantity: '?'
 - neurodata_type_def: FiberPhotometryResponseSeries
   neurodata_type_inc: TimeSeries
   doc: Extends TimeSeries to hold Fiber Photometry data.

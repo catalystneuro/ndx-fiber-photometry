@@ -226,8 +226,8 @@ def main():
                 quantity="?",
             ),
             NWBDatasetSpec(
-                name="fiber",
-                doc="Link to the fiber device.",
+                name="optical_fiber",
+                doc="Link to the optical fiber device.",
                 dtype=NWBRefSpec(target_type="Device", reftype="object"),
                 shape=(None,),
                 neurodata_type_inc="VectorData",
@@ -252,6 +252,22 @@ def main():
                 dtype=NWBRefSpec(target_type="Device", reftype="object"),
                 shape=(None,),
                 neurodata_type_inc="VectorData",
+            ),
+            NWBDatasetSpec(
+                name="emission_filter",
+                doc="Link to the emission filter device.",
+                dtype=NWBRefSpec(target_type="Device", reftype="object"),
+                shape=(None,),
+                neurodata_type_inc="VectorData",
+                quantity="?",
+            ),
+            NWBDatasetSpec(
+                name="excitation_filter",
+                doc="Link to the excitation filter device.",
+                dtype=NWBRefSpec(target_type="Device", reftype="object"),
+                shape=(None,),
+                neurodata_type_inc="VectorData",
+                quantity="?",
             ),
         ],
     )
