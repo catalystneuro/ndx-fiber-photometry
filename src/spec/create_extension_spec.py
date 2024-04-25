@@ -36,6 +36,28 @@ def main():
     # Define new data types
     # see https://pynwb.readthedocs.io/en/stable/tutorials/general/extensions.html
     # for more information
+    indicator = NWBGroupSpec(
+        neurodata_type_def="Indicator",
+        neurodata_type_inc="Device",
+        name="indicator",
+        doc="Extends Device to hold metadata on the Indicator.",
+        attributes=[
+            NWBAttributeSpec(
+                name="injection_location",
+                doc="Injection brain region name.",
+                dtype="text",
+                required=False,
+            ),
+            NWBAttributeSpec(
+                name="injection_coordinates_in_mm",
+                doc="Fluorophore injection location in stereotactic coordinates (AP, ML, DV) mm relative to Bregma.",
+                dtype="float",
+                shape=(3,),
+                required=False,
+            ),
+        ],
+    )
+
     optical_fiber = NWBGroupSpec(
         neurodata_type_def="OpticalFiber",
         neurodata_type_inc="Device",
@@ -125,14 +147,14 @@ def main():
             NWBAttributeSpec(
                 name="cut_off_wavelength_in_nm",
                 doc="Wavelength at which transmission shifts back to reflection,"
-                        "for mirrors with complex transmission spectra.",
+                "for mirrors with complex transmission spectra.",
                 dtype="float",
                 required=False,
             ),
             NWBAttributeSpec(
                 name="reflection_bandwidth_in_nm",
                 doc="The range of wavelengths that are primarily reflected."
-                        "The start and end wavelengths needs to be specified.",
+                "The start and end wavelengths needs to be specified.",
                 dtype="float",
                 required=False,
                 shape=(2,),
@@ -140,7 +162,7 @@ def main():
             NWBAttributeSpec(
                 name="transmission_bandwidth_in_nm",
                 doc="The range of wavelengths that are primarily transmitted."
-                        "The start and end wavelengths needs to be specified.",
+                "The start and end wavelengths needs to be specified.",
                 dtype="float",
                 required=False,
                 shape=(2,),
@@ -209,11 +231,16 @@ def main():
                 shape=(None, 3),
                 neurodata_type_inc="VectorData",
                 quantity="?",
+                attributes=[
+                    NWBAttributeSpec(
+                        name="unit", doc="coordinates unit", value="millimiters", dtype="text"
+                    )
+                ],
             ),
             NWBDatasetSpec(
                 name="indicator",
-                doc="Indicator notation.",
-                dtype="text",
+                doc="Link to the indicator object.",
+                dtype=NWBRefSpec(target_type="Device", reftype="object"),
                 shape=(None,),
                 neurodata_type_inc="VectorData",
             ),
@@ -280,7 +307,7 @@ def main():
             NWBDatasetSpec(
                 name="data",
                 doc="The data values. May be 1D or 2D. The first dimension must be time."
-                    "The optional second dimension refers to the fiber that record the series.",
+                "The optional second dimension refers to the fiber that record the series.",
                 shape=(None, None),
             ),
             NWBDatasetSpec(
@@ -292,11 +319,54 @@ def main():
         ],
     )
 
-    # TODO add deconvolved traces
-    # TODO add commanded voltages
+    commandedvoltage_series = NWBGroupSpec(
+        neurodata_type_def="CommandedVoltageSeries",
+        neurodata_type_inc="TimeSeries",
+        doc="Extends TimeSeries to hold a Commanded Voltage",
+        datasets=[
+            NWBDatasetSpec(
+                name="data",
+                doc="Voltages (length number timesteps) in unit volts.",
+                dtype="float",
+                shape=(None,),
+                attributes=[
+                    NWBAttributeSpec(
+                        name="unit", doc="data unit", value="volts", dtype="text"
+                    )
+                ],
+            ),
+            NWBDatasetSpec(
+                name="frequency",
+                doc="Voltage frequency in unit hertz.",
+                dtype="float",
+                attributes=[
+                    NWBAttributeSpec(
+                        name="unit", doc="frequency unit", value="hertz", dtype="text"
+                    )
+                ],
+                quantity="?",
+            ),
+        ],
+    )
+
+    multi_commanded_voltage = NWBGroupSpec(
+        name='commanded_voltages',
+        neurodata_type_def="MultiCommandedVoltage",
+        neurodata_type_inc="NWBDataInterface",
+        doc="holds CommandedVoltageSeries objects",
+        groups=[
+            NWBGroupSpec(
+                neurodata_type_inc="CommandedVoltageSeries",
+                quantity="*",
+                doc="commanded voltage series",
+            )
+        ],
+    )
+
 
     # TODO: add all of your new data types to this list
     new_data_types = [
+        indicator,
         optical_fiber,
         excitation_source,
         photodetector,
@@ -304,6 +374,8 @@ def main():
         optical_filter,
         fiber_photometry_table,
         fiberphotometryresponse_series,
+        commandedvoltage_series,
+        multi_commanded_voltage
     ]
 
     # export the spec to yaml files in the spec folder

@@ -22,7 +22,17 @@ load_namespaces(str(__spec_path))
 # Either have PyNWB generate a class from the spec using `get_class` as shown
 # below or write a custom class and register it using the class decorator
 # `@register_class("TetrodeSeries", "ndx-fiber-photometry")`
-TetrodeSeries = get_class("TetrodeSeries", "ndx-fiber-photometry")
+Indicator = get_class("Indicator", "ndx-fiber-photometry")
+OpticalFiber = get_class("OpticalFiber", "ndx-fiber-photometry")
+ExcitationSource = get_class("ExcitationSource", "ndx-fiber-photometry")
+Photodetector = get_class("Photodetector", "ndx-fiber-photometry")
+DichroicMirror = get_class("DichroicMirror", "ndx-fiber-photometry")
+OpticalFilter = get_class("OpticalFilter", "ndx-fiber-photometry")
+FiberPhotometryTable = get_class("FiberPhotometryTable", "ndx-fiber-photometry")
+FiberPhotometryResponseSeries = get_class("FiberPhotometryResponseSeries", "ndx-fiber-photometry")
+CommandedVoltageSeries = get_class("CommandedVoltageSeries", "ndx-fiber-photometry")
+MultiCommandedVoltage = get_class("MultiCommandedVoltage", "ndx-fiber-photometry")
+
 
 # NOTE: `widgets/tetrode_series_widget.py` adds a "widget"
 # attribute to the TetrodeSeries class. This attribute is used by NWBWidgets.

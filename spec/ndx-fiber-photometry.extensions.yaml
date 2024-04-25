@@ -1,4 +1,20 @@
 groups:
+- neurodata_type_def: Indicator
+  neurodata_type_inc: Device
+  name: indicator
+  doc: Extends Device to hold metadata on the Indicator.
+  attributes:
+  - name: injection_location
+    dtype: text
+    doc: Injection brain region name.
+    required: false
+  - name: injection_coordinates_in_mm
+    dtype: float
+    shape:
+    - 3
+    doc: Fluorophore injection location in stereotactic coordinates (AP, ML, DV) mm
+      relative to Bregma.
+    required: false
 - neurodata_type_def: OpticalFiber
   neurodata_type_inc: Device
   name: fiber
@@ -115,12 +131,19 @@ groups:
     - 3
     doc: Fiber placement in stereotactic coordinates (AP, ML, DV) mm relative to Bregma.
     quantity: '?'
+    attributes:
+    - name: unit
+      dtype: text
+      value: millimiters
+      doc: coordinates unit
   - name: indicator
     neurodata_type_inc: VectorData
-    dtype: text
+    dtype:
+      target_type: Device
+      reftype: object
     shape:
     - null
-    doc: Indicator notation.
+    doc: Link to the indicator object.
   - name: notes
     neurodata_type_inc: VectorData
     dtype: text
@@ -192,3 +215,34 @@ groups:
     neurodata_type_inc: DynamicTableRegion
     doc: References row(s) of FiberPhotometryTable.
     quantity: '?'
+- neurodata_type_def: CommandedVoltageSeries
+  neurodata_type_inc: TimeSeries
+  doc: Extends TimeSeries to hold a Commanded Voltage
+  datasets:
+  - name: data
+    dtype: float
+    shape:
+    - null
+    doc: Voltages (length number timesteps) in unit volts.
+    attributes:
+    - name: unit
+      dtype: text
+      value: volts
+      doc: data unit
+  - name: frequency
+    dtype: float
+    doc: Voltage frequency in unit hertz.
+    quantity: '?'
+    attributes:
+    - name: unit
+      dtype: text
+      value: hertz
+      doc: frequency unit
+- neurodata_type_def: MultiCommandedVoltage
+  neurodata_type_inc: NWBDataInterface
+  name: commanded_voltages
+  doc: holds CommandedVoltageSeries objects
+  groups:
+  - neurodata_type_inc: CommandedVoltageSeries
+    doc: commanded voltage series
+    quantity: '*'
