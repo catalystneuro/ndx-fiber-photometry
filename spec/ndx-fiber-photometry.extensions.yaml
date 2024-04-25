@@ -134,7 +134,7 @@ groups:
     attributes:
     - name: unit
       dtype: text
-      value: millimiters
+      value: millimeters
       doc: coordinates unit
   - name: indicator
     neurodata_type_inc: VectorData

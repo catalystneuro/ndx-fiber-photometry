@@ -232,7 +232,7 @@ def main():
                 shape=(None, 3),
                 neurodata_type_inc="VectorData",
                 quantity="?",
-                attributes=[NWBAttributeSpec(name="unit", doc="coordinates unit", value="millimiters", dtype="text")],
+                attributes=[NWBAttributeSpec(name="unit", doc="coordinates unit", value="millimeters", dtype="text")],
             ),
             NWBDatasetSpec(
                 name="indicator",

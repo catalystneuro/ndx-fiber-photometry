@@ -14,7 +14,6 @@ from ndx_fiber_photometry import (
     OpticalFilter,
     FiberPhotometryTable,
     FiberPhotometryResponseSeries,
-    CommandedVoltageSeries,
     MultiCommandedVoltage,
 )
 
