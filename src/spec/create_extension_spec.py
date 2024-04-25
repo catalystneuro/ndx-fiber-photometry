@@ -39,9 +39,13 @@ def main():
     indicator = NWBGroupSpec(
         neurodata_type_def="Indicator",
         neurodata_type_inc="Device",
-        name="indicator",
         doc="Extends Device to hold metadata on the Indicator.",
         attributes=[
+            NWBAttributeSpec(
+                name="label",
+                doc="Indicator standard notation.",
+                dtype="text",
+            ),
             NWBAttributeSpec(
                 name="injection_location",
                 doc="Injection brain region name.",
@@ -61,7 +65,6 @@ def main():
     optical_fiber = NWBGroupSpec(
         neurodata_type_def="OpticalFiber",
         neurodata_type_inc="Device",
-        name="fiber",
         doc="Extends Device to hold metadata on the Optica Fiber.",
         attributes=[
             NWBAttributeSpec(
@@ -82,7 +85,6 @@ def main():
     excitation_source = NWBGroupSpec(
         neurodata_type_def="ExcitationSource",
         neurodata_type_inc="Device",
-        name="excitation_source",
         doc="Extends Device to hold metadata on the Excitation Source.",
         attributes=[
             NWBAttributeSpec(
@@ -107,7 +109,6 @@ def main():
     photodetector = NWBGroupSpec(
         neurodata_type_def="Photodetector",
         neurodata_type_inc="Device",
-        name="excitation_source",
         doc="Extends Device to hold metadata on the Excitation Source.",
         attributes=[
             NWBAttributeSpec(
@@ -196,6 +197,7 @@ def main():
                 name="bandwidth_in_nm",
                 doc="Width of the wavelength range that the filter allows to pass through or blocks.",
                 dtype="float",
+                shape=(2,),
             ),
             NWBAttributeSpec(
                 name="filter_type",
@@ -214,7 +216,6 @@ def main():
     fiber_photometry_table = NWBGroupSpec(
         neurodata_type_def="FiberPhotometryTable",
         neurodata_type_inc="DynamicTable",
-        name="fiber_photometry_table",
         doc="Extends DynamicTable to hold metadata on the Fiber Photometry system.",
         datasets=[
             NWBDatasetSpec(
@@ -231,11 +232,7 @@ def main():
                 shape=(None, 3),
                 neurodata_type_inc="VectorData",
                 quantity="?",
-                attributes=[
-                    NWBAttributeSpec(
-                        name="unit", doc="coordinates unit", value="millimiters", dtype="text"
-                    )
-                ],
+                attributes=[NWBAttributeSpec(name="unit", doc="coordinates unit", value="millimiters", dtype="text")],
             ),
             NWBDatasetSpec(
                 name="indicator",
@@ -264,6 +261,13 @@ def main():
                 doc="Link to the excitation source device.",
                 dtype=NWBRefSpec(target_type="Device", reftype="object"),
                 shape=(None,),
+                neurodata_type_inc="VectorData",
+            ),
+            NWBDatasetSpec(
+                name="commandedvoltage_series",
+                doc="Link to the commanded voltage series.",
+                dtype=NWBRefSpec(target_type="TimeSeries", reftype="object"),
+                shape=(None, None),
                 neurodata_type_inc="VectorData",
             ),
             NWBDatasetSpec(
@@ -311,7 +315,7 @@ def main():
                 shape=(None, None),
             ),
             NWBDatasetSpec(
-                name="fiber_photometry_table",
+                name="fiber_photometry_table_region",
                 doc="References row(s) of FiberPhotometryTable.",
                 neurodata_type_inc="DynamicTableRegion",
                 quantity="?",
@@ -329,28 +333,20 @@ def main():
                 doc="Voltages (length number timesteps) in unit volts.",
                 dtype="float",
                 shape=(None,),
-                attributes=[
-                    NWBAttributeSpec(
-                        name="unit", doc="data unit", value="volts", dtype="text"
-                    )
-                ],
+                attributes=[NWBAttributeSpec(name="unit", doc="data unit", value="volts", dtype="text")],
             ),
             NWBDatasetSpec(
                 name="frequency",
                 doc="Voltage frequency in unit hertz.",
                 dtype="float",
-                attributes=[
-                    NWBAttributeSpec(
-                        name="unit", doc="frequency unit", value="hertz", dtype="text"
-                    )
-                ],
+                attributes=[NWBAttributeSpec(name="unit", doc="frequency unit", value="hertz", dtype="text")],
                 quantity="?",
             ),
         ],
     )
 
     multi_commanded_voltage = NWBGroupSpec(
-        name='commanded_voltages',
+        name="commanded_voltages",
         neurodata_type_def="MultiCommandedVoltage",
         neurodata_type_inc="NWBDataInterface",
         doc="holds CommandedVoltageSeries objects",
@@ -363,7 +359,6 @@ def main():
         ],
     )
 
-
     # TODO: add all of your new data types to this list
     new_data_types = [
         indicator,
@@ -375,7 +370,7 @@ def main():
         fiber_photometry_table,
         fiberphotometryresponse_series,
         commandedvoltage_series,
-        multi_commanded_voltage
+        multi_commanded_voltage,
     ]
 
     # export the spec to yaml files in the spec folder

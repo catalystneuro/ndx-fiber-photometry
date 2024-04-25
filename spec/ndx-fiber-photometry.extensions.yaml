@@ -1,9 +1,11 @@
 groups:
 - neurodata_type_def: Indicator
   neurodata_type_inc: Device
-  name: indicator
   doc: Extends Device to hold metadata on the Indicator.
   attributes:
+  - name: label
+    dtype: text
+    doc: Indicator standard notation.
   - name: injection_location
     dtype: text
     doc: Injection brain region name.
@@ -17,7 +19,6 @@ groups:
     required: false
 - neurodata_type_def: OpticalFiber
   neurodata_type_inc: Device
-  name: fiber
   doc: Extends Device to hold metadata on the Optica Fiber.
   attributes:
   - name: model
@@ -30,7 +31,6 @@ groups:
     required: false
 - neurodata_type_def: ExcitationSource
   neurodata_type_inc: Device
-  name: excitation_source
   doc: Extends Device to hold metadata on the Excitation Source.
   attributes:
   - name: model
@@ -45,7 +45,6 @@ groups:
     doc: Excitation wavelength of the stimulation light (nanometers).
 - neurodata_type_def: Photodetector
   neurodata_type_inc: Device
-  name: excitation_source
   doc: Extends Device to hold metadata on the Excitation Source.
   attributes:
   - name: model
@@ -104,6 +103,8 @@ groups:
     doc: Wavelength that the filter is designed to pass or reflect.
   - name: bandwidth_in_nm
     dtype: float
+    shape:
+    - 2
     doc: Width of the wavelength range that the filter allows to pass through or blocks.
   - name: filter_type
     dtype: text
@@ -114,7 +115,6 @@ groups:
     required: false
 - neurodata_type_def: FiberPhotometryTable
   neurodata_type_inc: DynamicTable
-  name: fiber_photometry_table
   doc: Extends DynamicTable to hold metadata on the Fiber Photometry system.
   datasets:
   - name: location
@@ -167,6 +167,15 @@ groups:
     shape:
     - null
     doc: Link to the excitation source device.
+  - name: commandedvoltage_series
+    neurodata_type_inc: VectorData
+    dtype:
+      target_type: TimeSeries
+      reftype: object
+    shape:
+    - null
+    - null
+    doc: Link to the commanded voltage series.
   - name: photodetector
     neurodata_type_inc: VectorData
     dtype:
@@ -211,7 +220,7 @@ groups:
     - null
     doc: The data values. May be 1D or 2D. The first dimension must be time.The optional
       second dimension refers to the fiber that record the series.
-  - name: fiber_photometry_table
+  - name: fiber_photometry_table_region
     neurodata_type_inc: DynamicTableRegion
     doc: References row(s) of FiberPhotometryTable.
     quantity: '?'
