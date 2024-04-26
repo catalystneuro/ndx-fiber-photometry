@@ -109,7 +109,7 @@ def main():
     photodetector = NWBGroupSpec(
         neurodata_type_def="Photodetector",
         neurodata_type_inc="Device",
-        doc="Extends Device to hold metadata on the Excitation Source.",
+        doc="Extends Device to hold metadata on the Photodetector.",
         attributes=[
             NWBAttributeSpec(
                 name="model",
