@@ -54,7 +54,7 @@ def main():
             ),
             NWBAttributeSpec(
                 name="injection_coordinates_in_mm",
-                doc="Fluorophore injection location in stereotactic coordinates (AP, ML, DV) mm relative to Bregma.",
+                doc="Indicator injection location in stereotactic coordinates (AP, ML, DV) mm relative to Bregma.",
                 dtype="float",
                 shape=(3,),
                 required=False,
