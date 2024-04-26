@@ -264,7 +264,7 @@ def main():
                 neurodata_type_inc="VectorData",
             ),
             NWBDatasetSpec(
-                name="commandedvoltage_series",
+                name="commanded_voltage_series",
                 doc="Link to the commanded voltage series.",
                 dtype=NWBRefSpec(target_type="TimeSeries", reftype="object"),
                 shape=(None, None),
