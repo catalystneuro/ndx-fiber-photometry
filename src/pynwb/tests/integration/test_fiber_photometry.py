@@ -4,6 +4,7 @@ import numpy as np
 from pynwb import NWBHDF5IO, NWBFile
 from pynwb.core import DynamicTableRegion
 from pynwb.testing import TestCase, remove_test_file
+from pynwb.testing.mock.file import mock_NWBFile
 
 from ndx_fiber_photometry import (
     Indicator,
@@ -18,12 +19,9 @@ from ndx_fiber_photometry import (
 )
 
 
-def set_up_nwbfile():
-    nwbfile = NWBFile(
-        session_description="session_description",
-        identifier="identifier",
-        session_start_time=datetime.datetime.now(datetime.timezone.utc),
-    )
+def set_up_nwbfile(nwbfile: NWBFile = None):
+    """Create an NWBFile."""
+    nwbfile = nwbfile or mock_NWBFile()
     return nwbfile
 
 
@@ -52,15 +50,15 @@ class TestIntegrationRoundtrip(TestCase):
     def test_roundtrip(self):
 
         indicator_green = Indicator(
-            name="Green Indicator",
-            description="indicator",
+            name="indicator_1",
+            description="Green indicator",
             label="GCamp6f",
             injection_location="VTA",
             injection_coordinates_in_mm=(3.0, 2.0, 1.0),
         )
         indicator_red = Indicator(
-            name="Red Indicator",
-            description="indicator",
+            name="indicator_2",
+            description="Red indicator",
             label="Tdtomato",
             injection_location="VTA",
             injection_coordinates_in_mm=(3.0, 2.0, 1.0),
