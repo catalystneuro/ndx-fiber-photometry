@@ -18,7 +18,6 @@ Ophys:
       location: Location of this fiber
       coordinates: [0.0, 0.0, 0.0] # Fiber placement stereotactic coordinates in (AP, ML, DV) in mm relative to Bregma
       notes: extra notes
-      indicator: indicator
     OpticalFibers:
       - name: fiber0
         description: fiber0 description
@@ -61,12 +60,13 @@ Ophys:
         model: dichroic0 model
         cut_on_wavelength_in_nm: 465.0
         cut_off_wavelength_in_nm: 500.0
-    # Fluorophores:
-    #   - label: dlight
-    #     location: VTA
-    #     emission_peak_wavelength: 500.0
-    #     excitation_peak_wavelength: 465.0
-    #     coordinates: [0.0, 0.0, 0.0] # Fluorophore injection site in taxonomical coordinates in (AP, ML, Z) in mm relative to Bregma
+    Indicator:
+      - name: indicator0
+        label: dlight
+        location: VTA
+        emission_peak_wavelength: 500.0
+        excitation_peak_wavelength: 465.0
+        coordinates: [0.0, 0.0, 0.0] # Fluorophore injection site in taxonomical coordinates in (AP, ML, Z) in mm relative to Bregma
     FiberPhotometryResponseSeries:
       - name: _405A
         description: isosbestic signal
