@@ -113,7 +113,7 @@ def main():
         attributes=[
             NWBAttributeSpec(
                 name="model",
-                doc="Model of excitation source device.",
+                doc="Model of photodetector device.",
                 dtype="text",
                 required=False,
             ),
