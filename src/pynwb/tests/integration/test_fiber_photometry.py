@@ -14,7 +14,7 @@ from ndx_fiber_photometry import (
     OpticalFilter,
     FiberPhotometryTable,
     FiberPhotometryResponseSeries,
-    MultiCommandedVoltage,
+    CommandedVoltageSeries,
 )
 
 
@@ -40,7 +40,6 @@ class TestIntegrationRoundtrip(TestCase):
         FiberPhotometryTable,
         FiberPhotometryResponseSeries,
         CommandedVoltageSeries,
-        MultiCommandedVoltage,
     """
 
     def setUp(self):
@@ -147,13 +146,11 @@ class TestIntegrationRoundtrip(TestCase):
             filter_type="emission filter",
         )
 
-        multi_commanded_voltage = MultiCommandedVoltage()
-
-        commandedvoltage_series_1 = multi_commanded_voltage.create_commanded_voltage_series(
-            name="commandedvoltage_series_1", data=[1.0, 2.0, 3.0], frequency=30.0, rate=30.0, unit="volts"
+        commanded_voltage_series_1 = CommandedVoltageSeries(
+            name="commanded_voltage_series_1", data=[1.0, 2.0, 3.0], frequency=30.0, rate=30.0, unit="volts"
         )
-        commandedvoltage_series_2 = multi_commanded_voltage.create_commanded_voltage_series(
-            name="commandedvoltage_series_2",
+        commanded_voltage_series_2 = CommandedVoltageSeries(
+            name="commanded_voltage_series_2",
             data=[4.0, 5.0, 6.0],
             rate=30.0,
             unit="volts",
@@ -169,7 +166,7 @@ class TestIntegrationRoundtrip(TestCase):
             indicator=indicator_green,
             optical_fiber=optical_fiber_1,
             excitation_source=excitation_source_1,
-            commandedvoltage_series=commandedvoltage_series_1,
+            commanded_voltage_series=commanded_voltage_series_1,
             photodetector=photodetector_1,
             dichroic_mirror=dichroic_mirror_1,
             emission_filter=optical_filter_1,
@@ -180,7 +177,7 @@ class TestIntegrationRoundtrip(TestCase):
             indicator=indicator_red,
             optical_fiber=optical_fiber_2,
             excitation_source=excitation_source_2,
-            commandedvoltage_series=commandedvoltage_series_2,
+            commanded_voltage_series=commanded_voltage_series_2,
             photodetector=photodetector_2,
             dichroic_mirror=dichroic_mirror_2,
             emission_filter=optical_filter_2,
@@ -212,7 +209,8 @@ class TestIntegrationRoundtrip(TestCase):
         self.nwbfile.add_device(optical_filter_1)
         self.nwbfile.add_device(optical_filter_2)
 
-        self.nwbfile.add_acquisition(multi_commanded_voltage)
+        self.nwbfile.add_acquisition(commanded_voltage_series_1)
+        self.nwbfile.add_acquisition(commanded_voltage_series_2)
         self.nwbfile.add_acquisition(fiber_photometry_table)
         self.nwbfile.add_acquisition(fiber_photometry_response_series)
 

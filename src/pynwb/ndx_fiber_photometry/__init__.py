@@ -31,7 +31,6 @@ OpticalFilter = get_class("OpticalFilter", "ndx-fiber-photometry")
 FiberPhotometryTable = get_class("FiberPhotometryTable", "ndx-fiber-photometry")
 FiberPhotometryResponseSeries = get_class("FiberPhotometryResponseSeries", "ndx-fiber-photometry")
 CommandedVoltageSeries = get_class("CommandedVoltageSeries", "ndx-fiber-photometry")
-MultiCommandedVoltage = get_class("MultiCommandedVoltage", "ndx-fiber-photometry")
 
 
 # NOTE: `widgets/tetrode_series_widget.py` adds a "widget"

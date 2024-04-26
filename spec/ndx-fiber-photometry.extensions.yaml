@@ -14,12 +14,12 @@ groups:
     dtype: float
     shape:
     - 3
-    doc: Fluorophore injection location in stereotactic coordinates (AP, ML, DV) mm
+    doc: Indicator injection location in stereotactic coordinates (AP, ML, DV) mm
       relative to Bregma.
     required: false
 - neurodata_type_def: OpticalFiber
   neurodata_type_inc: Device
-  doc: Extends Device to hold metadata on the Optica Fiber.
+  doc: Extends Device to hold metadata on the Optical Fiber.
   attributes:
   - name: model
     dtype: text
@@ -45,11 +45,11 @@ groups:
     doc: Excitation wavelength of the stimulation light (nanometers).
 - neurodata_type_def: Photodetector
   neurodata_type_inc: Device
-  doc: Extends Device to hold metadata on the Excitation Source.
+  doc: Extends Device to hold metadata on the Photodetector.
   attributes:
   - name: model
     dtype: text
-    doc: Model of excitation source device.
+    doc: Model of photodetector device.
     required: false
   - name: detector_type
     dtype: text
@@ -167,7 +167,7 @@ groups:
     shape:
     - null
     doc: Link to the excitation source device.
-  - name: commandedvoltage_series
+  - name: commanded_voltage_series
     neurodata_type_inc: VectorData
     dtype:
       target_type: TimeSeries
@@ -247,11 +247,3 @@ groups:
       dtype: text
       value: hertz
       doc: frequency unit
-- neurodata_type_def: MultiCommandedVoltage
-  neurodata_type_inc: NWBDataInterface
-  name: commanded_voltages
-  doc: holds CommandedVoltageSeries objects
-  groups:
-  - neurodata_type_inc: CommandedVoltageSeries
-    doc: commanded voltage series
-    quantity: '*'

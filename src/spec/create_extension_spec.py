@@ -345,20 +345,6 @@ def main():
         ],
     )
 
-    multi_commanded_voltage = NWBGroupSpec(
-        name="commanded_voltages",
-        neurodata_type_def="MultiCommandedVoltage",
-        neurodata_type_inc="NWBDataInterface",
-        doc="holds CommandedVoltageSeries objects",
-        groups=[
-            NWBGroupSpec(
-                neurodata_type_inc="CommandedVoltageSeries",
-                quantity="*",
-                doc="commanded voltage series",
-            )
-        ],
-    )
-
     # TODO: add all of your new data types to this list
     new_data_types = [
         indicator,
@@ -370,7 +356,6 @@ def main():
         fiber_photometry_table,
         fiberphotometryresponse_series,
         commandedvoltage_series,
-        multi_commanded_voltage,
     ]
 
     # export the spec to yaml files in the spec folder
