@@ -65,7 +65,7 @@ def main():
     optical_fiber = NWBGroupSpec(
         neurodata_type_def="OpticalFiber",
         neurodata_type_inc="Device",
-        doc="Extends Device to hold metadata on the Optica Fiber.",
+        doc="Extends Device to hold metadata on the Optical Fiber.",
         attributes=[
             NWBAttributeSpec(
                 name="model",
