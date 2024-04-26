@@ -16,7 +16,7 @@ Ophys:
   FiberPhotometry:
     FiberPhotometryTable:
       location: Location of this fiber
-      coordinates: [0.0, 0.0, 0.0] # Fiber placement taxonomical coordinates in (AP, ML, Z) in mm relative to Bregma
+      coordinates: [0.0, 0.0, 0.0] # Fiber placement stereotactic coordinates in (AP, ML, DV) in mm relative to Bregma
       notes: extra notes
       indicator: indicator
     OpticalFibers:
