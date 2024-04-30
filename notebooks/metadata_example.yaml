@@ -1,0 +1,74 @@
+NWBFile:
+  session_description: Description.
+  session_start_time: 2000-07-23T00:00:00-07:00
+  institution: My University
+  lab: My Lab
+  experimenter:
+    - Last, First Middle
+Subject:
+  subject_id: subid012345
+  genotype: not defined
+  description: not defined
+  species: Mus musculus
+  date_of_birth: 2023-03-17T00:00:00
+  sex: F
+Ophys:
+  FiberPhotometry:
+    FiberPhotometryTable:
+      location: Location of this fiber
+      coordinates: [0.0, 0.0, 0.0] # Fiber placement stereotactic coordinates in (AP, ML, DV) in mm relative to Bregma
+      notes: extra notes
+    OpticalFibers:
+      - name: fiber0
+        description: fiber0 description
+        manufacturer: fiber0 manufacturer
+        model: fiber0 model
+        numerical_aperture: 0.2
+    ExcitationSources:
+      - name: laser0
+        description: laser0 description
+        manufacturer: laser0 manufacturer
+        model: laser0 model
+        illumination_type: laser # LED or laser
+        excitation_wavelength_in_nm: 465.0
+    Photodetectors:
+      - name: photodetector0
+        description: photodetector0 description
+        manufacturer: photodetector0 manufacturer
+        model: photodetector0 model
+        detector_type: PMT # PMT or photodiode
+        detected_wavelength_in_nm: 500.0
+    OpticalFilters:
+      - name: filter0
+        description: filter0 description
+        manufacturer: filter0 manufacturer
+        model: filter0 model
+        peak_wavelength_in_nm: 465.0
+        bandwidth_in_nm: 20.0
+        filter_type: Excitation
+      - name: filter1
+        description: filter1 description
+        manufacturer: filter1 manufacturer
+        model: filter1 model
+        peak_wavelength_in_nm: 500.0
+        bandwidth_in_nm: 20.0
+        filter_type: Emission
+    DichroicMirrors:
+      - name: dichroic0
+        description: dichroic0 description
+        manufacturer: dichroic0 manufacturer
+        model: dichroic0 model
+        cut_on_wavelength_in_nm: 465.0
+        cut_off_wavelength_in_nm: 500.0
+    Indicator:
+      - name: indicator0
+        label: dlight
+        location: VTA
+        emission_peak_wavelength: 500.0
+        excitation_peak_wavelength: 465.0
+        coordinates: [0.0, 0.0, 0.0] # Fluorophore injection site in taxonomical coordinates in (AP, ML, Z) in mm relative to Bregma
+    FiberPhotometryResponseSeries:
+      - name: _405A
+        description: isosbestic signal
+        unit: F
+        fiber_photometry_table_region: [0]
