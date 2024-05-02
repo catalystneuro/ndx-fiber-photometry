@@ -28,7 +28,7 @@ ExcitationSource = get_class("ExcitationSource", "ndx-fiber-photometry")
 Photodetector = get_class("Photodetector", "ndx-fiber-photometry")
 DichroicMirror = get_class("DichroicMirror", "ndx-fiber-photometry")
 OpticalFilter = get_class("OpticalFilter", "ndx-fiber-photometry")
-FiberPhotometryTable = get_class("FiberPhotometryTable", "ndx-fiber-photometry")
+from .fiber_photometry import FiberPhotometryTable
 FiberPhotometryResponseSeries = get_class("FiberPhotometryResponseSeries", "ndx-fiber-photometry")
 CommandedVoltageSeries = get_class("CommandedVoltageSeries", "ndx-fiber-photometry")
 
