@@ -153,7 +153,7 @@ def main():
                 required=False,
             ),
             NWBAttributeSpec(
-                name="reflection_bandwidth_in_nm",
+                name="reflection_band_in_nm",
                 doc="The range of wavelengths that are primarily reflected."
                 "The start and end wavelengths needs to be specified.",
                 dtype="float",
@@ -161,7 +161,7 @@ def main():
                 shape=(2,),
             ),
             NWBAttributeSpec(
-                name="transmission_bandwidth_in_nm",
+                name="transmission_band_in_nm",
                 doc="The range of wavelengths that are primarily transmitted."
                 "The start and end wavelengths needs to be specified.",
                 dtype="float",
@@ -189,19 +189,14 @@ def main():
         doc="Extends Device to hold a Optical Filter.",
         attributes=[
             NWBAttributeSpec(
-                name="peak_wavelength_in_nm",
-                doc="Wavelength that the filter is designed to pass or reflect.",
-                dtype="float",
-            ),
-            NWBAttributeSpec(
-                name="bandwidth_in_nm",
-                doc="Width of the wavelength range that the filter allows to pass through or blocks.",
+                name="band_wavelengths_in_nm",
+                doc="Wavelength range that the filter allows to pass through or blocks.",
                 dtype="float",
                 shape=(2,),
             ),
             NWBAttributeSpec(
                 name="filter_type",
-                doc="Type of filter (e.g., 'Excitation', 'Emission', 'Bandpass', 'Longpass', 'Shortpass').",
+                doc="Type of filter (e.g., 'Bandpass', 'Bandstop', 'Longpass', 'Shortpass').",
                 dtype="text",
             ),
             NWBAttributeSpec(

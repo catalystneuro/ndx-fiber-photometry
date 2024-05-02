@@ -72,14 +72,14 @@ groups:
     doc: Wavelength at which transmission shifts back to reflection,for mirrors with
       complex transmission spectra.
     required: false
-  - name: reflection_bandwidth_in_nm
+  - name: reflection_band_in_nm
     dtype: float
     shape:
     - 2
     doc: The range of wavelengths that are primarily reflected.The start and end wavelengths
       needs to be specified.
     required: false
-  - name: transmission_bandwidth_in_nm
+  - name: transmission_band_in_nm
     dtype: float
     shape:
     - 2
@@ -98,17 +98,14 @@ groups:
   neurodata_type_inc: Device
   doc: Extends Device to hold a Optical Filter.
   attributes:
-  - name: peak_wavelength_in_nm
-    dtype: float
-    doc: Wavelength that the filter is designed to pass or reflect.
-  - name: bandwidth_in_nm
+  - name: band_wavelengths_in_nm
     dtype: float
     shape:
     - 2
-    doc: Width of the wavelength range that the filter allows to pass through or blocks.
+    doc: Wavelength range that the filter allows to pass through or blocks.
   - name: filter_type
     dtype: text
-    doc: Type of filter (e.g., 'Excitation', 'Emission', 'Bandpass', 'Longpass', 'Shortpass').
+    doc: Type of filter (e.g., 'Bandpass', 'Bandstop', 'Longpass', 'Shortpass').
   - name: model
     dtype: text
     doc: Model of the optical filter.

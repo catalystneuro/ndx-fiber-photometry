@@ -109,9 +109,9 @@ class TestIntegrationRoundtrip(TestCase):
             description="Dichroic mirror for green indicator",
             model="dicdichroic mirror model",
             cut_on_wavelength_in_nm=470.0,
-            transmission_bandwidth_in_nm=(460.0, 480.0),
+            transmission_band_in_nm=(460.0, 480.0),
             cut_off_wavelength_in_nm=500.0,
-            reflection_bandwidth_in_nm=(490.0, 520.0),
+            reflection_band_in_nm=(490.0, 520.0),
             angle_of_incidence_in_degrees=45.0,
         )
 
@@ -120,9 +120,9 @@ class TestIntegrationRoundtrip(TestCase):
             description="Dichroic mirror for red indicator",
             model="dicdichroic mirror model",
             cut_on_wavelength_in_nm=525.0,
-            transmission_bandwidth_in_nm=(515.0, 535.0),
+            transmission_band_in_nm=(515.0, 535.0),
             cut_off_wavelength_in_nm=585.0,
-            reflection_bandwidth_in_nm=(575.0, 595.0),
+            reflection_band_in_nm=(575.0, 595.0),
             angle_of_incidence_in_degrees=45.0,
         )
 
@@ -130,16 +130,14 @@ class TestIntegrationRoundtrip(TestCase):
             name="optical_filter_1",
             description="emission filter for green indicator",
             model="emission filter model",
-            peak_wavelength_in_nm=500.0,
-            bandwidth_in_nm=(490.0, 520.0),
+            band_wavelengths_in_nm=(490.0, 520.0),
             filter_type="emission filter",
         )
         optical_filter_2 = OpticalFilter(
             name="optical_filter_2",
             description="emission filter for red indicator",
             model="emission filter model",
-            peak_wavelength_in_nm=585.0,
-            bandwidth_in_nm=(575.0, 595.0),
+            band_wavelengths_in_nm=(575.0, 595.0),
             filter_type="emission filter",
         )
 
