@@ -67,11 +67,13 @@ class TestIntegrationRoundtrip(TestCase):
             name="optical_fiber_1",
             model="fiber_model",
             numerical_aperture=0.2,
+            core_diameter_in_um=400.0,
         )
         optical_fiber_2 = OpticalFiber(
             name="optical_fiber_2",
             model="fiber_model",
             numerical_aperture=0.2,
+            core_diameter_in_um=400.0,
         )
 
         excitation_source_1 = ExcitationSource(
