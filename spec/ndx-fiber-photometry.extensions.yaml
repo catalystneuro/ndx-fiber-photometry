@@ -60,6 +60,7 @@ groups:
   - name: gain
     dtype: float
     doc: Gain on the photodetector.
+    required: false
 - neurodata_type_def: DichroicMirror
   neurodata_type_inc: Device
   doc: Extends Device to hold a Dichroic Mirror.
@@ -176,6 +177,7 @@ groups:
     - null
     - null
     doc: Link to the commanded voltage series.
+    quantity: '?'
   - name: photodetector
     neurodata_type_inc: VectorData
     dtype:

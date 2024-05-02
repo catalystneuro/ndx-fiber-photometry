@@ -131,6 +131,7 @@ def main():
                 name="gain",
                 doc="Gain on the photodetector.",
                 dtype="float",
+                required=False,
             ),
         ],
     )
@@ -269,6 +270,7 @@ def main():
                 dtype=NWBRefSpec(target_type="TimeSeries", reftype="object"),
                 shape=(None, None),
                 neurodata_type_inc="VectorData",
+                quantity="?",
             ),
             NWBDatasetSpec(
                 name="photodetector",
