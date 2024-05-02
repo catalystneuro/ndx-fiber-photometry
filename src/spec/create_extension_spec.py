@@ -144,6 +144,7 @@ def main():
                 name="cut_on_wavelength_in_nm",
                 doc="Wavelength at which the mirror starts to transmit light more than reflect.",
                 dtype="float",
+                required=False,
             ),
             NWBAttributeSpec(
                 name="cut_off_wavelength_in_nm",
