@@ -24,6 +24,7 @@ Ophys:
         manufacturer: fiber0 manufacturer
         model: fiber0 model
         numerical_aperture: 0.2
+        core_diameter_in_um: 400.0
     ExcitationSources:
       - name: laser0
         description: laser0 description

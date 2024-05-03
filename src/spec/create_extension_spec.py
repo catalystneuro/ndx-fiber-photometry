@@ -79,6 +79,12 @@ def main():
                 dtype="float",
                 required=False,
             ),
+            NWBAttributeSpec(
+                name="core_diameter_in_um",
+                doc="Core diameter in micrometers.",
+                dtype="float",
+                required=False,
+            ),
         ],
     )
 

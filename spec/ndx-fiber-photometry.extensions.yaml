@@ -29,6 +29,10 @@ groups:
     dtype: float
     doc: Numerical aperture, e.g., 0.39 NA.
     required: false
+  - name: core_diameter_in_um
+    dtype: float
+    doc: Core diameter in micrometers.
+    required: false
 - neurodata_type_def: ExcitationSource
   neurodata_type_inc: Device
   doc: Extends Device to hold metadata on the Excitation Source.
