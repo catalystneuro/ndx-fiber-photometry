@@ -72,6 +72,7 @@ groups:
   - name: cut_on_wavelength_in_nm
     dtype: float
     doc: Wavelength at which the mirror starts to transmit light more than reflect.
+    required: false
   - name: cut_off_wavelength_in_nm
     dtype: float
     doc: Wavelength at which transmission shifts back to reflection,for mirrors with
