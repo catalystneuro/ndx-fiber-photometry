@@ -39,21 +39,24 @@ Ophys:
         model: photodetector0 model
         detector_type: PMT # PMT or photodiode
         detected_wavelength_in_nm: 500.0
-    OpticalFilters:
-      - name: filter0
-        description: filter0 description
-        manufacturer: filter0 manufacturer
-        model: filter0 model
-        peak_wavelength_in_nm: 465.0
+    BandOpticalFilters:
+      - name: band_filter0
+        description: band_filter0 description
+        manufacturer: band_filter0 manufacturer
+        model: band_filter0 model
+        center_wavelength_in_nm: 465.0
         bandwidth_in_nm: 20.0
-        filter_type: Excitation
-      - name: filter1
-        description: filter1 description
-        manufacturer: filter1 manufacturer
-        model: filter1 model
-        peak_wavelength_in_nm: 500.0
-        bandwidth_in_nm: 20.0
-        filter_type: Emission
+        filter_type: Bandpass
+    EdgeOpticalFilters:
+      - name: edge_filter0
+        description: edge_filter0 description
+        manufacturer: edge_filter0 manufacturer
+        model: edge_filter0 model
+        cut_wavelength_in_nm: 500.0
+        slope_in_percent_cut_wavelength: 1.0
+        slope_starting_transmission_in_percent: 10.0
+        slope_ending_transmission_in_percent: 80.0
+        filter_type: Longpass
     DichroicMirrors:
       - name: dichroic0
         description: dichroic0 description
