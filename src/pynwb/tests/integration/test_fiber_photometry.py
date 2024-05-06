@@ -11,7 +11,8 @@ from ndx_fiber_photometry import (
     ExcitationSource,
     Photodetector,
     DichroicMirror,
-    OpticalFilter,
+    BandOpticalFilter,
+    EdgeOpticalFilter,
     FiberPhotometryTable,
     FiberPhotometryResponseSeries,
     CommandedVoltageSeries,
@@ -33,7 +34,8 @@ class TestIntegrationRoundtrip(TestCase):
         ExcitationSource,
         Photodetector,
         DichroicMirror,
-        OpticalFilter,
+        BandOpticalFilter,
+        EdgeOpticalFilter,
         FiberPhotometryTable,
         FiberPhotometryResponseSeries,
         CommandedVoltageSeries,
@@ -126,19 +128,23 @@ class TestIntegrationRoundtrip(TestCase):
             angle_of_incidence_in_degrees=45.0,
         )
 
-        optical_filter_1 = OpticalFilter(
-            name="optical_filter_1",
+        band_optical_filter = BandOpticalFilter(
+            name="band_optical_filter",
             description="emission filter for green indicator",
             model="emission filter model",
-            band_wavelengths_in_nm=(490.0, 520.0),
-            filter_type="emission filter",
+            center_wavelength_in_nm=505.0,
+            bandwidth_in_nm=30.0, # 505±15nm
+            filter_type="Bandpass",
         )
-        optical_filter_2 = OpticalFilter(
-            name="optical_filter_2",
+        edge_optical_filter = EdgeOpticalFilter(
+            name="edge_optical_filter",
             description="emission filter for red indicator",
             model="emission filter model",
-            band_wavelengths_in_nm=(575.0, 595.0),
-            filter_type="emission filter",
+            cut_wavelength_in_nm=585.0,
+            slope_in_percent_cut_wavelength=1.0,
+            slope_starting_transmission_in_percent=10.0,
+            slope_ending_transmission_in_percent=80.0,
+            filter_type="Longpass",
         )
 
         commanded_voltage_series_1 = CommandedVoltageSeries(
@@ -164,7 +170,7 @@ class TestIntegrationRoundtrip(TestCase):
             commanded_voltage_series=commanded_voltage_series_1,
             photodetector=photodetector_1,
             dichroic_mirror=dichroic_mirror_1,
-            emission_filter=optical_filter_1,
+            emission_filter=band_optical_filter,
         )
         fiber_photometry_table.add_row(
             location="VTA",
@@ -175,7 +181,7 @@ class TestIntegrationRoundtrip(TestCase):
             commanded_voltage_series=commanded_voltage_series_2,
             photodetector=photodetector_2,
             dichroic_mirror=dichroic_mirror_2,
-            emission_filter=optical_filter_2,
+            emission_filter=edge_optical_filter,
         )
 
         fiber_photometry_table_region = DynamicTableRegion(
@@ -201,8 +207,8 @@ class TestIntegrationRoundtrip(TestCase):
         self.nwbfile.add_device(photodetector_2)
         self.nwbfile.add_device(dichroic_mirror_1)
         self.nwbfile.add_device(dichroic_mirror_2)
-        self.nwbfile.add_device(optical_filter_1)
-        self.nwbfile.add_device(optical_filter_2)
+        self.nwbfile.add_device(band_optical_filter)
+        self.nwbfile.add_device(edge_optical_filter)
 
         self.nwbfile.add_acquisition(commanded_voltage_series_1)
         self.nwbfile.add_acquisition(commanded_voltage_series_2)

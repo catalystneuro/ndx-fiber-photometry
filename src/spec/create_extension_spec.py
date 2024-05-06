@@ -183,21 +183,66 @@ def main():
         ],
     )
 
-    optical_filter = NWBGroupSpec(
-        neurodata_type_def="OpticalFilter",
+    band_optical_filter = NWBGroupSpec(
+        neurodata_type_def="BandOpticalFilter",
         neurodata_type_inc="Device",
-        doc="Extends Device to hold a Optical Filter.",
+        doc="Extends Device to hold a Band Optical Filter (Bandpass or Bandstop).",
         attributes=[
             NWBAttributeSpec(
-                name="band_wavelengths_in_nm",
-                doc="Wavelength range that the filter allows to pass through or blocks.",
+                name="center_wavelength_in_nm",
+                doc="The midpoint of the band of wavelengths that the filter transmits or blocks.",
                 dtype="float",
-                shape=(2,),
+            ),
+            NWBAttributeSpec(
+                name="bandwidth_in_nm",
+                doc="The width of the wavelength range that the filter transmits or blocks (full width at half maximum).",
+                dtype="float",
             ),
             NWBAttributeSpec(
                 name="filter_type",
-                doc="Type of filter (e.g., 'Bandpass', 'Bandstop', 'Longpass', 'Shortpass').",
+                doc="Type of filter (e.g., 'Bandpass', 'Bandstop').",
                 dtype="text",
+            ),
+            NWBAttributeSpec(
+                name="model",
+                doc="Model of the optical filter.",
+                dtype="text",
+                required=False,
+            ),
+        ],
+    )
+    edge_optical_filter = NWBGroupSpec(
+        neurodata_type_def="EdgeOpticalFilter",
+        neurodata_type_inc="Device",
+        doc="Extends Device to hold an Edge Optical Filter (Longpass or Shortpass).",
+        attributes=[
+            NWBAttributeSpec(
+                name="cut_wavelength_in_nm",
+                doc="The wavelength at which the filter transmits half as much as its peak transmission.",
+                dtype="float",
+            ),
+            NWBAttributeSpec(
+                name="filter_type",
+                doc="Type of filter (e.g., 'Longpass', 'Shortpass').",
+                dtype="text",
+            ),
+            NWBAttributeSpec(
+                name="slope_in_percent_cut_wavelength",
+                doc="The steepness of the transition from high blocking to high transmission (or vice versa). Specified as a percentage of the cut wavelength.",
+                dtype="float",
+                required=False,
+            ),
+            NWBAttributeSpec(
+                name="slope_starting_transmission_in_percent",
+                doc="The percent transmission that defines the starting point for the slope (e.g. 10%).",
+                dtype="float",
+                required=False,
+            ),
+            NWBAttributeSpec(
+                name="slope_ending_transmission_in_percent",
+                doc="The percent transmission that defines the ending point for the slope (e.g. 80%).",
+                dtype="float",
+                required=False,
             ),
             NWBAttributeSpec(
                 name="model",
@@ -347,7 +392,8 @@ def main():
         excitation_source,
         photodetector,
         dichroic_mirror,
-        optical_filter,
+        band_optical_filter,
+        edge_optical_filter,
         fiber_photometry_table,
         fiberphotometryresponse_series,
         commandedvoltage_series,
