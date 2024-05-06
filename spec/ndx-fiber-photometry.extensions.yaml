@@ -29,6 +29,10 @@ groups:
     dtype: float
     doc: Numerical aperture, e.g., 0.39 NA.
     required: false
+  - name: core_diameter_in_um
+    dtype: float
+    doc: Core diameter in micrometers.
+    required: false
 - neurodata_type_def: ExcitationSource
   neurodata_type_inc: Device
   doc: Extends Device to hold metadata on the Excitation Source.
@@ -60,6 +64,7 @@ groups:
   - name: gain
     dtype: float
     doc: Gain on the photodetector.
+    required: false
 - neurodata_type_def: DichroicMirror
   neurodata_type_inc: Device
   doc: Extends Device to hold a Dichroic Mirror.
@@ -67,6 +72,7 @@ groups:
   - name: cut_on_wavelength_in_nm
     dtype: float
     doc: Wavelength at which the mirror starts to transmit light more than reflect.
+    required: false
   - name: cut_off_wavelength_in_nm
     dtype: float
     doc: Wavelength at which transmission shifts back to reflection,for mirrors with
@@ -204,6 +210,7 @@ groups:
     - null
     - null
     doc: Link to the commanded voltage series.
+    quantity: '?'
   - name: photodetector
     neurodata_type_inc: VectorData
     dtype:

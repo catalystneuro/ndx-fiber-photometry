@@ -79,6 +79,12 @@ def main():
                 dtype="float",
                 required=False,
             ),
+            NWBAttributeSpec(
+                name="core_diameter_in_um",
+                doc="Core diameter in micrometers.",
+                dtype="float",
+                required=False,
+            ),
         ],
     )
 
@@ -131,6 +137,7 @@ def main():
                 name="gain",
                 doc="Gain on the photodetector.",
                 dtype="float",
+                required=False,
             ),
         ],
     )
@@ -144,6 +151,7 @@ def main():
                 name="cut_on_wavelength_in_nm",
                 doc="Wavelength at which the mirror starts to transmit light more than reflect.",
                 dtype="float",
+                required=False,
             ),
             NWBAttributeSpec(
                 name="cut_off_wavelength_in_nm",
@@ -309,6 +317,7 @@ def main():
                 dtype=NWBRefSpec(target_type="TimeSeries", reftype="object"),
                 shape=(None, None),
                 neurodata_type_inc="VectorData",
+                quantity="?",
             ),
             NWBDatasetSpec(
                 name="photodetector",

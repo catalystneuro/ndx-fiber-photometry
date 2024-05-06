@@ -1,7 +1,6 @@
 import numpy as np
 
 from pynwb import NWBHDF5IO, NWBFile
-from pynwb.core import DynamicTableRegion
 from pynwb.testing import TestCase, remove_test_file
 from pynwb.testing.mock.file import mock_NWBFile
 
@@ -69,11 +68,13 @@ class TestIntegrationRoundtrip(TestCase):
             name="optical_fiber_1",
             model="fiber_model",
             numerical_aperture=0.2,
+            core_diameter_in_um=400.0,
         )
         optical_fiber_2 = OpticalFiber(
             name="optical_fiber_2",
             model="fiber_model",
             numerical_aperture=0.2,
+            core_diameter_in_um=400.0,
         )
 
         excitation_source_1 = ExcitationSource(
@@ -184,8 +185,8 @@ class TestIntegrationRoundtrip(TestCase):
             emission_filter=edge_optical_filter,
         )
 
-        fiber_photometry_table_region = DynamicTableRegion(
-            name="fiber_photometry_table_region", data=[0], description="source fibers", table=fiber_photometry_table
+        fiber_photometry_table_region = fiber_photometry_table.create_fiber_photometry_table_region(
+            region=[0], description="source fibers"
         )
 
         fiber_photometry_response_series = FiberPhotometryResponseSeries(
