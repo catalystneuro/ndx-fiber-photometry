@@ -78,14 +78,14 @@ groups:
     doc: Wavelength at which transmission shifts back to reflection,for mirrors with
       complex transmission spectra.
     required: false
-  - name: reflection_bandwidth_in_nm
+  - name: reflection_band_in_nm
     dtype: float
     shape:
     - 2
     doc: The range of wavelengths that are primarily reflected.The start and end wavelengths
       needs to be specified.
     required: false
-  - name: transmission_bandwidth_in_nm
+  - name: transmission_band_in_nm
     dtype: float
     shape:
     - 2
@@ -100,21 +100,49 @@ groups:
     dtype: text
     doc: Model of the dichroic mirror.
     required: false
-- neurodata_type_def: OpticalFilter
+- neurodata_type_def: BandOpticalFilter
   neurodata_type_inc: Device
-  doc: Extends Device to hold a Optical Filter.
+  doc: Extends Device to hold a Band Optical Filter (Bandpass or Bandstop).
   attributes:
-  - name: peak_wavelength_in_nm
+  - name: center_wavelength_in_nm
     dtype: float
-    doc: Wavelength that the filter is designed to pass or reflect.
+    doc: The midpoint of the band of wavelengths that the filter transmits or blocks.
   - name: bandwidth_in_nm
     dtype: float
-    shape:
-    - 2
-    doc: Width of the wavelength range that the filter allows to pass through or blocks.
+    doc: The width of the wavelength range that the filter transmits or blocks (full
+      width at half maximum).
   - name: filter_type
     dtype: text
-    doc: Type of filter (e.g., 'Excitation', 'Emission', 'Bandpass', 'Longpass', 'Shortpass').
+    doc: Type of filter (e.g., 'Bandpass', 'Bandstop').
+  - name: model
+    dtype: text
+    doc: Model of the optical filter.
+    required: false
+- neurodata_type_def: EdgeOpticalFilter
+  neurodata_type_inc: Device
+  doc: Extends Device to hold an Edge Optical Filter (Longpass or Shortpass).
+  attributes:
+  - name: cut_wavelength_in_nm
+    dtype: float
+    doc: The wavelength at which the filter transmits half as much as its peak transmission.
+  - name: filter_type
+    dtype: text
+    doc: Type of filter (e.g., 'Longpass', 'Shortpass').
+  - name: slope_in_percent_cut_wavelength
+    dtype: float
+    doc: The steepness of the transition from high blocking to high transmission (or
+      vice versa). Specified as a percentage of the cut wavelength.
+    required: false
+  - name: slope_starting_transmission_in_percent
+    dtype: float
+    doc: The percent transmission that defines the starting point for the slope (e.g.
+      10%).
+    required: false
+  - name: slope_ending_transmission_in_percent
+    dtype: float
+    doc: The percent transmission that defines the ending point for the slope (e.g.
+      80%).
+    required: false
   - name: model
     dtype: text
     doc: Model of the optical filter.

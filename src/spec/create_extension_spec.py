@@ -161,7 +161,7 @@ def main():
                 required=False,
             ),
             NWBAttributeSpec(
-                name="reflection_bandwidth_in_nm",
+                name="reflection_band_in_nm",
                 doc="The range of wavelengths that are primarily reflected."
                 "The start and end wavelengths needs to be specified.",
                 dtype="float",
@@ -169,7 +169,7 @@ def main():
                 shape=(2,),
             ),
             NWBAttributeSpec(
-                name="transmission_bandwidth_in_nm",
+                name="transmission_band_in_nm",
                 doc="The range of wavelengths that are primarily transmitted."
                 "The start and end wavelengths needs to be specified.",
                 dtype="float",
@@ -191,26 +191,66 @@ def main():
         ],
     )
 
-    optical_filter = NWBGroupSpec(
-        neurodata_type_def="OpticalFilter",
+    band_optical_filter = NWBGroupSpec(
+        neurodata_type_def="BandOpticalFilter",
         neurodata_type_inc="Device",
-        doc="Extends Device to hold a Optical Filter.",
+        doc="Extends Device to hold a Band Optical Filter (Bandpass or Bandstop).",
         attributes=[
             NWBAttributeSpec(
-                name="peak_wavelength_in_nm",
-                doc="Wavelength that the filter is designed to pass or reflect.",
+                name="center_wavelength_in_nm",
+                doc="The midpoint of the band of wavelengths that the filter transmits or blocks.",
                 dtype="float",
             ),
             NWBAttributeSpec(
                 name="bandwidth_in_nm",
-                doc="Width of the wavelength range that the filter allows to pass through or blocks.",
+                doc="The width of the wavelength range that the filter transmits or blocks (full width at half maximum).",
                 dtype="float",
-                shape=(2,),
             ),
             NWBAttributeSpec(
                 name="filter_type",
-                doc="Type of filter (e.g., 'Excitation', 'Emission', 'Bandpass', 'Longpass', 'Shortpass').",
+                doc="Type of filter (e.g., 'Bandpass', 'Bandstop').",
                 dtype="text",
+            ),
+            NWBAttributeSpec(
+                name="model",
+                doc="Model of the optical filter.",
+                dtype="text",
+                required=False,
+            ),
+        ],
+    )
+    edge_optical_filter = NWBGroupSpec(
+        neurodata_type_def="EdgeOpticalFilter",
+        neurodata_type_inc="Device",
+        doc="Extends Device to hold an Edge Optical Filter (Longpass or Shortpass).",
+        attributes=[
+            NWBAttributeSpec(
+                name="cut_wavelength_in_nm",
+                doc="The wavelength at which the filter transmits half as much as its peak transmission.",
+                dtype="float",
+            ),
+            NWBAttributeSpec(
+                name="filter_type",
+                doc="Type of filter (e.g., 'Longpass', 'Shortpass').",
+                dtype="text",
+            ),
+            NWBAttributeSpec(
+                name="slope_in_percent_cut_wavelength",
+                doc="The steepness of the transition from high blocking to high transmission (or vice versa). Specified as a percentage of the cut wavelength.",
+                dtype="float",
+                required=False,
+            ),
+            NWBAttributeSpec(
+                name="slope_starting_transmission_in_percent",
+                doc="The percent transmission that defines the starting point for the slope (e.g. 10%).",
+                dtype="float",
+                required=False,
+            ),
+            NWBAttributeSpec(
+                name="slope_ending_transmission_in_percent",
+                doc="The percent transmission that defines the ending point for the slope (e.g. 80%).",
+                dtype="float",
+                required=False,
             ),
             NWBAttributeSpec(
                 name="model",
@@ -361,7 +401,8 @@ def main():
         excitation_source,
         photodetector,
         dichroic_mirror,
-        optical_filter,
+        band_optical_filter,
+        edge_optical_filter,
         fiber_photometry_table,
         fiberphotometryresponse_series,
         commandedvoltage_series,
