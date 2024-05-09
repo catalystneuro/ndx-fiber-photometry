@@ -361,7 +361,7 @@ def main():
                 name="data",
                 doc="The data values. May be 1D or 2D. The first dimension must be time."
                 "The optional second dimension refers to the fiber that record the series.",
-                shape=(None, None),
+                shape=((None, ), (None, None)),
             ),
             NWBDatasetSpec(
                 name="fiber_photometry_table_region",
