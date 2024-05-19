@@ -12,6 +12,7 @@ from ndx_fiber_photometry import (
     DichroicMirror,
     BandOpticalFilter,
     EdgeOpticalFilter,
+    FiberPhotometry,
     FiberPhotometryTable,
     FiberPhotometryResponseSeries,
     CommandedVoltageSeries,
@@ -35,6 +36,7 @@ class TestIntegrationRoundtrip(TestCase):
         DichroicMirror,
         BandOpticalFilter,
         EdgeOpticalFilter,
+        FiberPhotometry,
         FiberPhotometryTable,
         FiberPhotometryResponseSeries,
         CommandedVoltageSeries,
@@ -189,6 +191,8 @@ class TestIntegrationRoundtrip(TestCase):
             region=[0], description="source fibers"
         )
 
+        fiber_photometry_lab_meta_data = FiberPhotometry(fiber_photometry_table=fiber_photometry_table)
+
         fiber_photometry_response_series = FiberPhotometryResponseSeries(
             name="fiber_photometry_response_series",
             description="my roi response series",
@@ -213,7 +217,7 @@ class TestIntegrationRoundtrip(TestCase):
 
         self.nwbfile.add_acquisition(commanded_voltage_series_1)
         self.nwbfile.add_acquisition(commanded_voltage_series_2)
-        self.nwbfile.add_acquisition(fiber_photometry_table)
+        self.nwbfile.add_lab_meta_data(fiber_photometry_lab_meta_data)
         self.nwbfile.add_acquisition(fiber_photometry_response_series)
 
         with NWBHDF5IO(self.path, mode="w") as io:
@@ -222,7 +226,7 @@ class TestIntegrationRoundtrip(TestCase):
         with NWBHDF5IO(self.path, mode="r", load_namespaces=True) as io:
             read_nwbfile = io.read()
             self.assertContainerEqual(
-                self.nwbfile.acquisition["fiber_photometry_table"], read_nwbfile.acquisition["fiber_photometry_table"]
+                self.nwbfile.lab_meta_data["fiber_photometry"], read_nwbfile.lab_meta_data["fiber_photometry"]
             )
             self.assertContainerEqual(
                 fiber_photometry_response_series, read_nwbfile.acquisition["fiber_photometry_response_series"]
