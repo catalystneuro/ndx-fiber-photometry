@@ -191,7 +191,10 @@ class TestIntegrationRoundtrip(TestCase):
             region=[0], description="source fibers"
         )
 
-        fiber_photometry_lab_meta_data = FiberPhotometry(fiber_photometry_table=fiber_photometry_table)
+        fiber_photometry_lab_meta_data = FiberPhotometry(
+            name="fiber_photometry",
+            fiber_photometry_table=fiber_photometry_table,
+        )
 
         fiber_photometry_response_series = FiberPhotometryResponseSeries(
             name="fiber_photometry_response_series",

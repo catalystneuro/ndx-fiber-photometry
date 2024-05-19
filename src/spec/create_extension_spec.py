@@ -356,11 +356,9 @@ def main():
     fiber_photometry_lab_meta_data = NWBGroupSpec(
         neurodata_type_def='FiberPhotometry',
         neurodata_type_inc='LabMetaData',
-        name='fiber_photometry',
         doc='Extends LabMetaData to hold all Fiber Photometry metadata.',
         groups=[
             NWBGroupSpec(
-                name='fiber_photometry_table',
                 neurodata_type_inc='FiberPhotometryTable',
                 doc='The table containing the metadata on the Fiber Photometry system.',
             ),
