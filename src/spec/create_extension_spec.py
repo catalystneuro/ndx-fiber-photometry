@@ -29,6 +29,7 @@ def main():
     ns_builder.include_namespace("core")
     ns_builder.include_type("TimeSeries", namespace="core")
     ns_builder.include_type("Device", namespace="core")
+    ns_builder.include_type("LabMetaData", namespace="core")
     ns_builder.include_type("DynamicTable", namespace="hdmf-common")
     ns_builder.include_type("DynamicTableRegion", namespace="hdmf-common")
     ns_builder.include_type("VectorData", namespace="hdmf-common")
@@ -352,6 +353,18 @@ def main():
         ],
     )
 
+    fiber_photometry_lab_meta_data = NWBGroupSpec(
+        neurodata_type_def='FiberPhotometry',
+        neurodata_type_inc='LabMetaData',
+        doc='Extends LabMetaData to hold all Fiber Photometry metadata.',
+        groups=[
+            NWBGroupSpec(
+                neurodata_type_inc='FiberPhotometryTable',
+                doc='The table containing the metadata on the Fiber Photometry system.',
+            ),
+        ],
+    )
+
     fiberphotometryresponse_series = NWBGroupSpec(
         neurodata_type_def="FiberPhotometryResponseSeries",
         neurodata_type_inc="TimeSeries",
@@ -404,6 +417,7 @@ def main():
         band_optical_filter,
         edge_optical_filter,
         fiber_photometry_table,
+        fiber_photometry_lab_meta_data,
         fiberphotometryresponse_series,
         commandedvoltage_series,
     ]
