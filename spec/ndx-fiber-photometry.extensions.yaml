@@ -207,9 +207,7 @@ groups:
       target_type: TimeSeries
       reftype: object
     shape:
-    - - null
-    - - null
-      - null
+    - null
     doc: Link to the commanded voltage series.
     quantity: '?'
   - name: photodetector
