@@ -4,6 +4,10 @@ This is an NWB extension for storing fiber photometry recordings and associated 
 
 ## Installation
 
+To install the latest stable release through PyPI,
+```bash
+pip install ndx-fiber-photometry
+```
 
 ## Usage
 
