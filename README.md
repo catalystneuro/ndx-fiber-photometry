@@ -224,7 +224,7 @@ nwbfile.add_acquisition(fiber_photometry_response_series)
 ```
 
 ## Extension Diagram
-```
+```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#ffffff', "primaryBorderColor': '#144E73', 'lineColor': '#D96F32'}}}%%
 
 
