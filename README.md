@@ -222,5 +222,43 @@ nwbfile.add_acquisition(commanded_voltage_series_2)
 nwbfile.add_lab_meta_data(fiber_photometry_lab_meta_data)
 nwbfile.add_acquisition(fiber_photometry_response_series)
 ```
+
+## Extension Diagram
+```
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#ffffff', "primaryBorderColor': '#144E73', 'lineColor': '#D96F32'}}}%%
+
+
+classDiagram
+    direction BT
+
+    class TimeSeries {
+        attributes
+        --------------------------------------
+        name : text
+    }
+
+    class FiberPhotometryResponseSeries {
+        links
+        --------------------------------------
+        microscope : Microscope
+        light_source : MicroscopyLightSource
+        optical_channel : MicroscopyOpticalChannel
+    }
+
+    class Microscope{
+        attributes
+        --------------------------------------
+        model : text, optional
+    }
+
+    class Device{
+        attributes
+        --------------------------------------
+        model : text, optional
+    }
+
+    TimeSeries <|-- FiberPhotometryResponseSeries : extends
+    Device <|-- Microscope : extends
+```
 ---
 This extension was created using [ndx-template](https://github.com/nwb-extensions/ndx-template).
