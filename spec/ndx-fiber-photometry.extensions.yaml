@@ -272,9 +272,7 @@ groups:
   - name: data
     dtype: float
     shape:
-    - - null
-    - - null
-      - null
+    - null
     doc: Voltages (length number timesteps) in unit volts.
     attributes:
     - name: unit
