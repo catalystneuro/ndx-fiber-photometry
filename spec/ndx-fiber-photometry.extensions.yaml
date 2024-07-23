@@ -263,6 +263,11 @@ groups:
       - null
     doc: The data values. May be 1D or 2D. The first dimension must be time.The optional
       second dimension refers to the fiber that record the series.
+    attributes:
+    - name: unit
+      dtype: text
+      value: n.a.
+      doc: fiber photometry response data unit
   - name: fiber_photometry_table_region
     neurodata_type_inc: DynamicTableRegion
     doc: References row(s) of FiberPhotometryTable.
