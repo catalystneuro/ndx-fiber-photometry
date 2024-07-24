@@ -403,6 +403,5 @@ classDiagram
     style DichroicMirror stroke:green,stroke-width:5px
     style Indicator stroke:green,stroke-width:5px
 ```
-```
 ---
 This extension was created using [ndx-template](https://github.com/nwb-extensions/ndx-template).
