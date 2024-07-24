@@ -225,7 +225,16 @@ nwbfile.add_acquisition(fiber_photometry_response_series)
 
 ## Extension Diagram
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#ffffff', "primaryBorderColor': '#144E73', 'lineColor': '#D96F32'}}}%%
+%%{
+    init: {
+        'theme': 'base',
+        'themeVariables': {
+            'primaryColor': '#ffffff',
+            "primaryBorderColor': '#144E73',
+            'lineColor': '#D96F32'
+        }
+    }
+}%%
 
 
 classDiagram
@@ -234,31 +243,166 @@ classDiagram
     class TimeSeries {
         attributes
         --------------------------------------
-        name : text
+        name : str
+        description : str
+        rate : float
+        starting_time: float
+        timestamps : array-like
+        unit : str
+        offset : float, optional
+        conversion : float, optional
     }
 
-    class FiberPhotometryResponseSeries {
-        links
-        --------------------------------------
-        microscope : Microscope
-        light_source : MicroscopyLightSource
-        optical_channel : MicroscopyOpticalChannel
-    }
-
-    class Microscope{
+    class DynamicTable{
         attributes
         --------------------------------------
-        model : text, optional
+        name : str
+        description : str
     }
 
     class Device{
         attributes
         --------------------------------------
-        model : text, optional
+        name : str
+        description : str
+        manufacturer : str
+    }
+
+    class FiberPhotometryResponseSeries {
+        datasets
+        --------------------------------------
+        data [ntime, nfibers] : array-like
+
+        links
+        --------------------------------------
+        fiber_photometry_table_region : DynamicTableRegion
+    }
+
+    class CommandedVoltageSeries {
+        datasets
+        --------------------------------------
+        data [ntime] : array-like
+
+        attributes
+        --------------------------------------
+        frequency : float
+    }
+
+    class FiberPhotometryTable {
+        VectorData Columns
+        --------------------------------------
+        location : str
+        coordinates [AP, ML, DV] : [float, float, float]
+        notes : str
+        commanded_voltage_series : CommandedVoltageSeries
+        optical_fiber : OpticalFiber
+        photodetector : Photodetector
+        indicator : Indicator
+        excitation_source : ExcitationSource
+        dichroic_mirror : DichroicMirror
+        emission_filter : BandOpticalFilter | EdgeOpticalFilter
+        excitation_filter : BandOpticalFilter | EdgeOpticalFilter
+    }
+
+    class OpticalFiber{
+        attributes
+        --------------------------------------
+        model : str
+        numerical_aperture : float
+        core_diameter_in_um : float
+    }
+
+    class ExcitationSource{
+        attributes
+        --------------------------------------
+        model : str
+        illumination_type : str
+        excitation_wavelength_in_nm : float
+    }
+
+    class Photodetector{
+        attributes
+        --------------------------------------
+        model : str
+        detector_type : str
+        detected_wavelength_in_nm : float
+        gain : float
+    }
+
+    class BandOpticalFilter{
+        attributes
+        --------------------------------------
+        model : str
+        center_wavelength_in_nm : float
+        bandwidth_in_nm : float
+        filter_type : str
+    }
+
+    class EdgeOpticalFilter{
+        attributes
+        --------------------------------------
+        model : str
+        cut_wavelength_in_nm : float
+        slope_in_percent_cut_wavelength : float
+        slope_starting_transmission_in_percent : float
+        slope_ending_transmission_in_percent : float
+        filter_type : str
+    }
+
+    class DichroicMirror{
+        attributes
+        --------------------------------------
+        model : str
+        cut_on_wavelength_in_nm : float
+        cut_off_wavelength_in_nm : float
+        reflection_band_in_nm : float
+        angle_of_incidence_in_degrees : float
+    }
+
+    class Indicator{
+        attributes
+        --------------------------------------
+        label : str, optional
+        injection_location : str
+        injection_coordinates_in_mm [AP, ML, DV] : [float, float, float]
     }
 
     TimeSeries <|-- FiberPhotometryResponseSeries : extends
-    Device <|-- Microscope : extends
+    TimeSeries <|-- CommandedVoltageSeries : extends
+    DynamicTable <|-- FiberPhotometryTable : extends
+    Device <|-- OpticalFiber : extends
+    Device <|-- ExcitationSource : extends
+    Device <|-- Photodetector : extends
+    Device <|-- BandOpticalFilter : extends
+    Device <|-- EdgeOpticalFilter : extends
+    Device <|-- DichroicMirror : extends
+    Device <|-- Indicator : extends
+
+    CommandedVoltageSeries o-- FiberPhotometryTable : aggregates
+    OpticalFiber o-- FiberPhotometryTable : aggregates
+    ExcitationSource o-- FiberPhotometryTable : aggregates
+    Photodetector o-- FiberPhotometryTable : aggregates
+    BandOpticalFilter o-- FiberPhotometryTable : aggregates
+    EdgeOpticalFilter o-- FiberPhotometryTable : aggregates
+    DichroicMirror o-- FiberPhotometryTable : aggregates
+    Indicator o-- FiberPhotometryTable : aggregates
+
+    FiberPhotometryTable -- FiberPhotometryResponseSeries : links
+
+    style Device stroke:blue,stroke-width:5px
+    style TimeSeries stroke:blue,stroke-width:5px
+    style DynamicTable stroke:blue,stroke-width:5px
+    style FiberPhotometryResponseSeries stroke:green,stroke-width:5px
+    style CommandedVoltageSeries stroke:green,stroke-width:5px
+    style FiberPhotometryTable stroke:green,stroke-width:5px
+    style OpticalFiber stroke:green,stroke-width:5px
+    style ExcitationSource stroke:green,stroke-width:5px
+    style Photodetector stroke:green,stroke-width:5px
+    style BandOpticalFilter stroke:green,stroke-width:5px
+    style EdgeOpticalFilter stroke:green,stroke-width:5px
+    style DichroicMirror stroke:green,stroke-width:5px
+    style Indicator stroke:green,stroke-width:5px
+```
 ```
 ---
 This extension was created using [ndx-template](https://github.com/nwb-extensions/ndx-template).
