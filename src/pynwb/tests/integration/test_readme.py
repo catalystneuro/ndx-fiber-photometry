@@ -12,6 +12,7 @@ def test_readme(tmp_path):
             start_line = i
         elif line == "```\n" and start_line is not None:
             end_line = i
+            break
         elif line.startswith('nwbfile_path = '):
             nwbfile_path = Path(line.split('=')[-1].strip())
             nwbfile_paths.append(nwbfile_path)
