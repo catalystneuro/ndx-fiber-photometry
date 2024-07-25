@@ -380,8 +380,7 @@ def main():
                 name="data",
                 doc="The data values. May be 1D or 2D. The first dimension must be time."
                 "The optional second dimension refers to the fiber that record the series.",
-                shape=((None, ), (None, None)),
-                attributes=[NWBAttributeSpec(name="unit", doc="fiber photometry response data unit", value="n.a.", dtype="text")],
+                shape=((None,), (None, None)),
             ),
             NWBDatasetSpec(
                 name="fiber_photometry_table_region",
@@ -402,7 +401,6 @@ def main():
                 doc="Voltages (length number timesteps) in unit volts.",
                 dtype="float",
                 shape=((None,), (None, None)),
-                attributes=[NWBAttributeSpec(name="unit", doc="data unit", value="volts", dtype="text")],
             ),
             NWBDatasetSpec(
                 name="frequency",
