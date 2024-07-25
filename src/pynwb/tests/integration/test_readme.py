@@ -1,4 +1,3 @@
-from pathlib import Path
 from pynwb import NWBHDF5IO
 
 
