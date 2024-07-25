@@ -27,7 +27,9 @@ jobs:
           new_patch_version=`expr $old_patch_version + 1`
           new_version="$old_major_version.$old_minor_version.$new_patch_version"
           echo "New Version: $new_version"
-          sed -i -e "s/version=\"$old_version\"/version=\"$new_version\"/g" setup.py
+          sed -i -e "s/version = \"$old_version\"/version = \"$new_version\"/g" pyproject.toml
+          sed -i -e "s/version=\"\"\"$old_version\"\"\"/version=\"\"\"$new_version\"\"\"/g" src/spec/create_extension_spec.py
+          sed -i -e "s/version: $old_version/version: $new_version/g" spec/ndx-fiber-photometry.namespace.yaml
           echo "old_version=$old_version" >> "$GITHUB_ENV"
           echo "new_version=$new_version" >> "$GITHUB_ENV"
       - name: Commit Changes and Create Pull Request
