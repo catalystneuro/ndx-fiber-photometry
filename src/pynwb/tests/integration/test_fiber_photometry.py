@@ -200,7 +200,7 @@ class TestIntegrationRoundtrip(TestCase):
             name="fiber_photometry_response_series",
             description="my roi response series",
             data=np.random.randn(100, 1),
-            unit="F",
+            unit="n.a.",
             rate=30.0,
             fiber_photometry_table_region=fiber_photometry_table_region,
         )
