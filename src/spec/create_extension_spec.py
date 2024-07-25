@@ -204,7 +204,10 @@ def main():
             ),
             NWBAttributeSpec(
                 name="bandwidth_in_nm",
-                doc="The width of the wavelength range that the filter transmits or blocks (full width at half maximum).",
+                doc=(
+                    "The width of the wavelength range that the filter transmits or blocks"
+                    " (full width at half maximum)."
+                ),
                 dtype="float",
             ),
             NWBAttributeSpec(
@@ -237,7 +240,10 @@ def main():
             ),
             NWBAttributeSpec(
                 name="slope_in_percent_cut_wavelength",
-                doc="The steepness of the transition from high blocking to high transmission (or vice versa). Specified as a percentage of the cut wavelength.",
+                doc=(
+                    "The steepness of the transition from high blocking to high transmission (or vice versa). "
+                    "Specified as a percentage of the cut wavelength."
+                ),
                 dtype="float",
                 required=False,
             ),
@@ -354,13 +360,13 @@ def main():
     )
 
     fiber_photometry_lab_meta_data = NWBGroupSpec(
-        neurodata_type_def='FiberPhotometry',
-        neurodata_type_inc='LabMetaData',
-        doc='Extends LabMetaData to hold all Fiber Photometry metadata.',
+        neurodata_type_def="FiberPhotometry",
+        neurodata_type_inc="LabMetaData",
+        doc="Extends LabMetaData to hold all Fiber Photometry metadata.",
         groups=[
             NWBGroupSpec(
-                neurodata_type_inc='FiberPhotometryTable',
-                doc='The table containing the metadata on the Fiber Photometry system.',
+                neurodata_type_inc="FiberPhotometryTable",
+                doc="The table containing the metadata on the Fiber Photometry system.",
             ),
         ],
     )
@@ -374,7 +380,7 @@ def main():
                 name="data",
                 doc="The data values. May be 1D or 2D. The first dimension must be time."
                 "The optional second dimension refers to the fiber that record the series.",
-                shape=((None, ), (None, None)),
+                shape=((None,), (None, None)),
             ),
             NWBDatasetSpec(
                 name="fiber_photometry_table_region",
