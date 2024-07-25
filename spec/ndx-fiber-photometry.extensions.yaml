@@ -207,9 +207,7 @@ groups:
       target_type: TimeSeries
       reftype: object
     shape:
-    - - null
-    - - null
-      - null
+    - null
     doc: Link to the commanded voltage series.
     quantity: '?'
   - name: photodetector
@@ -274,9 +272,7 @@ groups:
   - name: data
     dtype: float
     shape:
-    - - null
-    - - null
-      - null
+    - null
     doc: Voltages (length number timesteps) in unit volts.
   - name: frequency
     dtype: float
