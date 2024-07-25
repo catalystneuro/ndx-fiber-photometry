@@ -401,7 +401,6 @@ def main():
                 doc="Voltages (length number timesteps) in unit volts.",
                 dtype="float",
                 shape=(None,),
-                attributes=[NWBAttributeSpec(name="unit", doc="data unit", value="volts", dtype="text")],
             ),
             NWBDatasetSpec(
                 name="frequency",

@@ -274,11 +274,6 @@ groups:
     shape:
     - null
     doc: Voltages (length number timesteps) in unit volts.
-    attributes:
-    - name: unit
-      dtype: text
-      value: volts
-      doc: data unit
   - name: frequency
     dtype: float
     doc: Voltage frequency in unit hertz.
