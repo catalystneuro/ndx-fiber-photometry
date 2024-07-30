@@ -16,14 +16,11 @@ readme = "README.md"
 # requires-python = ">=3.8"
 license = {text = "BSD-3"}
 classifiers = [
-    # TODO: add classifiers before release
-    # "Programming Language :: Python",
-    # "Programming Language :: Python :: 3.8",
-    # "Programming Language :: Python :: 3.9",
-    # "Programming Language :: Python :: 3.10",
-    # "Programming Language :: Python :: 3.11",
-    # "Programming Language :: Python :: 3.12",
-    # "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: BSD License",
@@ -35,15 +32,14 @@ keywords = [
     'ndx-extension',
 ]
 dependencies = [
-    "pynwb>=2.6.0",
-    "hdmf>=3.13.0",
+    "pynwb>=2.8.0",
+    "hdmf>=3.14.1",
 ]
 
-# TODO: add URLs before release
-# [project.urls]
-# "Homepage" = "https://github.com/organization/package"
+[project.urls]
+"Homepage" = "https://github.com/organization/ndx-fiber-photometry"
 # "Documentation" = "https://package.readthedocs.io/"
-# "Bug Tracker" = "https://github.com/organization/package/issues"
+"Bug Tracker" = "https://github.com/organization/ndx-fiber-photometry/issues"
 # "Discussions" = "https://github.com/organization/package/discussions"
 # "Changelog" = "https://github.com/organization/package/blob/main/CHANGELOG.md"
 
