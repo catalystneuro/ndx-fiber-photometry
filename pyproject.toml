@@ -32,8 +32,8 @@ keywords = [
     'ndx-extension',
 ]
 dependencies = [
-    "pynwb>=2.8.1",
-    "hdmf>=3.14.2",
+    "pynwb>=2.8.0",
+    "hdmf>=3.14.1",
 ]
 
 [project.urls]
