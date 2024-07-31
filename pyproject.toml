@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ndx-fiber-photometry"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
     { name="Alessandra Trapani", email="alessandra.trapani@catlystneuro.com" },
     { name="Luiz Tauffer", email="luiz.tauffer@catlystneuro.com" },
