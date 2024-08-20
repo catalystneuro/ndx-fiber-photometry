@@ -136,7 +136,7 @@ class TestIntegrationRoundtrip(TestCase):
             description="emission filter for green indicator",
             model="emission filter model",
             center_wavelength_in_nm=505.0,
-            bandwidth_in_nm=30.0, # 505±15nm
+            bandwidth_in_nm=30.0,  # 505±15nm
             filter_type="Bandpass",
         )
         edge_optical_filter = EdgeOpticalFilter(
