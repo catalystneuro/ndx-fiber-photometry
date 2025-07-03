@@ -2,9 +2,15 @@
 import os.path
 
 from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec, NWBDatasetSpec, NWBRefSpec, NWBAttributeSpec
-
-# TODO: import other spec classes as needed
-# from pynwb.spec import NWBLinkSpec, NWBDtypeSpec
+from ndx_ophys_devices import (
+    Indicator,
+    OpticalFiber,
+    ExcitationSource,
+    Photodetector,
+    DichroicMirror,
+    BandOpticalFilter,
+    EdgeOpticalFilter,
+)
 
 
 def main():
@@ -27,6 +33,7 @@ def main():
         ],
     )
     ns_builder.include_namespace("core")
+    ns_builder.include_namespace("ndx-ophys-devices")
     ns_builder.include_type("TimeSeries", namespace="core")
     ns_builder.include_type("Device", namespace="core")
     ns_builder.include_type("LabMetaData", namespace="core")
@@ -37,237 +44,6 @@ def main():
     # Define new data types
     # see https://pynwb.readthedocs.io/en/stable/tutorials/general/extensions.html
     # for more information
-    indicator = NWBGroupSpec(
-        neurodata_type_def="Indicator",
-        neurodata_type_inc="Device",
-        doc="Extends Device to hold metadata on the Indicator.",
-        attributes=[
-            NWBAttributeSpec(
-                name="label",
-                doc="Indicator standard notation.",
-                dtype="text",
-            ),
-            NWBAttributeSpec(
-                name="injection_location",
-                doc="Injection brain region name.",
-                dtype="text",
-                required=False,
-            ),
-            NWBAttributeSpec(
-                name="injection_coordinates_in_mm",
-                doc="Indicator injection location in stereotactic coordinates (AP, ML, DV) mm relative to Bregma.",
-                dtype="float",
-                shape=(3,),
-                required=False,
-            ),
-        ],
-    )
-
-    optical_fiber = NWBGroupSpec(
-        neurodata_type_def="OpticalFiber",
-        neurodata_type_inc="Device",
-        doc="Extends Device to hold metadata on the Optical Fiber.",
-        attributes=[
-            NWBAttributeSpec(
-                name="model",
-                doc="Model of optical fiber.",
-                dtype="text",
-                required=False,
-            ),
-            NWBAttributeSpec(
-                name="numerical_aperture",
-                doc="Numerical aperture, e.g., 0.39 NA.",
-                dtype="float",
-                required=False,
-            ),
-            NWBAttributeSpec(
-                name="core_diameter_in_um",
-                doc="Core diameter in micrometers.",
-                dtype="float",
-                required=False,
-            ),
-        ],
-    )
-
-    excitation_source = NWBGroupSpec(
-        neurodata_type_def="ExcitationSource",
-        neurodata_type_inc="Device",
-        doc="Extends Device to hold metadata on the Excitation Source.",
-        attributes=[
-            NWBAttributeSpec(
-                name="model",
-                doc="Model of excitation source device.",
-                dtype="text",
-                required=False,
-            ),
-            NWBAttributeSpec(
-                name="illumination_type",
-                doc="Illumination type, e.g., laser or LED.",
-                dtype="text",
-            ),
-            NWBAttributeSpec(
-                name="excitation_wavelength_in_nm",
-                doc="Excitation wavelength of the stimulation light (nanometers).",
-                dtype="float",
-            ),
-        ],
-    )
-
-    photodetector = NWBGroupSpec(
-        neurodata_type_def="Photodetector",
-        neurodata_type_inc="Device",
-        doc="Extends Device to hold metadata on the Photodetector.",
-        attributes=[
-            NWBAttributeSpec(
-                name="model",
-                doc="Model of photodetector device.",
-                dtype="text",
-                required=False,
-            ),
-            NWBAttributeSpec(
-                name="detector_type",
-                doc="Technology used to detect the light, e.g., PMT or photodiode.",
-                dtype="text",
-            ),
-            NWBAttributeSpec(
-                name="detected_wavelength_in_nm",
-                doc="Wavelength detected by photodetector.",
-                dtype="float",
-            ),
-            NWBAttributeSpec(
-                name="gain",
-                doc="Gain on the photodetector.",
-                dtype="float",
-                required=False,
-            ),
-        ],
-    )
-
-    dichroic_mirror = NWBGroupSpec(
-        neurodata_type_def="DichroicMirror",
-        neurodata_type_inc="Device",
-        doc="Extends Device to hold a Dichroic Mirror.",
-        attributes=[
-            NWBAttributeSpec(
-                name="cut_on_wavelength_in_nm",
-                doc="Wavelength at which the mirror starts to transmit light more than reflect.",
-                dtype="float",
-                required=False,
-            ),
-            NWBAttributeSpec(
-                name="cut_off_wavelength_in_nm",
-                doc="Wavelength at which transmission shifts back to reflection,"
-                "for mirrors with complex transmission spectra.",
-                dtype="float",
-                required=False,
-            ),
-            NWBAttributeSpec(
-                name="reflection_band_in_nm",
-                doc="The range of wavelengths that are primarily reflected."
-                "The start and end wavelengths needs to be specified.",
-                dtype="float",
-                required=False,
-                shape=(2,),
-            ),
-            NWBAttributeSpec(
-                name="transmission_band_in_nm",
-                doc="The range of wavelengths that are primarily transmitted."
-                "The start and end wavelengths needs to be specified.",
-                dtype="float",
-                required=False,
-                shape=(2,),
-            ),
-            NWBAttributeSpec(
-                name="angle_of_incidence_in_degrees",
-                doc="Intended angle at which light strikes the mirror.",
-                dtype="float",
-                required=False,
-            ),
-            NWBAttributeSpec(
-                name="model",
-                doc="Model of the dichroic mirror.",
-                dtype="text",
-                required=False,
-            ),
-        ],
-    )
-
-    band_optical_filter = NWBGroupSpec(
-        neurodata_type_def="BandOpticalFilter",
-        neurodata_type_inc="Device",
-        doc="Extends Device to hold a Band Optical Filter (Bandpass or Bandstop).",
-        attributes=[
-            NWBAttributeSpec(
-                name="center_wavelength_in_nm",
-                doc="The midpoint of the band of wavelengths that the filter transmits or blocks.",
-                dtype="float",
-            ),
-            NWBAttributeSpec(
-                name="bandwidth_in_nm",
-                doc=(
-                    "The width of the wavelength range that the filter transmits or blocks"
-                    " (full width at half maximum)."
-                ),
-                dtype="float",
-            ),
-            NWBAttributeSpec(
-                name="filter_type",
-                doc="Type of filter (e.g., 'Bandpass', 'Bandstop').",
-                dtype="text",
-            ),
-            NWBAttributeSpec(
-                name="model",
-                doc="Model of the optical filter.",
-                dtype="text",
-                required=False,
-            ),
-        ],
-    )
-    edge_optical_filter = NWBGroupSpec(
-        neurodata_type_def="EdgeOpticalFilter",
-        neurodata_type_inc="Device",
-        doc="Extends Device to hold an Edge Optical Filter (Longpass or Shortpass).",
-        attributes=[
-            NWBAttributeSpec(
-                name="cut_wavelength_in_nm",
-                doc="The wavelength at which the filter transmits half as much as its peak transmission.",
-                dtype="float",
-            ),
-            NWBAttributeSpec(
-                name="filter_type",
-                doc="Type of filter (e.g., 'Longpass', 'Shortpass').",
-                dtype="text",
-            ),
-            NWBAttributeSpec(
-                name="slope_in_percent_cut_wavelength",
-                doc=(
-                    "The steepness of the transition from high blocking to high transmission (or vice versa). "
-                    "Specified as a percentage of the cut wavelength."
-                ),
-                dtype="float",
-                required=False,
-            ),
-            NWBAttributeSpec(
-                name="slope_starting_transmission_in_percent",
-                doc="The percent transmission that defines the starting point for the slope (e.g. 10%).",
-                dtype="float",
-                required=False,
-            ),
-            NWBAttributeSpec(
-                name="slope_ending_transmission_in_percent",
-                doc="The percent transmission that defines the ending point for the slope (e.g. 80%).",
-                dtype="float",
-                required=False,
-            ),
-            NWBAttributeSpec(
-                name="model",
-                doc="Model of the optical filter.",
-                dtype="text",
-                required=False,
-            ),
-        ],
-    )
-
     fiber_photometry_table = NWBGroupSpec(
         neurodata_type_def="FiberPhotometryTable",
         neurodata_type_inc="DynamicTable",
@@ -412,15 +188,7 @@ def main():
         ],
     )
 
-    # TODO: add all of your new data types to this list
     new_data_types = [
-        indicator,
-        optical_fiber,
-        excitation_source,
-        photodetector,
-        dichroic_mirror,
-        band_optical_filter,
-        edge_optical_filter,
         fiber_photometry_table,
         fiber_photometry_lab_meta_data,
         fiberphotometryresponse_series,
