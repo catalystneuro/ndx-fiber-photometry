@@ -18,11 +18,22 @@ namespaces:
     - TimeSeries
     - Device
     - LabMetaData
-  - namespace: ndx-ophys-devices
   - namespace: hdmf-common
     neurodata_types:
     - DynamicTable
     - DynamicTableRegion
     - VectorData
+  - namespace: ndx-ophys-devices
+    neurodata_types:
+    - Indicator
+    - ViralVector
+    - ViralVectorInjection
+    - OpticalFiber
+    - ExcitationSource
+    - Photodetector
+    - DichroicMirror
+    - BandOpticalFilter
+    - EdgeOpticalFilter
+    - OpticalFilter
   - source: ndx-fiber-photometry.extensions.yaml
   version: 0.1.1

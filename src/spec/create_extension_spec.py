@@ -1,19 +1,6 @@
 # -*- coding: utf-8 -*-
 import os.path
-
 from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec, NWBDatasetSpec, NWBRefSpec, NWBAttributeSpec
-from ndx_ophys_devices import (
-    Indicator,
-    ViralVector,
-    ViralVectorInjection,
-    OpticalFiber,
-    ExcitationSource,
-    Photodetector,
-    DichroicMirror,
-    BandOpticalFilter,
-    EdgeOpticalFilter,
-    OpticalFilter,
-)
 
 
 def main():
@@ -36,13 +23,26 @@ def main():
         ],
     )
     ns_builder.include_namespace("core")
-    ns_builder.include_namespace("ndx-ophys-devices")
     ns_builder.include_type("TimeSeries", namespace="core")
     ns_builder.include_type("Device", namespace="core")
     ns_builder.include_type("LabMetaData", namespace="core")
+
+    ns_builder.include_namespace("hdmf-common")
     ns_builder.include_type("DynamicTable", namespace="hdmf-common")
     ns_builder.include_type("DynamicTableRegion", namespace="hdmf-common")
     ns_builder.include_type("VectorData", namespace="hdmf-common")
+
+    ns_builder.include_namespace("ndx-ophys-devices")
+    ns_builder.include_type("Indicator", namespace="ndx-ophys-devices")
+    ns_builder.include_type("ViralVector", namespace="ndx-ophys-devices")
+    ns_builder.include_type("ViralVectorInjection", namespace="ndx-ophys-devices")
+    ns_builder.include_type("OpticalFiber", namespace="ndx-ophys-devices")
+    ns_builder.include_type("ExcitationSource", namespace="ndx-ophys-devices")
+    ns_builder.include_type("Photodetector", namespace="ndx-ophys-devices")
+    ns_builder.include_type("DichroicMirror", namespace="ndx-ophys-devices")
+    ns_builder.include_type("BandOpticalFilter", namespace="ndx-ophys-devices")
+    ns_builder.include_type("EdgeOpticalFilter", namespace="ndx-ophys-devices")
+    ns_builder.include_type("OpticalFilter", namespace="ndx-ophys-devices")
 
     # Define new data types
     # see https://pynwb.readthedocs.io/en/stable/tutorials/general/extensions.html
