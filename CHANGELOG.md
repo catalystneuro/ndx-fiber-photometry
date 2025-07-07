@@ -1,4 +1,6 @@
-# Upcoming (v0.1.1)
+# v0.2.0 (Upcoming)
+
+* Refactored the extension to depend on ndx-ophys-devices for device and biological component specification, replacing its previous standalone device types [PR #37](https://github.com/catalystneuro/ndx-fiber-photometry/pull/37).
 
 # v0.1.0
 
