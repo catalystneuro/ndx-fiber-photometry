@@ -48,7 +48,6 @@ from ndx_ophys_devices import (
     EdgeOpticalFilterModel,
     EdgeOpticalFilter,
 )
-
 from ndx_fiber_photometry import (
     FiberPhotometryViruses,
     FiberPhotometryVirusInjections,
@@ -319,7 +318,7 @@ commanded_voltage_series_2 = CommandedVoltageSeries(
     unit="volts",
 )
 
-fiber_photometry_table = FiberPhotometryTable(
+fiber_photometry_table = FiberPhotometryTable( # TODO: update locations/coordinates
     name="fiber_photometry_table",
     description="fiber photometry table",
 )
