@@ -318,13 +318,12 @@ commanded_voltage_series_2 = CommandedVoltageSeries(
     unit="volts",
 )
 
-fiber_photometry_table = FiberPhotometryTable( # TODO: update locations/coordinates
+fiber_photometry_table = FiberPhotometryTable(
     name="fiber_photometry_table",
     description="fiber photometry table",
 )
 fiber_photometry_table.add_row(
     location="VTA",
-    coordinates=(3.0, 2.0, 1.0),
     indicator=indicator_green,
     optical_fiber=optical_fiber_1,
     excitation_source=excitation_source_1,
@@ -335,7 +334,6 @@ fiber_photometry_table.add_row(
 )
 fiber_photometry_table.add_row(
     location="VTA",
-    coordinates=(3.0, 2.0, 1.0),
     indicator=indicator_red,
     optical_fiber=optical_fiber_2,
     excitation_source=excitation_source_2,
@@ -459,7 +457,7 @@ classDiagram
         VectorData Columns
         --------------------------------------
         location : str
-        coordinates [AP, ML, DV] : [float, float, float]
+        coordinates [x, y, z] : [float, float, float]
         notes : str
         commanded_voltage_series : CommandedVoltageSeries
         optical_fiber : OpticalFiber

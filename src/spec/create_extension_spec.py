@@ -60,7 +60,7 @@ def main():
             ),
             NWBDatasetSpec(
                 name="coordinates",
-                doc="Fiber placement in stereotactic coordinates (AP, ML, DV) mm relative to Bregma.",
+                doc="Relative coordinates of fiber in multi-fiber array. If single fiber, use None.",
                 dtype="float",
                 shape=(None, 3),
                 neurodata_type_inc="VectorData",
