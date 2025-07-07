@@ -12,6 +12,7 @@ from ndx_ophys_devices import (
     DichroicMirror,
     BandOpticalFilter,
     EdgeOpticalFilter,
+    OpticalFilter,
 )
 
 
@@ -70,7 +71,7 @@ def main():
             NWBDatasetSpec(
                 name="indicator",
                 doc="Link to the indicator object.",
-                dtype=NWBRefSpec(target_type="Device", reftype="object"),
+                dtype=NWBRefSpec(target_type="Indicator", reftype="object"),
                 shape=(None,),
                 neurodata_type_inc="VectorData",
             ),
@@ -85,21 +86,21 @@ def main():
             NWBDatasetSpec(
                 name="optical_fiber",
                 doc="Link to the optical fiber device.",
-                dtype=NWBRefSpec(target_type="Device", reftype="object"),
+                dtype=NWBRefSpec(target_type="OpticalFiber", reftype="object"),
                 shape=(None,),
                 neurodata_type_inc="VectorData",
             ),
             NWBDatasetSpec(
                 name="excitation_source",
                 doc="Link to the excitation source device.",
-                dtype=NWBRefSpec(target_type="Device", reftype="object"),
+                dtype=NWBRefSpec(target_type="ExcitationSource", reftype="object"),
                 shape=(None,),
                 neurodata_type_inc="VectorData",
             ),
             NWBDatasetSpec(
                 name="commanded_voltage_series",
                 doc="Link to the commanded voltage series.",
-                dtype=NWBRefSpec(target_type="TimeSeries", reftype="object"),
+                dtype=NWBRefSpec(target_type="CommandedVoltageSeries", reftype="object"),
                 shape=(None,),
                 neurodata_type_inc="VectorData",
                 quantity="?",
@@ -107,21 +108,21 @@ def main():
             NWBDatasetSpec(
                 name="photodetector",
                 doc="Link to the photodetector device.",
-                dtype=NWBRefSpec(target_type="Device", reftype="object"),
+                dtype=NWBRefSpec(target_type="Photodetector", reftype="object"),
                 shape=(None,),
                 neurodata_type_inc="VectorData",
             ),
             NWBDatasetSpec(
                 name="dichroic_mirror",
                 doc="Link to the dichroic mirror device.",
-                dtype=NWBRefSpec(target_type="Device", reftype="object"),
+                dtype=NWBRefSpec(target_type="DichroicMirror", reftype="object"),
                 shape=(None,),
                 neurodata_type_inc="VectorData",
             ),
             NWBDatasetSpec(
                 name="emission_filter",
                 doc="Link to the emission filter device.",
-                dtype=NWBRefSpec(target_type="Device", reftype="object"),
+                dtype=NWBRefSpec(target_type="OpticalFilter", reftype="object"),
                 shape=(None,),
                 neurodata_type_inc="VectorData",
                 quantity="?",
@@ -129,7 +130,7 @@ def main():
             NWBDatasetSpec(
                 name="excitation_filter",
                 doc="Link to the excitation filter device.",
-                dtype=NWBRefSpec(target_type="Device", reftype="object"),
+                dtype=NWBRefSpec(target_type="OpticalFilter", reftype="object"),
                 shape=(None,),
                 neurodata_type_inc="VectorData",
                 quantity="?",

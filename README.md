@@ -613,15 +613,15 @@ classDiagram
             --------------------------------------
             location : VectorData[str]
             coordinates : VectorData[float[3]]
-            indicator : VectorData[Device]
+            indicator : VectorData[Indicator]
             notes : VectorData[str]
-            optical_fiber : VectorData[Device]
-            excitation_source : VectorData[Device]
-            commanded_voltage_series : VectorData[TimeSeries]
-            photodetector : VectorData[Device]
-            dichroic_mirror : VectorData[Device]
-            emission_filter : VectorData[Device]
-            excitation_filter : VectorData[Device]
+            optical_fiber : VectorData[OpticalFiber]
+            excitation_source : VectorData[ExcitationSource]
+            commanded_voltage_series : VectorData[CommandedVoltageSeries]
+            photodetector : VectorData[Photodetector]
+            dichroic_mirror : VectorData[DichroicMirror]
+            emission_filter : VectorData[OpticalFilter]
+            excitation_filter : VectorData[OpticalFilter]
         }
 
         class FiberPhotometryViruses {
@@ -668,13 +668,15 @@ classDiagram
             --------------------------------------
             attributes
             --------------------------------------
-            depth_in_mm : float
             insertion_position_ap_in_mm : float
             insertion_position_ml_in_mm : float
             insertion_position_dv_in_mm : float
+            depth_in_mm : float
             position_reference : str
             hemisphere : str
+            insertion_angle_yaw_in_deg : float
             insertion_angle_pitch_in_deg : float
+            insertion_angle_roll_in_deg : float
         }
 
         class OpticalFiber {

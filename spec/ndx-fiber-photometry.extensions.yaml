@@ -42,7 +42,8 @@ groups:
     shape:
     - null
     - 3
-    doc: Fiber placement in stereotactic coordinates (AP, ML, DV) mm relative to Bregma.
+    doc: Relative coordinates of fiber in multi-fiber array. If single fiber, use
+      None.
     quantity: '?'
     attributes:
     - name: unit
@@ -52,7 +53,7 @@ groups:
   - name: indicator
     neurodata_type_inc: VectorData
     dtype:
-      target_type: Device
+      target_type: Indicator
       reftype: object
     shape:
     - null
@@ -67,7 +68,7 @@ groups:
   - name: optical_fiber
     neurodata_type_inc: VectorData
     dtype:
-      target_type: Device
+      target_type: OpticalFiber
       reftype: object
     shape:
     - null
@@ -75,7 +76,7 @@ groups:
   - name: excitation_source
     neurodata_type_inc: VectorData
     dtype:
-      target_type: Device
+      target_type: ExcitationSource
       reftype: object
     shape:
     - null
@@ -83,7 +84,7 @@ groups:
   - name: commanded_voltage_series
     neurodata_type_inc: VectorData
     dtype:
-      target_type: TimeSeries
+      target_type: CommandedVoltageSeries
       reftype: object
     shape:
     - null
@@ -92,7 +93,7 @@ groups:
   - name: photodetector
     neurodata_type_inc: VectorData
     dtype:
-      target_type: Device
+      target_type: Photodetector
       reftype: object
     shape:
     - null
@@ -100,7 +101,7 @@ groups:
   - name: dichroic_mirror
     neurodata_type_inc: VectorData
     dtype:
-      target_type: Device
+      target_type: DichroicMirror
       reftype: object
     shape:
     - null
@@ -108,7 +109,7 @@ groups:
   - name: emission_filter
     neurodata_type_inc: VectorData
     dtype:
-      target_type: Device
+      target_type: OpticalFilter
       reftype: object
     shape:
     - null
@@ -117,7 +118,7 @@ groups:
   - name: excitation_filter
     neurodata_type_inc: VectorData
     dtype:
-      target_type: Device
+      target_type: OpticalFilter
       reftype: object
     shape:
     - null
