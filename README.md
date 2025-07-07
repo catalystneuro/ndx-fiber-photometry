@@ -541,339 +541,363 @@ nwbfile.add_acquisition(fiber_photometry_response_series)
 
 ## Extension Diagram
 ```mermaid
-%%{
-    init: {
-        'theme': 'base',
-        'themeVariables': {
-            'primaryColor': '#ffffff',
-            'primaryBorderColor': '#144E73',
-            'lineColor': '#D96F32'
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#ffffff', 'primaryBorderColor': '#144E73', 'lineColor': '#D96F32'}}}%%
+classDiagram
+    direction LR
+
+    namespace ndx-fiber-photometry {
+        class FiberPhotometryResponseSeries {
+            <<TimeSeries>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            name : str
+            description : str
+            rate : float
+            starting_time : float
+            timestamps : array-like
+            unit : str
+            offset : float
+            conversion : float
+            --------------------------------------
+            datasets
+            --------------------------------------
+            data[ntime] | data[ntime, nfibers] : numeric
+            fiber_photometry_table_region : DynamicTableRegion
+        }
+
+        class CommandedVoltageSeries {
+            <<TimeSeries>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            name : str
+            description : str
+            rate : float
+            starting_time : float
+            timestamps : array-like
+            unit : str
+            offset : float
+            conversion : float
+            --------------------------------------
+            datasets
+            --------------------------------------
+            data[ntime] : float
+            frequency : float
+        }
+
+        class FiberPhotometry {
+            <<LabMetaData>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            name : str
+            --------------------------------------
+            groups
+            --------------------------------------
+            fiber_photometry_table : FiberPhotometryTable
+            fiber_photometry_viruses : FiberPhotometryViruses
+            fiber_photometry_virus_injections : FiberPhotometryVirusInjections
+            fiber_photometry_indicators : FiberPhotometryIndicators
+        }
+
+        class FiberPhotometryTable {
+            <<DynamicTable>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            name : str
+            description : str
+            --------------------------------------
+            columns
+            --------------------------------------
+            location : VectorData[str]
+            coordinates : VectorData[float[3]]
+            indicator : VectorData[Device]
+            notes : VectorData[str]
+            optical_fiber : VectorData[Device]
+            excitation_source : VectorData[Device]
+            commanded_voltage_series : VectorData[TimeSeries]
+            photodetector : VectorData[Device]
+            dichroic_mirror : VectorData[Device]
+            emission_filter : VectorData[Device]
+            excitation_filter : VectorData[Device]
+        }
+
+        class FiberPhotometryViruses {
+            <<NWBContainer>>
+            --------------------------------------
+            groups
+            --------------------------------------
+            viral_vectors : ViralVector[]
+        }
+
+        class FiberPhotometryVirusInjections {
+            <<NWBContainer>>
+            --------------------------------------
+            groups
+            --------------------------------------
+            viral_vector_injections : ViralVectorInjection[]
+        }
+
+        class FiberPhotometryIndicators {
+            <<NWBContainer>>
+            --------------------------------------
+            groups
+            --------------------------------------
+            indicators : Indicator[]
         }
     }
-}%%
 
-classDiagram
-    direction TB
+    namespace ndx-ophys-devices {
+        class OpticalFiberModel {
+            <<DeviceModel>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            numerical_aperture : float
+            core_diameter_in_um : float
+            active_length_in_mm : float
+            ferrule_name : str
+            ferrule_model : str
+            ferrule_diameter_in_mm : float
+        }
 
-    %% Base NWB Classes
-    class TimeSeries {
-        attributes
-        --------------------------------------
-        name : str
-        description : str
-        rate : float
-        starting_time: float
-        timestamps : array-like
-        unit : str
-        offset : float, optional
-        conversion : float, optional
+        class FiberInsertion {
+            <<NWBContainer>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            depth_in_mm : float
+            insertion_position_ap_in_mm : float
+            insertion_position_ml_in_mm : float
+            insertion_position_dv_in_mm : float
+            position_reference : str
+            hemisphere : str
+            insertion_angle_pitch_in_deg : float
+        }
+
+        class OpticalFiber {
+            <<DeviceInstance>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            serial_number : str
+            --------------------------------------
+            groups
+            --------------------------------------
+            fiber_insertion : FiberInsertion
+            --------------------------------------
+            links
+            --------------------------------------
+            model : OpticalFiberModel
+        }
+
+        class ExcitationSourceModel {
+            <<DeviceModel>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            source_type : str
+            excitation_mode : str
+            wavelength_range_in_nm : float[2]
+        }
+
+        class ExcitationSource {
+            <<DeviceInstance>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            serial_number : str
+            power_in_W : float
+            intensity_in_W_per_m2 : float
+            exposure_time_in_s : float
+            --------------------------------------
+            links
+            --------------------------------------
+            model : ExcitationSourceModel
+        }
+
+        class PhotodetectorModel {
+            <<DeviceModel>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            detector_type : str
+            wavelength_range_in_nm : float[2]
+            gain : float
+            gain_unit : str
+        }
+
+        class Photodetector {
+            <<DeviceInstance>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            serial_number : str
+            --------------------------------------
+            links
+            --------------------------------------
+            model : PhotodetectorModel
+        }
+
+        class DichroicMirrorModel {
+            <<DeviceModel>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            cut_on_wavelength_in_nm : float
+            cut_off_wavelength_in_nm : float
+            reflection_band_in_nm : float[2]
+            transmission_band_in_nm : float[2]
+            angle_of_incidence_in_degrees : float
+        }
+
+        class DichroicMirror {
+            <<DeviceInstance>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            serial_number : str
+            --------------------------------------
+            links
+            --------------------------------------
+            model : DichroicMirrorModel
+        }
+
+        class BandOpticalFilterModel {
+            <<DeviceModel>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            filter_type : str
+            center_wavelength_in_nm : float
+            bandwidth_in_nm : float
+        }
+
+        class BandOpticalFilter {
+            <<DeviceInstance>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            serial_number : str
+            --------------------------------------
+            links
+            --------------------------------------
+            model : BandOpticalFilterModel
+        }
+
+        class EdgeOpticalFilterModel {
+            <<DeviceModel>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            filter_type : str
+            cut_wavelength_in_nm : float
+            slope_in_percent_cut_wavelength : float
+            slope_starting_transmission_in_percent : float
+            slope_ending_transmission_in_percent : float
+        }
+
+        class EdgeOpticalFilter {
+            <<DeviceInstance>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            serial_number : str
+            --------------------------------------
+            links
+            --------------------------------------
+            model : EdgeOpticalFilterModel
+        }
+
+        class ViralVector {
+            <<NWBContainer>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            construct_name : str
+            description : str
+            manufacturer : str
+            titer_in_vg_per_ml : float
+        }
+
+        class ViralVectorInjection {
+            <<NWBContainer>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            description : str
+            location : str
+            hemisphere : str
+            reference : str
+            ap_in_mm : float
+            ml_in_mm : float
+            dv_in_mm : float
+            pitch_in_deg : float
+            yaw_in_deg : float
+            roll_in_deg : float
+            stereotactic_rotation_in_deg : float
+            stereotactic_tilt_in_deg : float
+            volume_in_uL : float
+            injection_date : str
+            --------------------------------------
+            links
+            --------------------------------------
+            viral_vector : ViralVector
+        }
+
+        class Indicator {
+            <<NWBContainer>>
+            --------------------------------------
+            attributes
+            --------------------------------------
+            label : str
+            description : str
+            manufacturer : str
+            --------------------------------------
+            links
+            --------------------------------------
+            viral_vector_injection : ViralVectorInjection
+        }
     }
 
-    class DynamicTable{
-        attributes
-        --------------------------------------
-        name : str
-        description : str
-    }
+    %% Main container relationships
+    FiberPhotometry *--> FiberPhotometryTable
+    FiberPhotometry *--> FiberPhotometryViruses
+    FiberPhotometry *--> FiberPhotometryVirusInjections
+    FiberPhotometry *--> FiberPhotometryIndicators
 
-    class Device{
-        attributes
-        --------------------------------------
-        name : str
-        description : str
-        manufacturer : str
-    }
-
-    class LabMetaData{
-        attributes
-        --------------------------------------
-        name : str
-    }
-
-    %% ndx-ophys-devices Model Classes
-    class OpticalFiberModel {
-        attributes
-        --------------------------------------
-        numerical_aperture : float
-        core_diameter_in_um : float
-        active_length_in_mm : float
-        ferrule_name : str
-        ferrule_model : str
-        ferrule_diameter_in_mm : float
-    }
-
-    class ExcitationSourceModel {
-        attributes
-        --------------------------------------
-        source_type : str
-        excitation_mode : str
-        wavelength_range_in_nm : array
-    }
-
-    class PhotodetectorModel {
-        attributes
-        --------------------------------------
-        detector_type : str
-        wavelength_range_in_nm : array
-        gain : float
-        gain_unit : str
-    }
-
-    class DichroicMirrorModel {
-        attributes
-        --------------------------------------
-        cut_on_wavelength_in_nm : float
-        cut_off_wavelength_in_nm : float
-        reflection_band_in_nm : array
-        transmission_band_in_nm : array
-        angle_of_incidence_in_degrees : float
-    }
-
-    class BandOpticalFilterModel {
-        attributes
-        --------------------------------------
-        filter_type : str
-        center_wavelength_in_nm : float
-        bandwidth_in_nm : float
-    }
-
-    class EdgeOpticalFilterModel {
-        attributes
-        --------------------------------------
-        filter_type : str
-        cut_wavelength_in_nm : float
-        slope_in_percent_cut_wavelength : float
-        slope_starting_transmission_in_percent : float
-        slope_ending_transmission_in_percent : float
-    }
-
-    %% ndx-ophys-devices Device Classes
-    class OpticalFiber{
-        attributes
-        --------------------------------------
-        serial_number : str
-    }
-
-    class ExcitationSource{
-        attributes
-        --------------------------------------
-        serial_number : str
-        power_in_W : float
-        intensity_in_W_per_m2 : float
-        exposure_time_in_s : float
-    }
-
-    class Photodetector{
-        attributes
-        --------------------------------------
-        serial_number : str
-    }
-
-    class BandOpticalFilter{
-        attributes
-        --------------------------------------
-        serial_number : str
-    }
-
-    class EdgeOpticalFilter{
-        attributes
-        --------------------------------------
-        serial_number : str
-    }
-
-    class DichroicMirror{
-        attributes
-        --------------------------------------
-        serial_number : str
-    }
-
-    class FiberInsertion{
-        attributes
-        --------------------------------------
-        depth_in_mm : float
-        insertion_position_ap_in_mm : float
-        insertion_position_ml_in_mm : float
-        insertion_position_dv_in_mm : float
-        position_reference : str
-        hemisphere : str
-        insertion_angle_pitch_in_deg : float
-    }
-
-    class ViralVector{
-        attributes
-        --------------------------------------
-        construct_name : str
-        manufacturer : str
-        titer_in_vg_per_ml : float
-    }
-
-    class ViralVectorInjection{
-        attributes
-        --------------------------------------
-        location : str
-        hemisphere : str
-        reference : str
-        ap_in_mm : float
-        ml_in_mm : float
-        dv_in_mm : float
-        volume_in_uL : float
-        injection_date : str
-    }
-
-    class Indicator{
-        attributes
-        --------------------------------------
-        label : str
-    }
-
-    %% ndx-fiber-photometry Container Classes
-    class FiberPhotometryViruses{
-        collections
-        --------------------------------------
-        viral_vectors : ViralVector[]
-    }
-
-    class FiberPhotometryVirusInjections{
-        collections
-        --------------------------------------
-        viral_vector_injections : ViralVectorInjection[]
-    }
-
-    class FiberPhotometryIndicators{
-        collections
-        --------------------------------------
-        indicators : Indicator[]
-    }
-
-    %% ndx-fiber-photometry Data Classes
-    class CommandedVoltageSeries {
-        datasets
-        --------------------------------------
-        data [ntime] : array-like
-        attributes
-        --------------------------------------
-        frequency : float
-    }
-
-    class FiberPhotometryResponseSeries {
-        datasets
-        --------------------------------------
-        data [ntime, nfibers] : array-like
-        links
-        --------------------------------------
-        fiber_photometry_table_region : DynamicTableRegion
-    }
-
-    class FiberPhotometryTable {
-        VectorData Columns
-        --------------------------------------
-        location : str
-        commanded_voltage_series : CommandedVoltageSeries
-        optical_fiber : OpticalFiber
-        photodetector : Photodetector
-        indicator : Indicator
-        excitation_source : ExcitationSource
-        dichroic_mirror : DichroicMirror
-        emission_filter : BandOpticalFilter | EdgeOpticalFilter
-    }
-
-    class FiberPhotometry{
-        links
-        --------------------------------------
-        fiber_photometry_table : FiberPhotometryTable
-        fiber_photometry_viruses : FiberPhotometryViruses
-        fiber_photometry_virus_injections : FiberPhotometryVirusInjections
-        fiber_photometry_indicators : FiberPhotometryIndicators
-    }
-
-    %% Inheritance relationships
-    TimeSeries <|-- FiberPhotometryResponseSeries : extends
-    TimeSeries <|-- CommandedVoltageSeries : extends
-    DynamicTable <|-- FiberPhotometryTable : extends
-    LabMetaData <|-- FiberPhotometry : extends
-    Device <|-- OpticalFiberModel : extends
-    Device <|-- OpticalFiber : extends
-    Device <|-- ExcitationSourceModel : extends
-    Device <|-- ExcitationSource : extends
-    Device <|-- PhotodetectorModel : extends
-    Device <|-- Photodetector : extends
-    Device <|-- DichroicMirrorModel : extends
-    Device <|-- DichroicMirror : extends
-    Device <|-- BandOpticalFilterModel : extends
-    Device <|-- BandOpticalFilter : extends
-    Device <|-- EdgeOpticalFilterModel : extends
-    Device <|-- EdgeOpticalFilter : extends
-    Device <|-- Indicator : extends
-
-    %% Model-Instance relationships
-    OpticalFiberModel <-- OpticalFiber : model
-    ExcitationSourceModel <-- ExcitationSource : model
-    PhotodetectorModel <-- Photodetector : model
-    DichroicMirrorModel <-- DichroicMirror : model
-    BandOpticalFilterModel <-- BandOpticalFilter : model
-    EdgeOpticalFilterModel <-- EdgeOpticalFilter : model
-
-    %% Other composition relationships
-    FiberInsertion <-- OpticalFiber : fiber_insertion
-    ViralVector <-- ViralVectorInjection : viral_vector
-    ViralVectorInjection <-- Indicator : viral_vector_injection
+    %% Table column relationships
+    FiberPhotometryTable ..> CommandedVoltageSeries
+    FiberPhotometryTable ..> OpticalFiber
+    FiberPhotometryTable ..> ExcitationSource
+    FiberPhotometryTable ..> Photodetector
+    FiberPhotometryTable ..> DichroicMirror
+    FiberPhotometryTable ..> BandOpticalFilter
+    FiberPhotometryTable ..> EdgeOpticalFilter
+    FiberPhotometryTable ..> Indicator
 
     %% Container relationships
-    ViralVector <-- FiberPhotometryViruses : contains
-    ViralVectorInjection <-- FiberPhotometryVirusInjections : contains
-    Indicator <-- FiberPhotometryIndicators : contains
-
-    %% Table aggregation relationships
-    CommandedVoltageSeries <-- FiberPhotometryTable : references
-    OpticalFiber <-- FiberPhotometryTable : references
-    ExcitationSource <-- FiberPhotometryTable : references
-    Photodetector <-- FiberPhotometryTable : references
-    BandOpticalFilter <-- FiberPhotometryTable : references
-    EdgeOpticalFilter <-- FiberPhotometryTable : references
-    DichroicMirror <-- FiberPhotometryTable : references
-    Indicator <-- FiberPhotometryTable : references
-
-    %% Top-level organization
-    FiberPhotometryTable <-- FiberPhotometry : organizes
-    FiberPhotometryViruses <-- FiberPhotometry : organizes
-    FiberPhotometryVirusInjections <-- FiberPhotometry : organizes
-    FiberPhotometryIndicators <-- FiberPhotometry : organizes
+    FiberPhotometryViruses *--> ViralVector
+    FiberPhotometryVirusInjections *--> ViralVectorInjection
+    FiberPhotometryIndicators *--> Indicator
 
     %% Data linkage
-    FiberPhotometryTable <-- FiberPhotometryResponseSeries : links_to
+    FiberPhotometryResponseSeries ..> FiberPhotometryTable
 
-    %% Styling
-    style Device stroke:#144E73,stroke-width:3px,fill:#E8F4FD
-    style TimeSeries stroke:#144E73,stroke-width:3px,fill:#E8F4FD
-    style DynamicTable stroke:#144E73,stroke-width:3px,fill:#E8F4FD
-    style LabMetaData stroke:#144E73,stroke-width:3px,fill:#E8F4FD
+    %% Device model relationships
+    OpticalFiber ..> OpticalFiberModel
+    ExcitationSource ..> ExcitationSourceModel
+    Photodetector ..> PhotodetectorModel
+    DichroicMirror ..> DichroicMirrorModel
+    BandOpticalFilter ..> BandOpticalFilterModel
+    EdgeOpticalFilter ..> EdgeOpticalFilterModel
 
-    style OpticalFiberModel stroke:#D96F32,stroke-width:2px,fill:#FDF2E8
-    style ExcitationSourceModel stroke:#D96F32,stroke-width:2px,fill:#FDF2E8
-    style PhotodetectorModel stroke:#D96F32,stroke-width:2px,fill:#FDF2E8
-    style DichroicMirrorModel stroke:#D96F32,stroke-width:2px,fill:#FDF2E8
-    style BandOpticalFilterModel stroke:#D96F32,stroke-width:2px,fill:#FDF2E8
-    style EdgeOpticalFilterModel stroke:#D96F32,stroke-width:2px,fill:#FDF2E8
-
-    style OpticalFiber stroke:#28A745,stroke-width:2px,fill:#E8F5E8
-    style ExcitationSource stroke:#28A745,stroke-width:2px,fill:#E8F5E8
-    style Photodetector stroke:#28A745,stroke-width:2px,fill:#E8F5E8
-    style BandOpticalFilter stroke:#28A745,stroke-width:2px,fill:#E8F5E8
-    style EdgeOpticalFilter stroke:#28A745,stroke-width:2px,fill:#E8F5E8
-    style DichroicMirror stroke:#28A745,stroke-width:2px,fill:#E8F5E8
-    style Indicator stroke:#28A745,stroke-width:2px,fill:#E8F5E8
-    style FiberInsertion stroke:#28A745,stroke-width:2px,fill:#E8F5E8
-    style ViralVector stroke:#28A745,stroke-width:2px,fill:#E8F5E8
-    style ViralVectorInjection stroke:#28A745,stroke-width:2px,fill:#E8F5E8
-
-    style FiberPhotometryViruses stroke:#6F42C1,stroke-width:2px,fill:#F3E8FF
-    style FiberPhotometryVirusInjections stroke:#6F42C1,stroke-width:2px,fill:#F3E8FF
-    style FiberPhotometryIndicators stroke:#6F42C1,stroke-width:2px,fill:#F3E8FF
-
-    style FiberPhotometryResponseSeries stroke:#DC3545,stroke-width:2px,fill:#FFF0F0
-    style CommandedVoltageSeries stroke:#DC3545,stroke-width:2px,fill:#FFF0F0
-    style FiberPhotometryTable stroke:#DC3545,stroke-width:2px,fill:#FFF0F0
-    style FiberPhotometry stroke:#DC3545,stroke-width:2px,fill:#FFF0F0
+    %% Component relationships
+    OpticalFiber *--> FiberInsertion
+    ViralVectorInjection ..> ViralVector
+    Indicator ..> ViralVectorInjection
 ```
 ---
 This extension was created using [ndx-template](https://github.com/nwb-extensions/ndx-template).
