@@ -14,6 +14,15 @@ namespaces:
   name: ndx-fiber-photometry
   schema:
   - namespace: core
+    neurodata_types:
+    - TimeSeries
+    - Device
+    - LabMetaData
   - namespace: ndx-ophys-devices
+  - namespace: hdmf-common
+    neurodata_types:
+    - DynamicTable
+    - DynamicTableRegion
+    - VectorData
   - source: ndx-fiber-photometry.extensions.yaml
   version: 0.1.1

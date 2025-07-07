@@ -22,13 +22,9 @@ load_namespaces(str(__spec_path))
 # Either have PyNWB generate a class from the spec using `get_class` as shown
 # below or write a custom class and register it using the class decorator
 # `@register_class("TetrodeSeries", "ndx-fiber-photometry")`
-Indicator = get_class("Indicator", "ndx-fiber-photometry")
-OpticalFiber = get_class("OpticalFiber", "ndx-fiber-photometry")
-ExcitationSource = get_class("ExcitationSource", "ndx-fiber-photometry")
-Photodetector = get_class("Photodetector", "ndx-fiber-photometry")
-DichroicMirror = get_class("DichroicMirror", "ndx-fiber-photometry")
-BandOpticalFilter = get_class("BandOpticalFilter", "ndx-fiber-photometry")
-EdgeOpticalFilter = get_class("EdgeOpticalFilter", "ndx-fiber-photometry")
+FiberPhotometryViruses = get_class("FiberPhotometryViruses", "ndx-fiber-photometry")
+FiberPhotometryVirusInjections = get_class("FiberPhotometryVirusInjections", "ndx-fiber-photometry")
+FiberPhotometryIndicators = get_class("FiberPhotometryIndicators", "ndx-fiber-photometry")
 FiberPhotometry = get_class("FiberPhotometry", "ndx-fiber-photometry")
 from .fiber_photometry import FiberPhotometryTable
 

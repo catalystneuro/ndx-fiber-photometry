@@ -1,4 +1,31 @@
 groups:
+- neurodata_type_def: FiberPhotometryViruses
+  neurodata_type_inc: NWBContainer
+  name: fiber_photometry_viruses
+  doc: Group containing one or more ViralVector objects, to be used within an FiberPhotometry
+    object.
+  groups:
+  - neurodata_type_inc: ViralVector
+    doc: ViralVector object(s).
+    quantity: +
+- neurodata_type_def: FiberPhotometryVirusInjections
+  neurodata_type_inc: NWBContainer
+  name: fiber_photometry_virus_injections
+  doc: Group containing one or more ViralVectorInjection objects, to be used within
+    an FiberPhotometry object.
+  groups:
+  - neurodata_type_inc: ViralVectorInjection
+    doc: ViralVectorInjection object(s).
+    quantity: +
+- neurodata_type_def: FiberPhotometryIndicators
+  neurodata_type_inc: NWBContainer
+  name: fiber_photometry_indicators
+  doc: Group containing one or more Indicator objects, to be used within an FiberPhotometry
+    object.
+  groups:
+  - neurodata_type_inc: Indicator
+    doc: Indicator object(s).
+    quantity: +
 - neurodata_type_def: FiberPhotometryTable
   neurodata_type_inc: DynamicTable
   doc: Extends DynamicTable to hold metadata on the Fiber Photometry system.
@@ -102,6 +129,12 @@ groups:
   groups:
   - neurodata_type_inc: FiberPhotometryTable
     doc: The table containing the metadata on the Fiber Photometry system.
+  - neurodata_type_inc: FiberPhotometryIndicators
+    doc: The group containing the Indicator objects.
+  - neurodata_type_inc: FiberPhotometryViruses
+    doc: The group containing the ViralVector objects.
+  - neurodata_type_inc: FiberPhotometryVirusInjections
+    doc: The group containing the ViralVectorInjection objects.
 - neurodata_type_def: FiberPhotometryResponseSeries
   neurodata_type_inc: TimeSeries
   doc: Extends TimeSeries to hold Fiber Photometry data.

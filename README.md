@@ -50,6 +50,9 @@ from ndx_ophys_devices import (
 )
 
 from ndx_fiber_photometry import (
+    FiberPhotometryViruses,
+    FiberPhotometryVirusInjections,
+    FiberPhotometryIndicators,
     FiberPhotometry,
     FiberPhotometryTable,
     FiberPhotometryResponseSeries,
@@ -77,6 +80,7 @@ viral_vector_red = ViralVector(
     manufacturer="Vector Manufacturer",
     titer_in_vg_per_ml=1.0e12,
 )
+viruses = FiberPhotometryViruses(viral_vectors=[viral_vector_green, viral_vector_red])
 
 viral_vector_injection_green = ViralVectorInjection(
     name="viral_vector_injection_green",
@@ -93,7 +97,7 @@ viral_vector_injection_green = ViralVectorInjection(
     stereotactic_rotation_in_deg=0.0,
     stereotactic_tilt_in_deg=0.0,
     volume_in_uL=0.45,
-    injection_date=datetime.datetime.now(),
+    # injection_date=injection_date,
     viral_vector=viral_vector_green,
 )
 
@@ -112,8 +116,12 @@ viral_vector_injection_red = ViralVectorInjection(
     stereotactic_rotation_in_deg=0.0,
     stereotactic_tilt_in_deg=0.0,
     volume_in_uL=0.45,
-    injection_date=datetime.datetime.now(),
+    # injection_date=datetime.datetime.now(),
     viral_vector=viral_vector_red,
+)
+
+virus_injections = FiberPhotometryVirusInjections(
+    viral_vector_injections=[viral_vector_injection_green, viral_vector_injection_red]
 )
 
 
@@ -129,6 +137,8 @@ indicator_red = Indicator(
     label="Tdtomato",
     viral_vector_injection=viral_vector_injection_red,
 )
+
+indicators = FiberPhotometryIndicators(indicators=[indicator_green, indicator_red])
 
 optical_fiber_model = OpticalFiberModel(
     name="optical_fiber_model",
@@ -343,6 +353,9 @@ fiber_photometry_table_region = fiber_photometry_table.create_fiber_photometry_t
 fiber_photometry_lab_meta_data = FiberPhotometry(
     name="fiber_photometry",
     fiber_photometry_table=fiber_photometry_table,
+    fiber_photometry_viruses=viruses,
+    fiber_photometry_virus_injections=virus_injections,
+    fiber_photometry_indicators=indicators,
 )
 
 fiber_photometry_response_series = FiberPhotometryResponseSeries(
@@ -354,8 +367,6 @@ fiber_photometry_response_series = FiberPhotometryResponseSeries(
     fiber_photometry_table_region=fiber_photometry_table_region,
 )
 
-# nwbfile.add_device(indicator_green)
-# nwbfile.add_device(indicator_red)
 nwbfile.add_device(optical_fiber_model)
 nwbfile.add_device(optical_fiber_1)
 nwbfile.add_device(optical_fiber_2)

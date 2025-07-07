@@ -4,6 +4,8 @@ import os.path
 from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec, NWBDatasetSpec, NWBRefSpec, NWBAttributeSpec
 from ndx_ophys_devices import (
     Indicator,
+    ViralVector,
+    ViralVectorInjection,
     OpticalFiber,
     ExcitationSource,
     Photodetector,
@@ -135,6 +137,46 @@ def main():
         ],
     )
 
+    fiber_photometry_indicators = NWBGroupSpec(
+        name="fiber_photometry_indicators",  # use fixed name, for use in FiberPhotometry
+        neurodata_type_def="FiberPhotometryIndicators",
+        neurodata_type_inc="NWBContainer",
+        doc="Group containing one or more Indicator objects, to be used within an FiberPhotometry object.",
+        groups=[
+            NWBGroupSpec(
+                neurodata_type_inc="Indicator",
+                doc="Indicator object(s).",
+                quantity="+",
+            ),
+        ],
+    )
+    fiber_photometry_viruses = NWBGroupSpec(
+        name="fiber_photometry_viruses",  # use fixed name, for use in FiberPhotometry
+        neurodata_type_def="FiberPhotometryViruses",
+        neurodata_type_inc="NWBContainer",
+        doc="Group containing one or more ViralVector objects, to be used within an FiberPhotometry object.",
+        groups=[
+            NWBGroupSpec(
+                neurodata_type_inc="ViralVector",
+                doc="ViralVector object(s).",
+                quantity="+",
+            ),
+        ],
+    )
+    fiber_photometry_virus_injections = NWBGroupSpec(
+        name="fiber_photometry_virus_injections",  # use fixed name, for use in FiberPhotometry
+        neurodata_type_def="FiberPhotometryVirusInjections",
+        neurodata_type_inc="NWBContainer",
+        doc="Group containing one or more ViralVectorInjection objects, to be used within an FiberPhotometry object.",
+        groups=[
+            NWBGroupSpec(
+                neurodata_type_inc="ViralVectorInjection",
+                doc="ViralVectorInjection object(s).",
+                quantity="+",
+            ),
+        ],
+    )
+
     fiber_photometry_lab_meta_data = NWBGroupSpec(
         neurodata_type_def="FiberPhotometry",
         neurodata_type_inc="LabMetaData",
@@ -143,6 +185,18 @@ def main():
             NWBGroupSpec(
                 neurodata_type_inc="FiberPhotometryTable",
                 doc="The table containing the metadata on the Fiber Photometry system.",
+            ),
+            NWBGroupSpec(
+                neurodata_type_inc="FiberPhotometryIndicators",
+                doc="The group containing the Indicator objects.",
+            ),
+            NWBGroupSpec(
+                neurodata_type_inc="FiberPhotometryViruses",
+                doc="The group containing the ViralVector objects.",
+            ),
+            NWBGroupSpec(
+                neurodata_type_inc="FiberPhotometryVirusInjections",
+                doc="The group containing the ViralVectorInjection objects.",
             ),
         ],
     )
@@ -189,6 +243,9 @@ def main():
     )
 
     new_data_types = [
+        fiber_photometry_viruses,
+        fiber_photometry_virus_injections,
+        fiber_photometry_indicators,
         fiber_photometry_table,
         fiber_photometry_lab_meta_data,
         fiberphotometryresponse_series,
