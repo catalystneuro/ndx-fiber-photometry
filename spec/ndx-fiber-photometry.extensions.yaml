@@ -50,6 +50,18 @@ groups:
       dtype: text
       value: millimeters
       doc: coordinates unit
+  - name: excitation_wavelength_in_nm
+    neurodata_type_inc: VectorData
+    dtype: float
+    shape:
+    - null
+    doc: Wavelength of excitation light in nanometers.
+  - name: emission_wavelength_in_nm
+    neurodata_type_inc: VectorData
+    dtype: float
+    shape:
+    - null
+    doc: Wavelength of emission light in nanometers.
   - name: indicator
     neurodata_type_inc: VectorData
     dtype:

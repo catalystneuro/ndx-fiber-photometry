@@ -69,6 +69,20 @@ def main():
                 attributes=[NWBAttributeSpec(name="unit", doc="coordinates unit", value="millimeters", dtype="text")],
             ),
             NWBDatasetSpec(
+                name="excitation_wavelength_in_nm",
+                doc="Wavelength of excitation light in nanometers.",
+                dtype="float",
+                shape=(None,),
+                neurodata_type_inc="VectorData",
+            ),
+            NWBDatasetSpec(
+                name="emission_wavelength_in_nm",
+                doc="Wavelength of emission light in nanometers.",
+                dtype="float",
+                shape=(None,),
+                neurodata_type_inc="VectorData",
+            ),
+            NWBDatasetSpec(
                 name="indicator",
                 doc="Link to the indicator object.",
                 dtype=NWBRefSpec(target_type="Indicator", reftype="object"),

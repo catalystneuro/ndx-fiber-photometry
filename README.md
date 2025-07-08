@@ -475,6 +475,8 @@ fiber_photometry_table = FiberPhotometryTable(
 )
 fiber_photometry_table.add_row(
     location="VTA",
+    excitation_wavelength_in_nm=480.0,
+    emission_wavelength_in_nm=525.0,
     indicator=indicator_green,
     optical_fiber=optical_fiber_1,
     excitation_source=excitation_source_1,
@@ -485,6 +487,8 @@ fiber_photometry_table.add_row(
 )
 fiber_photometry_table.add_row(
     location="VTA",
+    excitation_wavelength_in_nm=580.0,
+    emission_wavelength_in_nm=610.0,
     indicator=indicator_red,
     optical_fiber=optical_fiber_2,
     excitation_source=excitation_source_2,
