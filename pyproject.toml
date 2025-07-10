@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ndx-fiber-photometry"
-version = "0.1.1"
+version = "0.2.0"
 authors = [
     { name="Alessandra Trapani", email="alessandra.trapani@catalystneuro.com" },
     { name="Luiz Tauffer", email="luiz.tauffer@catalystneuro.com" },
@@ -34,6 +34,7 @@ keywords = [
 dependencies = [
     "pynwb>=2.8.0",
     "hdmf>=3.14.1",
+    "ndx_ophys_devices>=0.3.0",
 ]
 
 [project.urls]
