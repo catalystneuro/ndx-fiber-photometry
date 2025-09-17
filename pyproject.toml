@@ -32,7 +32,7 @@ keywords = [
     'ndx-extension',
 ]
 dependencies = [
-    "pynwb>=2.8.0",
+    "pynwb>=3.1.0",
     "hdmf>=3.14.1",
     "ndx_ophys_devices>=0.3.0",
 ]
