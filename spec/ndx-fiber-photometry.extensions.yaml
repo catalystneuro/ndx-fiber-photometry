@@ -2,8 +2,8 @@ groups:
 - neurodata_type_def: FiberPhotometryViruses
   neurodata_type_inc: NWBContainer
   name: fiber_photometry_viruses
-  doc: Group containing one or more ViralVector objects, to be used within an FiberPhotometry
-    object.
+  doc: Group containing one or more ViralVector objects, to be used within an
+    FiberPhotometry object.
   groups:
   - neurodata_type_inc: ViralVector
     doc: ViralVector object(s).
@@ -11,8 +11,8 @@ groups:
 - neurodata_type_def: FiberPhotometryVirusInjections
   neurodata_type_inc: NWBContainer
   name: fiber_photometry_virus_injections
-  doc: Group containing one or more ViralVectorInjection objects, to be used within
-    an FiberPhotometry object.
+  doc: Group containing one or more ViralVectorInjection objects, to be used
+    within an FiberPhotometry object.
   groups:
   - neurodata_type_inc: ViralVectorInjection
     doc: ViralVectorInjection object(s).
@@ -20,8 +20,8 @@ groups:
 - neurodata_type_def: FiberPhotometryIndicators
   neurodata_type_inc: NWBContainer
   name: fiber_photometry_indicators
-  doc: Group containing one or more Indicator objects, to be used within an FiberPhotometry
-    object.
+  doc: Group containing one or more Indicator objects, to be used within an
+    FiberPhotometry object.
   groups:
   - neurodata_type_inc: Indicator
     doc: Indicator object(s).
@@ -42,8 +42,8 @@ groups:
     shape:
     - null
     - 3
-    doc: Relative coordinates of fiber in multi-fiber array. If single fiber, use
-      None.
+    doc: Relative coordinates of fiber in multi-fiber array. If single fiber,
+      use None.
     quantity: '?'
     attributes:
     - name: unit
@@ -157,8 +157,8 @@ groups:
     - - null
     - - null
       - null
-    doc: The data values. May be 1D or 2D. The first dimension must be time.The optional
-      second dimension refers to the fiber that record the series.
+    doc: The data values. May be 1D or 2D. The first dimension must be time.The
+      optional second dimension refers to the fiber that record the series.
   - name: fiber_photometry_table_region
     neurodata_type_inc: DynamicTableRegion
     doc: References row(s) of FiberPhotometryTable.
