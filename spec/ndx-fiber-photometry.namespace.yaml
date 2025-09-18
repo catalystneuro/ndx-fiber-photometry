@@ -9,8 +9,8 @@ namespaces:
   - luiz.tauffer@catlystneuro.com
   - paul.adkisson@catlystneuro.com
   - szonja.weigl@catlystneuro.com
-  doc: This is an NWB extension for storing fiber photometry recordings and associated
-    metadata.
+  doc: This is an NWB extension for storing fiber photometry recordings and
+    associated metadata.
   name: ndx-fiber-photometry
   schema:
   - namespace: core
@@ -23,5 +23,17 @@ namespaces:
     - DynamicTable
     - DynamicTableRegion
     - VectorData
+  - namespace: ndx-ophys-devices
+    neurodata_types:
+    - Indicator
+    - ViralVector
+    - ViralVectorInjection
+    - OpticalFiber
+    - ExcitationSource
+    - Photodetector
+    - DichroicMirror
+    - BandOpticalFilter
+    - EdgeOpticalFilter
+    - OpticalFilter
   - source: ndx-fiber-photometry.extensions.yaml
-  version: 0.1.1
+  version: 0.2.0
