@@ -1,4 +1,6 @@
-# v0.2.0 (Upcoming)
+# v0.2.1 (Upcoming)
+
+# v0.2.0 (September 18th, 2025)
 
 * Refactored the extension to depend on ndx-ophys-devices for device and biological component specification, replacing its previous standalone device types [PR #37](https://github.com/catalystneuro/ndx-fiber-photometry/pull/37).
 
