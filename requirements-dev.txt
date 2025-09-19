@@ -14,4 +14,4 @@ pytest-subtests==0.12.1
 python-dateutil==2.8.2
 ruff==0.3.4
 tox==4.14.2
-ndx_ophys_devices==0.3.0
+ndx_ophys_devices==0.3.1
