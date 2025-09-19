@@ -34,7 +34,7 @@ keywords = [
 dependencies = [
     "pynwb>=3.1.0",
     "hdmf>=4.1.0",
-    "ndx_ophys_devices>=0.3.0",
+    "ndx_ophys_devices>=0.3.1",
 ]
 
 [project.urls]
