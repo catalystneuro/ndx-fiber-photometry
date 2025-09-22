@@ -36,4 +36,4 @@ namespaces:
     - EdgeOpticalFilter
     - OpticalFilter
   - source: ndx-fiber-photometry.extensions.yaml
-  version: 0.2.1
+  version: 0.2.2
