@@ -1,4 +1,6 @@
-# v0.2.1 (Upcoming)
+# v0.2.2 (Upcoming)
+
+# v0.2.1 (September 22nd, 2025)
 
 * Updated the auto-publish workflow to use attestation, which is the new standard on PyPI [PR #41](https://github.com/catalystneuro/ndx-fiber-photometry/pull/41).
 * Updated requirements to depend on ndx-ophys-devices>=0.3.1 [PR #40](https://github.com/catalystneuro/ndx-fiber-photometry/pull/40)
