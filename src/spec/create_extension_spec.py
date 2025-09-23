@@ -208,10 +208,12 @@ def main():
             NWBGroupSpec(
                 neurodata_type_inc="FiberPhotometryViruses",
                 doc="The group containing the ViralVector objects.",
+                quantity="?",
             ),
             NWBGroupSpec(
                 neurodata_type_inc="FiberPhotometryVirusInjections",
                 doc="The group containing the ViralVectorInjection objects.",
+                quantity="?",
             ),
         ],
     )
