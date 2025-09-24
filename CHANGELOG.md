@@ -1,4 +1,6 @@
-# v0.2.2 (Upcoming)
+# v0.2.3 (Upcoming)
+
+# v0.2.2 (September 23rd, 2025)
 
 * Updated the `FiberPhotometryViruses` and `FiberPhotometryVirusInjections` groups to be optional in the `FiberPhotometry` container [PR #47](https://github.com/catalystneuro/ndx-fiber-photometry/pull/47).
 
