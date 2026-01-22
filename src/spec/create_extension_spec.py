@@ -12,7 +12,7 @@ def main():
         author=[
             "Alessandra Trapani",
             "Luiz Tauffer",
-            "Paul Adkisson",
+            "Paul Adkisson-Floro",
             "Szonja Weigl",
         ],
         contact=[
@@ -132,6 +132,7 @@ def main():
                 dtype=NWBRefSpec(target_type="DichroicMirror", reftype="object"),
                 shape=(None,),
                 neurodata_type_inc="VectorData",
+                quantity="?",
             ),
             NWBDatasetSpec(
                 name="emission_filter",
