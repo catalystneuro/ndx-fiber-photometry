@@ -1,5 +1,7 @@
 # v0.2.3 (Upcoming)
 
+* Made `dichroic_mirror` optional in the `FiberPhotometryTable` [PR #50](https://github.com/catalystneuro/ndx-fiber-photometry/pull/50).
+
 # v0.2.2 (September 23rd, 2025)
 
 * Updated the `FiberPhotometryViruses` and `FiberPhotometryVirusInjections` groups to be optional in the `FiberPhotometry` container [PR #47](https://github.com/catalystneuro/ndx-fiber-photometry/pull/47).

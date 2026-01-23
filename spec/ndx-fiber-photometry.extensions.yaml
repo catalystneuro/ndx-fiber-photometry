@@ -118,6 +118,7 @@ groups:
     shape:
     - null
     doc: Link to the dichroic mirror device.
+    quantity: '?'
   - name: emission_filter
     neurodata_type_inc: VectorData
     dtype:
