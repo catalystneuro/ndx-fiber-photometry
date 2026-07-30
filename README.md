@@ -170,6 +170,10 @@ Beyond the foundational device types, this extension provides specific container
   - `fiber_photometry_virus_injections`: Container of injection procedures
   - `fiber_photometry_indicators`: Container of indicators
 
+## Recommended Organization of Response Series
+
+The spec places no constraints on how data is divided across `FiberPhotometryResponseSeries` objects -- one series per trace, one series per session, or anything in between is valid. The developers of this extension recommend writing one series per excitation/emission wavelength, with one column per fiber/location (`data` shaped `[ntime, nfibers]`) and a `fiber_photometry_table_region` listing the corresponding rows in the same order as the columns. In our experience, this organization fits most fiber photometry data.
+
 ## Installation
 
 To install the latest stable release through PyPI,
