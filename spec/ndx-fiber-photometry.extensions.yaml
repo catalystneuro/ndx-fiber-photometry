@@ -2,7 +2,7 @@ groups:
 - neurodata_type_def: FiberPhotometryViruses
   neurodata_type_inc: NWBContainer
   name: fiber_photometry_viruses
-  doc: Group containing one or more ViralVector objects, to be used within an
+  doc: Group containing one or more ViralVector objects, to be used within a
     FiberPhotometry object.
   groups:
   - neurodata_type_inc: ViralVector
@@ -12,7 +12,7 @@ groups:
   neurodata_type_inc: NWBContainer
   name: fiber_photometry_virus_injections
   doc: Group containing one or more ViralVectorInjection objects, to be used
-    within an FiberPhotometry object.
+    within a FiberPhotometry object.
   groups:
   - neurodata_type_inc: ViralVectorInjection
     doc: ViralVectorInjection object(s).
@@ -20,7 +20,7 @@ groups:
 - neurodata_type_def: FiberPhotometryIndicators
   neurodata_type_inc: NWBContainer
   name: fiber_photometry_indicators
-  doc: Group containing one or more Indicator objects, to be used within an
+  doc: Group containing one or more Indicator objects, to be used within a
     FiberPhotometry object.
   groups:
   - neurodata_type_inc: Indicator
@@ -33,12 +33,17 @@ groups:
   - name: location
     neurodata_type_inc: VectorData
     dtype: text
+    dims:
+    - num_rows
     shape:
     - null
     doc: Location of fiber.
   - name: coordinates
     neurodata_type_inc: VectorData
     dtype: float
+    dims:
+    - num_rows
+    - x,y,z
     shape:
     - null
     - 3
@@ -53,12 +58,16 @@ groups:
   - name: excitation_wavelength_in_nm
     neurodata_type_inc: VectorData
     dtype: float
+    dims:
+    - num_rows
     shape:
     - null
     doc: Wavelength of excitation light in nanometers.
   - name: emission_wavelength_in_nm
     neurodata_type_inc: VectorData
     dtype: float
+    dims:
+    - num_rows
     shape:
     - null
     doc: Wavelength of emission light in nanometers.
@@ -67,21 +76,27 @@ groups:
     dtype:
       target_type: Indicator
       reftype: object
+    dims:
+    - num_rows
     shape:
     - null
     doc: Link to the indicator object.
   - name: notes
     neurodata_type_inc: VectorData
     dtype: text
+    dims:
+    - num_rows
     shape:
     - null
-    doc: Description of system.
+    doc: Free-text notes about this row.
     quantity: '?'
   - name: optical_fiber
     neurodata_type_inc: VectorData
     dtype:
       target_type: OpticalFiber
       reftype: object
+    dims:
+    - num_rows
     shape:
     - null
     doc: Link to the optical fiber device.
@@ -90,6 +105,8 @@ groups:
     dtype:
       target_type: ExcitationSource
       reftype: object
+    dims:
+    - num_rows
     shape:
     - null
     doc: Link to the excitation source device.
@@ -98,6 +115,8 @@ groups:
     dtype:
       target_type: CommandedVoltageSeries
       reftype: object
+    dims:
+    - num_rows
     shape:
     - null
     doc: Link to the commanded voltage series.
@@ -107,6 +126,8 @@ groups:
     dtype:
       target_type: Photodetector
       reftype: object
+    dims:
+    - num_rows
     shape:
     - null
     doc: Link to the photodetector device.
@@ -115,6 +136,8 @@ groups:
     dtype:
       target_type: DichroicMirror
       reftype: object
+    dims:
+    - num_rows
     shape:
     - null
     doc: Link to the dichroic mirror device.
@@ -124,6 +147,8 @@ groups:
     dtype:
       target_type: OpticalFilter
       reftype: object
+    dims:
+    - num_rows
     shape:
     - null
     doc: Link to the emission filter device.
@@ -133,6 +158,8 @@ groups:
     dtype:
       target_type: OpticalFilter
       reftype: object
+    dims:
+    - num_rows
     shape:
     - null
     doc: Link to the excitation filter device.
@@ -156,22 +183,29 @@ groups:
   doc: Extends TimeSeries to hold Fiber Photometry data.
   datasets:
   - name: data
+    dims:
+    - - num_times
+    - - num_times
+      - num_fibers
     shape:
     - - null
     - - null
       - null
-    doc: The data values. May be 1D or 2D. The first dimension must be time.The
-      optional second dimension refers to the fiber that record the series.
+    doc: The data values. May be 1D or 2D. The first dimension must be time. The
+      optional second dimension corresponds to the rows of FiberPhotometryTable
+      referenced by fiber_photometry_table_region, in the same order.
   - name: fiber_photometry_table_region
     neurodata_type_inc: DynamicTableRegion
-    doc: References row(s) of FiberPhotometryTable.
-    quantity: '?'
+    doc: References the row(s) of FiberPhotometryTable that the data come from,
+      one row per column of data.
 - neurodata_type_def: CommandedVoltageSeries
   neurodata_type_inc: TimeSeries
   doc: Extends TimeSeries to hold a Commanded Voltage
   datasets:
   - name: data
     dtype: float
+    dims:
+    - num_times
     shape:
     - null
     doc: Voltages (length number timesteps) in unit volts.

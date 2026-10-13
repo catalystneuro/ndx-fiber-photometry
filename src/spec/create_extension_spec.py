@@ -24,7 +24,7 @@ def main():
     )
     ns_builder.include_namespace("core")
     ns_builder.include_type("TimeSeries", namespace="core")
-    ns_builder.include_type("Device", namespace="core")
+    ns_builder.include_type("NWBContainer", namespace="core")
     ns_builder.include_type("LabMetaData", namespace="core")
 
     ns_builder.include_namespace("hdmf-common")
@@ -57,6 +57,7 @@ def main():
                 doc="Location of fiber.",
                 dtype="text",
                 shape=(None,),
+                dims=("num_rows",),
                 neurodata_type_inc="VectorData",
             ),
             NWBDatasetSpec(
@@ -64,6 +65,7 @@ def main():
                 doc="Relative coordinates of fiber in multi-fiber array. If single fiber, use None.",
                 dtype="float",
                 shape=(None, 3),
+                dims=("num_rows", "x,y,z"),
                 neurodata_type_inc="VectorData",
                 quantity="?",
                 attributes=[NWBAttributeSpec(name="unit", doc="coordinates unit", value="millimeters", dtype="text")],
@@ -73,6 +75,7 @@ def main():
                 doc="Wavelength of excitation light in nanometers.",
                 dtype="float",
                 shape=(None,),
+                dims=("num_rows",),
                 neurodata_type_inc="VectorData",
             ),
             NWBDatasetSpec(
@@ -80,6 +83,7 @@ def main():
                 doc="Wavelength of emission light in nanometers.",
                 dtype="float",
                 shape=(None,),
+                dims=("num_rows",),
                 neurodata_type_inc="VectorData",
             ),
             NWBDatasetSpec(
@@ -87,13 +91,15 @@ def main():
                 doc="Link to the indicator object.",
                 dtype=NWBRefSpec(target_type="Indicator", reftype="object"),
                 shape=(None,),
+                dims=("num_rows",),
                 neurodata_type_inc="VectorData",
             ),
             NWBDatasetSpec(
                 name="notes",
-                doc="Description of system.",
+                doc="Free-text notes about this row.",
                 dtype="text",
                 shape=(None,),
+                dims=("num_rows",),
                 neurodata_type_inc="VectorData",
                 quantity="?",
             ),
@@ -102,6 +108,7 @@ def main():
                 doc="Link to the optical fiber device.",
                 dtype=NWBRefSpec(target_type="OpticalFiber", reftype="object"),
                 shape=(None,),
+                dims=("num_rows",),
                 neurodata_type_inc="VectorData",
             ),
             NWBDatasetSpec(
@@ -109,6 +116,7 @@ def main():
                 doc="Link to the excitation source device.",
                 dtype=NWBRefSpec(target_type="ExcitationSource", reftype="object"),
                 shape=(None,),
+                dims=("num_rows",),
                 neurodata_type_inc="VectorData",
             ),
             NWBDatasetSpec(
@@ -116,6 +124,7 @@ def main():
                 doc="Link to the commanded voltage series.",
                 dtype=NWBRefSpec(target_type="CommandedVoltageSeries", reftype="object"),
                 shape=(None,),
+                dims=("num_rows",),
                 neurodata_type_inc="VectorData",
                 quantity="?",
             ),
@@ -124,6 +133,7 @@ def main():
                 doc="Link to the photodetector device.",
                 dtype=NWBRefSpec(target_type="Photodetector", reftype="object"),
                 shape=(None,),
+                dims=("num_rows",),
                 neurodata_type_inc="VectorData",
             ),
             NWBDatasetSpec(
@@ -131,6 +141,7 @@ def main():
                 doc="Link to the dichroic mirror device.",
                 dtype=NWBRefSpec(target_type="DichroicMirror", reftype="object"),
                 shape=(None,),
+                dims=("num_rows",),
                 neurodata_type_inc="VectorData",
                 quantity="?",
             ),
@@ -139,6 +150,7 @@ def main():
                 doc="Link to the emission filter device.",
                 dtype=NWBRefSpec(target_type="OpticalFilter", reftype="object"),
                 shape=(None,),
+                dims=("num_rows",),
                 neurodata_type_inc="VectorData",
                 quantity="?",
             ),
@@ -147,6 +159,7 @@ def main():
                 doc="Link to the excitation filter device.",
                 dtype=NWBRefSpec(target_type="OpticalFilter", reftype="object"),
                 shape=(None,),
+                dims=("num_rows",),
                 neurodata_type_inc="VectorData",
                 quantity="?",
             ),
@@ -157,7 +170,7 @@ def main():
         name="fiber_photometry_indicators",  # use fixed name, for use in FiberPhotometry
         neurodata_type_def="FiberPhotometryIndicators",
         neurodata_type_inc="NWBContainer",
-        doc="Group containing one or more Indicator objects, to be used within an FiberPhotometry object.",
+        doc="Group containing one or more Indicator objects, to be used within a FiberPhotometry object.",
         groups=[
             NWBGroupSpec(
                 neurodata_type_inc="Indicator",
@@ -170,7 +183,7 @@ def main():
         name="fiber_photometry_viruses",  # use fixed name, for use in FiberPhotometry
         neurodata_type_def="FiberPhotometryViruses",
         neurodata_type_inc="NWBContainer",
-        doc="Group containing one or more ViralVector objects, to be used within an FiberPhotometry object.",
+        doc="Group containing one or more ViralVector objects, to be used within a FiberPhotometry object.",
         groups=[
             NWBGroupSpec(
                 neurodata_type_inc="ViralVector",
@@ -183,7 +196,7 @@ def main():
         name="fiber_photometry_virus_injections",  # use fixed name, for use in FiberPhotometry
         neurodata_type_def="FiberPhotometryVirusInjections",
         neurodata_type_inc="NWBContainer",
-        doc="Group containing one or more ViralVectorInjection objects, to be used within an FiberPhotometry object.",
+        doc="Group containing one or more ViralVectorInjection objects, to be used within a FiberPhotometry object.",
         groups=[
             NWBGroupSpec(
                 neurodata_type_inc="ViralVectorInjection",
@@ -226,15 +239,17 @@ def main():
         datasets=[
             NWBDatasetSpec(
                 name="data",
-                doc="The data values. May be 1D or 2D. The first dimension must be time."
-                "The optional second dimension refers to the fiber that record the series.",
+                doc="The data values. May be 1D or 2D. The first dimension must be time. The optional second "
+                "dimension corresponds to the rows of FiberPhotometryTable referenced by "
+                "fiber_photometry_table_region, in the same order.",
                 shape=((None,), (None, None)),
+                dims=(("num_times",), ("num_times", "num_fibers")),
             ),
             NWBDatasetSpec(
                 name="fiber_photometry_table_region",
-                doc="References row(s) of FiberPhotometryTable.",
+                doc="References the row(s) of FiberPhotometryTable that the data come from, "
+                "one row per column of data.",
                 neurodata_type_inc="DynamicTableRegion",
-                quantity="?",
             ),
         ],
     )
@@ -249,6 +264,7 @@ def main():
                 doc="Voltages (length number timesteps) in unit volts.",
                 dtype="float",
                 shape=(None,),
+                dims=("num_times",),
             ),
             NWBDatasetSpec(
                 name="frequency",

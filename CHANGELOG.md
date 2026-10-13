@@ -6,6 +6,7 @@
   * `FiberInsertion` is removed. `OpticalFiber.fiber_insertion` is now an optional `StereotacticPosition` named "fiber_insertion", with `anatomical_target`, `origin`, `orientation`, `x_in_mm`, `y_in_mm`, `z_in_mm` and the optional angles `pitch_in_deg`, `yaw_in_deg` and `roll_in_deg`. The coordinates give the position of the fiber tip, so the old `depth_in_mm` is folded into the dorsoventral coordinate.
   * `ViralVectorInjection` no longer has `location`, `hemisphere`, `reference`, `ap_in_mm`, `ml_in_mm`, `dv_in_mm`, `pitch_in_deg`, `yaw_in_deg`, `roll_in_deg`, `stereotactic_rotation_in_deg` or `stereotactic_tilt_in_deg`. The injection site goes in the optional `viral_injection_coordinates`, a `StereotacticPosition` named "viral_injection_coordinates".
   * `gain` and `gain_unit` moved from `PhotodetectorModel` to `Photodetector`.
+* `FiberPhotometryResponseSeries.fiber_photometry_table_region` is now required, so every response series is linked to the rows of the `FiberPhotometryTable` it comes from.
 * Requires Python 3.10 or later.
 
 ## Reading files written with earlier versions
@@ -15,6 +16,8 @@ Files written with ndx-fiber-photometry 0.2.x and ndx-ophys-devices 0.3.x fail t
 ## Other changes
 
 * Fixed the contact email addresses in the namespace.
+* Declared explicit `dims` for all datasets with a shape, so that regenerating the spec gives the same result with pynwb 3.x and 4.x.
+* Clarified the docs of the `notes` column and of `FiberPhotometryResponseSeries.data`, and listed `NWBContainer` in place of the unused `Device` in the namespace.
 * Updated the example in the README and the tests with realistic values: VTA coordinates, LED excitation at 465 nm with a 405 nm isosbestic control row, jRGECO1a as the red indicator, a photoreceiver with its gain, and lock-in carrier frequencies for the commanded voltages.
 * `test_readme.py` now finds `README.md` relative to the test file and reads it as UTF-8, and the roundtrip test writes to a temporary directory.
 * `requirements-min.txt` now pins the minimum supported versions.

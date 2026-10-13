@@ -16,7 +16,7 @@ namespaces:
   - namespace: core
     neurodata_types:
     - TimeSeries
-    - Device
+    - NWBContainer
     - LabMetaData
   - namespace: hdmf-common
     neurodata_types:
