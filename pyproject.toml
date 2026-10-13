@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ndx-fiber-photometry"
-version = "0.2.4"
+version = "0.3.0"
 authors = [
     { name="Alessandra Trapani", email="alessandra.trapani@catalystneuro.com" },
     { name="Luiz Tauffer", email="luiz.tauffer@catalystneuro.com" },
@@ -13,14 +13,13 @@ authors = [
 ]
 description = "This is an NWB extension for storing fiber photometry recordings and associated metadata."
 readme = "README.md"
-# requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = {text = "BSD-3"}
 classifiers = [
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: BSD License",
@@ -34,7 +33,7 @@ keywords = [
 dependencies = [
     "pynwb>=3.1.0",
     "hdmf>=4.1.0",
-    "ndx_ophys_devices>=0.3.1",
+    "ndx_ophys_devices>=0.4.0,<0.5",
 ]
 
 [project.urls]

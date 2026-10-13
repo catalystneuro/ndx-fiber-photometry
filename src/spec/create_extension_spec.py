@@ -7,7 +7,7 @@ def main():
     # these arguments were auto-generated from your cookiecutter inputs
     ns_builder = NWBNamespaceBuilder(
         name="""ndx-fiber-photometry""",
-        version="""0.2.4""",
+        version="""0.3.0""",
         doc="""This is an NWB extension for storing fiber photometry recordings and associated metadata.""",
         author=[
             "Alessandra Trapani",
@@ -16,10 +16,10 @@ def main():
             "Szonja Weigl",
         ],
         contact=[
-            "alessandra.trapani@catlystneuro.com",
-            "luiz.tauffer@catlystneuro.com",
-            "paul.adkisson@catlystneuro.com",
-            "szonja.weigl@catlystneuro.com",
+            "alessandra.trapani@catalystneuro.com",
+            "luiz.tauffer@catalystneuro.com",
+            "paul.adkisson@catalystneuro.com",
+            "szonja.weigl@catalystneuro.com",
         ],
     )
     ns_builder.include_namespace("core")

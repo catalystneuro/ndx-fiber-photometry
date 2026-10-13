@@ -1,4 +1,29 @@
-# v0.2.3 (Upcoming)
+# v0.3.0 (Upcoming)
+
+## Breaking changes
+
+* Requires ndx-ophys-devices 0.4.0 (`ndx_ophys_devices>=0.4.0,<0.5`), which changes several types used by this extension:
+  * `FiberInsertion` is removed. `OpticalFiber.fiber_insertion` is now an optional `StereotacticPosition` named "fiber_insertion", with `anatomical_target`, `origin`, `orientation`, `x_in_mm`, `y_in_mm`, `z_in_mm` and the optional angles `pitch_in_deg`, `yaw_in_deg` and `roll_in_deg`. The coordinates give the position of the fiber tip, so the old `depth_in_mm` is folded into the dorsoventral coordinate.
+  * `ViralVectorInjection` no longer has `location`, `hemisphere`, `reference`, `ap_in_mm`, `ml_in_mm`, `dv_in_mm`, `pitch_in_deg`, `yaw_in_deg`, `roll_in_deg`, `stereotactic_rotation_in_deg` or `stereotactic_tilt_in_deg`. The injection site goes in the optional `viral_injection_coordinates`, a `StereotacticPosition` named "viral_injection_coordinates".
+  * `gain` and `gain_unit` moved from `PhotodetectorModel` to `Photodetector`.
+* Requires Python 3.10 or later.
+
+## Reading files written with earlier versions
+
+Files written with ndx-fiber-photometry 0.2.x and ndx-ophys-devices 0.3.x fail to read with `No specification for 'FiberInsertion'` in a Python session that has imported ndx-fiber-photometry 0.3.0 or ndx-ophys-devices 0.4.0, because the installed namespaces take precedence over the ones cached in the file. To read such files, open them in a session that does not import these packages; pynwb then loads the cached namespaces.
+
+## Other changes
+
+* Fixed the contact email addresses in the namespace.
+* Updated the example in the README and the tests with realistic values: VTA coordinates, LED excitation at 465 nm with a 405 nm isosbestic control row, jRGECO1a as the red indicator, a photoreceiver with its gain, and lock-in carrier frequencies for the commanded voltages.
+* `test_readme.py` now finds `README.md` relative to the test file and reads it as UTF-8, and the roundtrip test writes to a temporary directory.
+* `requirements-min.txt` now pins the minimum supported versions.
+
+# v0.2.4 (Upcoming)
+
+* Capped the ndx-ophys-devices dependency at `<0.4`. ndx-ophys-devices 0.4.0 removes `FiberInsertion`, which this release uses. ndx-fiber-photometry 0.3.0 will adopt ndx-ophys-devices 0.4.0. If you have pinned `ndx-fiber-photometry==0.2.3` and a fresh install fails with `cannot import name 'FiberInsertion'`, run `pip install "ndx-ophys-devices<0.4"`.
+
+# v0.2.3 (January 23rd, 2026)
 
 * Made `dichroic_mirror` optional in the `FiberPhotometryTable` [PR #50](https://github.com/catalystneuro/ndx-fiber-photometry/pull/50).
 

@@ -1,9 +1,13 @@
+from pathlib import Path
+
 from pynwb import NWBHDF5IO
+
+README_PATH = Path(__file__).parents[4] / "README.md"
 
 
 def test_readme(tmp_path):
     """Test the first python code block in the README by simply executing it."""
-    with open("README.md") as f:
+    with open(README_PATH, encoding="utf-8") as f:
         lines = f.readlines()
     start_line = None
     for i, line in enumerate(lines):
