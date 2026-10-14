@@ -1,4 +1,8 @@
-# v0.2.3 (Upcoming)
+# v0.2.4 (October 14th, 2026)
+
+* Capped the ndx-ophys-devices dependency at `<0.4`. ndx-ophys-devices 0.4.0 removes `FiberInsertion`, which this release uses. ndx-fiber-photometry 0.3.0 will adopt ndx-ophys-devices 0.4.0. If you have pinned `ndx-fiber-photometry==0.2.3` and a fresh install fails with `cannot import name 'FiberInsertion'`, run `pip install "ndx-ophys-devices<0.4"`.
+
+# v0.2.3 (January 23rd, 2026)
 
 * Made `dichroic_mirror` optional in the `FiberPhotometryTable` [PR #50](https://github.com/catalystneuro/ndx-fiber-photometry/pull/50).
 
