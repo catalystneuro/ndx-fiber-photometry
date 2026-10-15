@@ -1,4 +1,4 @@
-# v0.3.0 (Upcoming)
+# v0.3.0 (October 15th, 2026)
 
 ## Breaking changes
 
@@ -13,6 +13,10 @@
 
 Files written with ndx-fiber-photometry 0.2.x and ndx-ophys-devices 0.3.x fail to read with `No specification for 'FiberInsertion'` in a Python session that has imported ndx-fiber-photometry 0.3.0 or ndx-ophys-devices 0.4.0, because the installed namespaces take precedence over the ones cached in the file. To read such files, open them in a session that does not import these packages; pynwb then loads the cached namespaces.
 
+## Installing with NeuroConv
+
+NeuroConv 0.10.2 and earlier import `FiberInsertion` in the TDT fiber photometry interface and allow ndx-fiber-photometry 0.3.0, which then fails on import. Until a NeuroConv release caps it ([PR #2102](https://github.com/catalystneuro/neuroconv/pull/2102)), run `pip install "ndx-fiber-photometry<0.3"` alongside NeuroConv.
+
 ## Other changes
 
 * Fixed the contact email addresses in the namespace.
@@ -21,8 +25,9 @@ Files written with ndx-fiber-photometry 0.2.x and ndx-ophys-devices 0.3.x fail t
 * Updated the example in the README and the tests with realistic values: VTA coordinates, LED excitation at 465 nm with a 405 nm isosbestic control row, jRGECO1a as the red indicator, a photoreceiver with its gain, and lock-in carrier frequencies for the commanded voltages.
 * `test_readme.py` now finds `README.md` relative to the test file and reads it as UTF-8, and the roundtrip test writes to a temporary directory.
 * `requirements-min.txt` now pins the minimum supported versions.
+* Bumped `gh-action-pypi-publish` to v1.14.2 in the publish workflow, so that wheels with Metadata-Version 2.5 can be uploaded.
 
-# v0.2.4 (Upcoming)
+# v0.2.4 (October 14th, 2026)
 
 * Capped the ndx-ophys-devices dependency at `<0.4`. ndx-ophys-devices 0.4.0 removes `FiberInsertion`, which this release uses. ndx-fiber-photometry 0.3.0 will adopt ndx-ophys-devices 0.4.0. If you have pinned `ndx-fiber-photometry==0.2.3` and a fresh install fails with `cannot import name 'FiberInsertion'`, run `pip install "ndx-ophys-devices<0.4"`.
 
