@@ -142,7 +142,7 @@ Beyond the foundational device types, this extension provides specific container
 **FiberPhotometryResponseSeries**: Extends `TimeSeries`
 - Stores recorded fiber photometry responses (fluorescence signals)
 - `data`: Time series of fluorescence measurements [ntime, nfibers]
-- `fiber_photometry_table_region`: Required. Links to the rows of the FiberPhotometryTable that the data come from, one row per column of `data`
+- `fiber_photometry_table_region`: Optional. Links to the rows of the FiberPhotometryTable that the data come from, one row per column of `data`
 - `rate`: Sampling rate of the fluorescence measurements
 
 **FiberPhotometryTable**: Extends `DynamicTable`

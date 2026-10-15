@@ -250,6 +250,7 @@ def main():
                 doc="References the row(s) of FiberPhotometryTable that the data come from, "
                 "one row per column of data.",
                 neurodata_type_inc="DynamicTableRegion",
+                quantity="?",
             ),
         ],
     )

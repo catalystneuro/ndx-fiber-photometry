@@ -198,6 +198,7 @@ groups:
     neurodata_type_inc: DynamicTableRegion
     doc: References the row(s) of FiberPhotometryTable that the data come from,
       one row per column of data.
+    quantity: '?'
 - neurodata_type_def: CommandedVoltageSeries
   neurodata_type_inc: TimeSeries
   doc: Extends TimeSeries to hold a Commanded Voltage

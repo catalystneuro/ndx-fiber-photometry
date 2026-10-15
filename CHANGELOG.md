@@ -6,7 +6,6 @@
   * `FiberInsertion` is removed. `OpticalFiber.fiber_insertion` is now an optional `StereotacticPosition` named "fiber_insertion", with `anatomical_target`, `origin`, `orientation`, `x_in_mm`, `y_in_mm`, `z_in_mm` and the optional angles `pitch_in_deg`, `yaw_in_deg` and `roll_in_deg`. The coordinates give the position of the fiber tip, so the old `depth_in_mm` is folded into the dorsoventral coordinate.
   * `ViralVectorInjection` no longer has `location`, `hemisphere`, `reference`, `ap_in_mm`, `ml_in_mm`, `dv_in_mm`, `pitch_in_deg`, `yaw_in_deg`, `roll_in_deg`, `stereotactic_rotation_in_deg` or `stereotactic_tilt_in_deg`. The injection site goes in the optional `viral_injection_coordinates`, a `StereotacticPosition` named "viral_injection_coordinates".
   * `gain` and `gain_unit` moved from `PhotodetectorModel` to `Photodetector`.
-* `FiberPhotometryResponseSeries.fiber_photometry_table_region` is now required, so every response series is linked to the rows of the `FiberPhotometryTable` it comes from.
 * Requires Python 3.10 or later.
 
 ## Reading files written with earlier versions
