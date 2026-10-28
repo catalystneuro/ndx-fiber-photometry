@@ -87,11 +87,12 @@ class TestFiberPhotometryResponseSeries:
                 processing_software_version="0.1.0",
             )
 
-    def test_file_with_malformed_processing_parameters_still_reads(self, nwbfile_path):
+    def test_reading_malformed_processing_parameters_warns(self, nwbfile_path):
         # another writer, such as MatNWB, could store text that is not JSON
         with h5py.File(nwbfile_path, mode="r+") as file:
             file["processing/ophys/processed_series/processing_parameters"][()] = "freq_min=0.2"
 
         with NWBHDF5IO(nwbfile_path, mode="r") as io:
-            read_series = io.read().processing["ophys"]["processed_series"]
+            with pytest.warns(UserWarning, match="processing_parameters of 'processed_series' is not valid JSON"):
+                read_series = io.read().processing["ophys"]["processed_series"]
             assert read_series.processing_parameters == "freq_min=0.2"
