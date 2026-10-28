@@ -2,7 +2,7 @@
 
 ## Features
 
-* Added an optional `processing_parameters` dataset to `FiberPhotometryResponseSeries` that stores the parameters of the processing that produced the data as JSON text, with required `processing_software` and `processing_software_version` attributes. The PyNWB constructor takes all three together or none of them. [PR #63](https://github.com/catalystneuro/ndx-fiber-photometry/pull/63)
+* Added an optional `processing_parameters` dataset to `FiberPhotometryResponseSeries` that stores the parameters of the processing that produced the data as JSON text, with required `processing_software` and `processing_software_version` attributes. The PyNWB constructor takes all three together or none of them, and checks that `processing_parameters` parses as JSON. [PR #63](https://github.com/catalystneuro/ndx-fiber-photometry/pull/63)
 
 # v0.3.0 (October 15th, 2026)
 

@@ -1,3 +1,5 @@
+import json
+
 from hdmf.common import DynamicTableRegion
 from hdmf.utils import docval, get_docval, popargs
 from pynwb import TimeSeries, get_class, register_class, register_map
@@ -45,7 +47,8 @@ class FiberPhotometryResponseSeries(TimeSeries):
             "type": str,
             "doc": (
                 "JSON-encoded parameters of the processing that produced the data, in the vocabulary of "
-                "processing_software. Requires processing_software and processing_software_version."
+                "processing_software. Must parse as JSON. Requires processing_software and "
+                "processing_software_version."
             ),
             "default": None,
         },
@@ -80,6 +83,9 @@ class FiberPhotometryResponseSeries(TimeSeries):
             raise ValueError(
                 "processing_parameters, processing_software and processing_software_version must be given together."
             )
+        # Files read from disk are not validated, so that a file with malformed JSON still opens.
+        if processing_parameters is not None and not self._in_construct_mode:
+            json.loads(processing_parameters)
         super().__init__(**kwargs)
         self.fiber_photometry_table_region = fiber_photometry_table_region
         self.processing_parameters = processing_parameters

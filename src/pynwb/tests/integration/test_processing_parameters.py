@@ -73,3 +73,25 @@ class TestFiberPhotometryResponseSeries:
                 processing_parameters=PROCESSING_PARAMETERS,
                 processing_software="fiber-mosaic",
             )
+
+    def test_processing_parameters_must_be_json(self):
+        with pytest.raises(json.JSONDecodeError):
+            FiberPhotometryResponseSeries(
+                name="processed_series",
+                description="Band-pass filtered 465 nm channel.",
+                data=np.zeros((10, 1)),
+                unit="n.a.",
+                rate=30.0,
+                processing_parameters="freq_min=0.2",
+                processing_software="fiber-mosaic",
+                processing_software_version="0.1.0",
+            )
+
+    def test_file_with_malformed_processing_parameters_still_reads(self, nwbfile_path):
+        # another writer, such as MatNWB, could store text that is not JSON
+        with h5py.File(nwbfile_path, mode="r+") as file:
+            file["processing/ophys/processed_series/processing_parameters"][()] = "freq_min=0.2"
+
+        with NWBHDF5IO(nwbfile_path, mode="r") as io:
+            read_series = io.read().processing["ophys"]["processed_series"]
+            assert read_series.processing_parameters == "freq_min=0.2"
