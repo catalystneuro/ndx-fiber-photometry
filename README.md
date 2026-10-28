@@ -145,11 +145,21 @@ Beyond the foundational device types, this extension provides specific container
 - `fiber_photometry_table_region`: Optional. Links to the rows of the FiberPhotometryTable that the data come from, one row per column of `data`
 - `rate`: Sampling rate of the fluorescence measurements
 
+**ModulatedResponseSeries**: Extends `FiberPhotometryResponseSeries`
+- Stores a signal recorded while the signal and control excitation were on at the same time, before demodulation
+- `fiber_photometry_table_region`: Required. Links to the rows of the signal excitation, one row per column of `data`
+- `control_fiber_photometry_table_region`: Required. Links to the rows of the control excitation, one row per column of `data`
+
+**DeltaFOverFResponseSeries**: Extends `FiberPhotometryResponseSeries`
+- Stores the change in fluorescence of the signal relative to a baseline computed from the control (dF/F)
+- `fiber_photometry_table_region`: Required. Links to the rows of the signal, one row per column of `data`
+- `control_fiber_photometry_table_region`: Required. Links to the rows of the control, one row per column of `data`
+
 **FiberPhotometryTable**: Extends `DynamicTable`
 - Central table organizing the experimental setup for each fiber
 - Each row represents one fiber/channel with its associated devices:
   - `location`: Target brain region
-  - `excitation_wavelength_in_nm`: Wavelength used for excitation
+  - `excitation_wavelength_in_nm`: Optional. Wavelength used for excitation; NaN only for a row recorded with no excitation, such as a dark measurement
   - `emission_wavelength_in_nm`: Wavelength of emitted fluorescence
   - `indicator`: The fluorescent indicator used
   - `optical_fiber`: The implanted optical fiber
@@ -210,6 +220,7 @@ from ndx_fiber_photometry import (
     FiberPhotometry,
     FiberPhotometryTable,
     FiberPhotometryResponseSeries,
+    DeltaFOverFResponseSeries,
     CommandedVoltageSeries,
 )
 
@@ -573,6 +584,21 @@ fiber_photometry_response_series = FiberPhotometryResponseSeries(
     fiber_photometry_table_region=fiber_photometry_table_region,
 )
 
+# dF/F of the 465 nm signal links to the 465 nm row as its signal and the 405 nm row as its control.
+delta_f_over_f_response_series = DeltaFOverFResponseSeries(
+    name="delta_f_over_f_response_series",
+    description="dF/F of the 465 nm channel, with the 405 nm channel fitted to it as baseline.",
+    data=rng.standard_normal((100, 1)) / 100,
+    unit="n.a.",
+    rate=30.0,
+    fiber_photometry_table_region=fiber_photometry_table.create_fiber_photometry_table_region(
+        region=[0], description="signal"
+    ),
+    control_fiber_photometry_table_region=fiber_photometry_table.create_region(
+        name="control_fiber_photometry_table_region", region=[1], description="control"
+    ),
+)
+
 nwbfile.add_device_model(optical_fiber_model)
 nwbfile.add_device(optical_fiber_1)
 nwbfile.add_device(optical_fiber_2)
@@ -599,6 +625,8 @@ nwbfile.add_acquisition(commanded_voltage_series_405)
 nwbfile.add_acquisition(commanded_voltage_series_560)
 nwbfile.add_lab_meta_data(fiber_photometry_lab_meta_data)
 nwbfile.add_acquisition(fiber_photometry_response_series)
+ophys_module = nwbfile.create_processing_module(name="ophys", description="Processed fiber photometry data.")
+ophys_module.add(delta_f_over_f_response_series)
 ```
 
 ## Extension Diagram
@@ -626,6 +654,24 @@ classDiagram
             --------------------------------------
             data[ntime] | data[ntime, nfibers] : numeric
             fiber_photometry_table_region : DynamicTableRegion
+        }
+
+        class ModulatedResponseSeries {
+            <<FiberPhotometryResponseSeries>>
+            --------------------------------------
+            datasets
+            --------------------------------------
+            fiber_photometry_table_region : DynamicTableRegion
+            control_fiber_photometry_table_region : DynamicTableRegion
+        }
+
+        class DeltaFOverFResponseSeries {
+            <<FiberPhotometryResponseSeries>>
+            --------------------------------------
+            datasets
+            --------------------------------------
+            fiber_photometry_table_region : DynamicTableRegion
+            control_fiber_photometry_table_region : DynamicTableRegion
         }
 
         class CommandedVoltageSeries {
@@ -942,6 +988,8 @@ classDiagram
 
     %% Data linkage
     FiberPhotometryResponseSeries ..> FiberPhotometryTable
+    ModulatedResponseSeries --|> FiberPhotometryResponseSeries
+    DeltaFOverFResponseSeries --|> FiberPhotometryResponseSeries
 
     %% Device model relationships
     OpticalFiber ..> OpticalFiberModel

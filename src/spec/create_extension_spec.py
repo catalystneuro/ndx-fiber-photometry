@@ -72,11 +72,13 @@ def main():
             ),
             NWBDatasetSpec(
                 name="excitation_wavelength_in_nm",
-                doc="Wavelength of excitation light in nanometers.",
+                doc="Wavelength of excitation light in nanometers. NaN only for a row recorded with no excitation, "
+                "such as a dark measurement with the excitation source off.",
                 dtype="float",
                 shape=(None,),
                 dims=("num_rows",),
                 neurodata_type_inc="VectorData",
+                quantity="?",
             ),
             NWBDatasetSpec(
                 name="emission_wavelength_in_nm",
@@ -255,6 +257,45 @@ def main():
         ],
     )
 
+    modulated_response_series = NWBGroupSpec(
+        neurodata_type_def="ModulatedResponseSeries",
+        neurodata_type_inc="FiberPhotometryResponseSeries",
+        doc="Fiber photometry signal recorded while the signal and control excitation were on at the same time, "
+        "before demodulation.",
+        datasets=[
+            NWBDatasetSpec(
+                name="fiber_photometry_table_region",
+                doc="References the row(s) of FiberPhotometryTable of the signal excitation, one row per column of "
+                "data.",
+                neurodata_type_inc="DynamicTableRegion",
+            ),
+            NWBDatasetSpec(
+                name="control_fiber_photometry_table_region",
+                doc="References the row(s) of FiberPhotometryTable of the control excitation, one row per column of "
+                "data.",
+                neurodata_type_inc="DynamicTableRegion",
+            ),
+        ],
+    )
+
+    delta_f_over_f_response_series = NWBGroupSpec(
+        neurodata_type_def="DeltaFOverFResponseSeries",
+        neurodata_type_inc="FiberPhotometryResponseSeries",
+        doc="Change in fluorescence of the signal relative to a baseline computed from the control (dF/F).",
+        datasets=[
+            NWBDatasetSpec(
+                name="fiber_photometry_table_region",
+                doc="References the row(s) of FiberPhotometryTable of the signal, one row per column of data.",
+                neurodata_type_inc="DynamicTableRegion",
+            ),
+            NWBDatasetSpec(
+                name="control_fiber_photometry_table_region",
+                doc="References the row(s) of FiberPhotometryTable of the control, one row per column of data.",
+                neurodata_type_inc="DynamicTableRegion",
+            ),
+        ],
+    )
+
     commandedvoltage_series = NWBGroupSpec(
         neurodata_type_def="CommandedVoltageSeries",
         neurodata_type_inc="TimeSeries",
@@ -284,6 +325,8 @@ def main():
         fiber_photometry_table,
         fiber_photometry_lab_meta_data,
         fiberphotometryresponse_series,
+        modulated_response_series,
+        delta_f_over_f_response_series,
         commandedvoltage_series,
     ]
 
