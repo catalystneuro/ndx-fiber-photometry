@@ -143,6 +143,7 @@ Beyond the foundational device types, this extension provides specific container
 - Stores recorded fiber photometry responses (fluorescence signals)
 - `data`: Time series of fluorescence measurements [ntime, nfibers]
 - `fiber_photometry_table_region`: Optional. Links to the rows of the FiberPhotometryTable that the data come from, one row per column of `data`
+- `processing_parameters`: Optional. JSON-encoded parameters of the processing that produced the data, with the attributes `processing_software` and `processing_software_version` naming the software whose vocabulary the parameters use
 - `rate`: Sampling rate of the fluorescence measurements
 
 **FiberPhotometryTable**: Extends `DynamicTable`
@@ -626,6 +627,9 @@ classDiagram
             --------------------------------------
             data[ntime] | data[ntime, nfibers] : numeric
             fiber_photometry_table_region : DynamicTableRegion
+            processing_parameters : str, optional
+            processing_parameters.processing_software : str
+            processing_parameters.processing_software_version : str
         }
 
         class CommandedVoltageSeries {

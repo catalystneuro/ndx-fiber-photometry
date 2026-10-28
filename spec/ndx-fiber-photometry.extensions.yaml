@@ -199,6 +199,18 @@ groups:
     doc: References the row(s) of FiberPhotometryTable that the data come from,
       one row per column of data.
     quantity: '?'
+  - name: processing_parameters
+    dtype: text
+    doc: JSON-encoded parameters of the processing that produced the data, in
+      the vocabulary of the software named by the processing_software attribute.
+    quantity: '?'
+    attributes:
+    - name: processing_software
+      dtype: text
+      doc: Name of the software that produced the data.
+    - name: processing_software_version
+      dtype: text
+      doc: Version of the software that produced the data.
 - neurodata_type_def: CommandedVoltageSeries
   neurodata_type_inc: TimeSeries
   doc: Extends TimeSeries to hold a Commanded Voltage
