@@ -20,7 +20,7 @@ These types follow a model-instance pattern where device models define specifica
 - `wavelength_range_in_nm`: Supported wavelength range [min, max]
 
 **ExcitationSource**: Specific light source instance
-- `power_in_W`: Maximum power output
+- `power_in_W`: Power delivered to the sample, e.g., measured at the fiber tip
 - `intensity_in_W_per_m2`: Light intensity at the fiber tip
 - `exposure_time_in_s`: Typical exposure duration
 - Links to its corresponding `ExcitationSourceModel`
@@ -34,16 +34,16 @@ These types follow a model-instance pattern where device models define specifica
 
 **OpticalFiber**: Specific fiber instance with implantation details
 - `serial_number`: Unique identifier for this fiber
-- `fiber_insertion`: Container with stereotactic coordinates and angles
+- `fiber_insertion`: Optional `StereotacticPosition` named "fiber_insertion" with the position of the fiber tip; omit it for fibers that are not implanted
 - Links to its corresponding `OpticalFiberModel`
 
-#### FiberInsertion
-Detailed implantation information for optical fibers:
-- Stereotactic coordinates (`insertion_position_ap_in_mm`, `insertion_position_ml_in_mm`, `insertion_position_dv_in_mm`)
-- `depth_in_mm`: Insertion depth
-- `position_reference`: Reference point for coordinates (e.g., "Bregma")
-- `hemisphere`: Target hemisphere
-- Insertion angles (`insertion_angle_pitch_in_deg`, `insertion_angle_yaw_in_deg`, `insertion_angle_roll_in_deg`)
+#### StereotacticPosition
+Stereotactic position of an implanted fiber tip or of an injection site:
+- `anatomical_target`: Targeted brain region (e.g., "Ventral Tegmental Area (VTA)")
+- `origin`: Where (0, 0, 0) is (e.g., "bregma")
+- `orientation`: Three letters giving the direction of the x, y and z axes (e.g., "RAS": x is right, y is anterior, z is dorsal)
+- `x_in_mm`, `y_in_mm`, `z_in_mm`: Coordinates of the target, i.e., the fiber tip or the injection site
+- Approach angles (`pitch_in_deg`, `roll_in_deg`) and the rotation of the device around its axis (`yaw_in_deg`); all 0 means a vertical approach
 
 #### ViralVector & ViralVectorInjection
 **ViralVector**: Viral construct specifications
@@ -53,16 +53,14 @@ Detailed implantation information for optical fibers:
 - `titer_in_vg_per_ml`: Viral titer in genomes per mL
 
 **ViralVectorInjection**: Injection procedure details
-- Stereotactic coordinates and angles
+- `viral_injection_coordinates`: Optional `StereotacticPosition` named "viral_injection_coordinates" with the injection site and target region
 - `volume_in_uL`: Volume injected
 - `injection_date`: Date of injection procedure
-- `location`: Target brain region
-- `hemisphere`: Target hemisphere
 - Links to the corresponding `ViralVector`
 
 #### Indicator
 Fluorescent indicator/reporter specifications:
-- `label`: Name of the fluorescent indicator (e.g., "GCaMP6f", "Tdtomato")
+- `label`: Name of the fluorescent indicator (e.g., "GCaMP6f", "jRGECO1a")
 - `description`: Detailed description of the indicator
 - `viral_vector_injection`: Links to the `ViralVectorInjection` used to deliver this indicator
 - Used to specify calcium indicators, voltage indicators, or other fluorescent reporters
@@ -71,12 +69,12 @@ Fluorescent indicator/reporter specifications:
 **PhotodetectorModel**: Template specifications for photodetectors
 - `detector_type`: Type of detector (e.g., "PMT", "photodiode", "CMOS")
 - `wavelength_range_in_nm`: Detection wavelength range [min, max]
-- `gain`: Base gain value for the detector
-- `gain_unit`: Units for the gain measurement (e.g., "A/W")
 
 **Photodetector**: Specific photodetector instance
 - `serial_number`: Unique identifier for this detector
 - `description`: Detailed description of the detector's role
+- `gain`: Gain setting used in this session (e.g., the transimpedance gain of a photoreceiver)
+- `gain_unit`: Unit of the gain (e.g., "V/W")
 - Links to its corresponding `PhotodetectorModel`
 
 #### DichroicMirror & DichroicMirrorModel
@@ -144,7 +142,7 @@ Beyond the foundational device types, this extension provides specific container
 **FiberPhotometryResponseSeries**: Extends `TimeSeries`
 - Stores recorded fiber photometry responses (fluorescence signals)
 - `data`: Time series of fluorescence measurements [ntime, nfibers]
-- `fiber_photometry_table_region`: Links to specific rows in the FiberPhotometryTable
+- `fiber_photometry_table_region`: Optional. Links to the rows of the FiberPhotometryTable that the data come from, one row per column of `data`
 - `rate`: Sampling rate of the fluorescence measurements
 
 **FiberPhotometryTable**: Extends `DynamicTable`
@@ -191,8 +189,8 @@ from ndx_ophys_devices import (
     ViralVector,
     ViralVectorInjection,
     Indicator,
+    StereotacticPosition,
     OpticalFiberModel,
-    FiberInsertion,
     OpticalFiber,
     ExcitationSourceModel,
     ExcitationSource,
@@ -232,26 +230,26 @@ viral_vector_green = ViralVector(
 viral_vector_red = ViralVector(
     name="viral_vector_red",
     description="AAV viral vector for the red indicator.",
-    construct_name="AAV-CaMKII-Tdtomato",
+    construct_name="AAV-CaMKII-jRGECO1a",
     manufacturer="Vector Manufacturer",
     titer_in_vg_per_ml=1.0e12,
 )
 viruses = FiberPhotometryViruses(viral_vectors=[viral_vector_green, viral_vector_red])
 
+# Coordinates use the RAS orientation relative to bregma: x is mediolateral (right is positive),
+# y is anteroposterior (anterior is positive) and z is dorsoventral (dorsal is positive).
 viral_vector_injection_green = ViralVectorInjection(
     name="viral_vector_injection_green",
     description="Viral vector injection for fiber photometry.",
-    location="Ventral Tegmental Area (VTA)",
-    hemisphere="right",
-    reference="Bregma at the cortical surface",
-    ap_in_mm=3.0,
-    ml_in_mm=2.0,
-    dv_in_mm=1.0,
-    pitch_in_deg=0.0,
-    yaw_in_deg=0.0,
-    roll_in_deg=0.0,
-    stereotactic_rotation_in_deg=0.0,
-    stereotactic_tilt_in_deg=0.0,
+    viral_injection_coordinates=StereotacticPosition(
+        name="viral_injection_coordinates",
+        anatomical_target="Ventral Tegmental Area (VTA)",
+        origin="bregma",
+        orientation="RAS",
+        x_in_mm=0.5,
+        y_in_mm=-3.3,
+        z_in_mm=-4.4,
+    ),
     volume_in_uL=0.45,
     injection_date="1970-01-01T00:00:00+00:00",
     viral_vector=viral_vector_green,
@@ -260,17 +258,15 @@ viral_vector_injection_green = ViralVectorInjection(
 viral_vector_injection_red = ViralVectorInjection(
     name="viral_vector_injection_red",
     description="Viral vector injection for fiber photometry.",
-    location="Ventral Tegmental Area (VTA)",
-    hemisphere="right",
-    reference="Bregma at the cortical surface",
-    ap_in_mm=3.0,
-    ml_in_mm=2.0,
-    dv_in_mm=1.0,
-    pitch_in_deg=0.0,
-    yaw_in_deg=0.0,
-    roll_in_deg=0.0,
-    stereotactic_rotation_in_deg=0.0,
-    stereotactic_tilt_in_deg=0.0,
+    viral_injection_coordinates=StereotacticPosition(
+        name="viral_injection_coordinates",
+        anatomical_target="Ventral Tegmental Area (VTA)",
+        origin="bregma",
+        orientation="RAS",
+        x_in_mm=-0.5,
+        y_in_mm=-3.3,
+        z_in_mm=-4.4,
+    ),
     volume_in_uL=0.45,
     injection_date="1970-01-01T00:00:00+00:00",
     viral_vector=viral_vector_red,
@@ -283,14 +279,14 @@ virus_injections = FiberPhotometryVirusInjections(
 
 indicator_green = Indicator(
     name="indicator_1",
-    description="Green indicator",
-    label="GCamp6f",
+    description="Green calcium indicator",
+    label="GCaMP6f",
     viral_vector_injection=viral_vector_injection_green,
 )
 indicator_red = Indicator(
     name="indicator_2",
-    description="Red indicator",
-    label="Tdtomato",
+    description="Red calcium indicator",
+    label="jRGECO1a",
     viral_vector_injection=viral_vector_injection_red,
 )
 
@@ -300,123 +296,142 @@ optical_fiber_model = OpticalFiberModel(
     name="optical_fiber_model",
     manufacturer="Fiber Manufacturer",
     model_number="OF-123",
-    description="Optical fiber model for optogenetics",
-    numerical_aperture=0.2,
+    description="Flat-tip fiber optic cannula for fiber photometry",
+    numerical_aperture=0.48,
     core_diameter_in_um=400.0,
-    active_length_in_mm=2.0,
     ferrule_name="cFCF - ∅2.5mm Ceramic Ferrule",
     ferrule_model="SM-SC-CF-10-FM",
     ferrule_diameter_in_mm=2.5,
 )
 
-fiber_insertion_1 = FiberInsertion(
-    name="fiber_insertion",
-    depth_in_mm=3.5,
-    insertion_position_ap_in_mm=3.0,
-    insertion_position_ml_in_mm=2.0,
-    insertion_position_dv_in_mm=1.0,
-    position_reference="bregma",
-    hemisphere="right",
-    insertion_angle_pitch_in_deg=10.0,
-)
-
-fiber_insertion_2 = FiberInsertion(
-    name="fiber_insertion",
-    depth_in_mm=3.5,
-    insertion_position_ap_in_mm=3.0,
-    insertion_position_ml_in_mm=-2.0,
-    insertion_position_dv_in_mm=1.0,
-    position_reference="bregma",
-    hemisphere="left",
-    insertion_angle_pitch_in_deg=10.0,
-)
-
+# The fiber tips are 0.2 mm above the injection sites.
 optical_fiber_1 = OpticalFiber(
     name="optical_fiber_1",
-    description="Optical fiber for fiber photometry.",
+    description="Optical fiber for fiber photometry in the right VTA.",
     serial_number="OF-SN-123456",
     model=optical_fiber_model,
-    fiber_insertion=fiber_insertion_1,
+    fiber_insertion=StereotacticPosition(
+        name="fiber_insertion",
+        anatomical_target="Ventral Tegmental Area (VTA)",
+        origin="bregma",
+        orientation="RAS",
+        x_in_mm=0.5,
+        y_in_mm=-3.3,
+        z_in_mm=-4.2,
+    ),
 )
 optical_fiber_2 = OpticalFiber(
     name="optical_fiber_2",
-    description="Optical fiber for fiber photometry.",
+    description="Optical fiber for fiber photometry in the left VTA.",
     serial_number="OF-SN-654321",
     model=optical_fiber_model,
-    fiber_insertion=fiber_insertion_2,
+    fiber_insertion=StereotacticPosition(
+        name="fiber_insertion",
+        anatomical_target="Ventral Tegmental Area (VTA)",
+        origin="bregma",
+        orientation="RAS",
+        x_in_mm=-0.5,
+        y_in_mm=-3.3,
+        z_in_mm=-4.2,
+    ),
 )
 
-excitation_source_model = ExcitationSourceModel(
-    name="excitation_source_model",
-    manufacturer="Laser Manufacturer",
-    model_number="ES-123",
-    description="Excitation source model for fiber photometry.",
-    source_type="laser",
+excitation_source_model_465 = ExcitationSourceModel(
+    name="excitation_source_model_465",
+    manufacturer="LED Manufacturer",
+    model_number="LED-465",
+    description="465 nm LED for exciting green indicators.",
+    source_type="LED",
     excitation_mode="one-photon",
-    wavelength_range_in_nm=[400.0, 800.0],
+    wavelength_range_in_nm=[455.0, 475.0],
 )
-excitation_source_1 = ExcitationSource(
-    name="excitation_source_1",
-    description="Excitation source for green indicator",
+excitation_source_model_405 = ExcitationSourceModel(
+    name="excitation_source_model_405",
+    manufacturer="LED Manufacturer",
+    model_number="LED-405",
+    description="405 nm LED for isosbestic excitation.",
+    source_type="LED",
+    excitation_mode="one-photon",
+    wavelength_range_in_nm=[400.0, 410.0],
+)
+excitation_source_model_560 = ExcitationSourceModel(
+    name="excitation_source_model_560",
+    manufacturer="LED Manufacturer",
+    model_number="LED-560",
+    description="560 nm LED for exciting red indicators.",
+    source_type="LED",
+    excitation_mode="one-photon",
+    wavelength_range_in_nm=[545.0, 575.0],
+)
+# Power is measured at the fiber tip; intensity is that power divided by the area of the 400 um core.
+excitation_source_465 = ExcitationSource(
+    name="excitation_source_465",
+    description="465 nm excitation of the green indicator (calcium-dependent signal).",
     serial_number="ES-SN-123456",
-    model=excitation_source_model,
-    power_in_W=0.7,
-    intensity_in_W_per_m2=0.005,
-    exposure_time_in_s=2.51e-13,
+    model=excitation_source_model_465,
+    power_in_W=30e-6,
+    intensity_in_W_per_m2=240.0,
 )
-excitation_source_2 = ExcitationSource(
-    name="excitation_source_2",
-    description="Excitation source for red indicator",
+excitation_source_405 = ExcitationSource(
+    name="excitation_source_405",
+    description="405 nm excitation of the green indicator (isosbestic control).",
+    serial_number="ES-SN-234567",
+    model=excitation_source_model_405,
+    power_in_W=15e-6,
+    intensity_in_W_per_m2=120.0,
+)
+excitation_source_560 = ExcitationSource(
+    name="excitation_source_560",
+    description="560 nm excitation of the red indicator.",
     serial_number="ES-SN-654321",
-    model=excitation_source_model,
-    power_in_W=0.7,
-    intensity_in_W_per_m2=0.005,
-    exposure_time_in_s=2.51e-13,
+    model=excitation_source_model_560,
+    power_in_W=30e-6,
+    intensity_in_W_per_m2=240.0,
 )
 
 photodetector_model = PhotodetectorModel(
     name="photodetector_model",
     manufacturer="Detector Manufacturer",
     model_number="PD-123",
-    description="Photodetector model for fiber photometry.",
-    detector_type="PMT",
-    wavelength_range_in_nm=[400.0, 800.0],
-    gain=100.0,
-    gain_unit="A/W",
+    description="Femtowatt silicon photoreceiver for fiber photometry.",
+    detector_type="Photodiode",
+    wavelength_range_in_nm=[300.0, 1100.0],
 )
 photodetector_1 = Photodetector(
     name="photodetector_1",
-    description="Photodetector for green emission.",
+    description="Photoreceiver for green emission.",
     serial_number="PD-SN-123456",
     model=photodetector_model,
+    gain=1.0e10,
+    gain_unit="V/W",
 )
 photodetector_2 = Photodetector(
     name="photodetector_2",
-    description="Photodetector for red emission.",
+    description="Photoreceiver for red emission.",
     serial_number="PD-SN-654321",
     model=photodetector_model,
+    gain=1.0e10,
+    gain_unit="V/W",
 )
 
 dichroic_mirror_model_1 = DichroicMirrorModel(
     name="dichroic_mirror_model_1",
     manufacturer="Mirror Manufacturer",
     model_number="DM-123",
-    description="Dichroic mirror model for green indicator.",
-    cut_on_wavelength_in_nm=470.0,
-    cut_off_wavelength_in_nm=500.0,
-    reflection_band_in_nm=[490.0, 520.0],
-    transmission_band_in_nm=[460.0, 480.0],
+    description="Dichroic mirror model for the green indicator: reflects 405 and 465 nm, transmits emission.",
+    cut_on_wavelength_in_nm=495.0,
+    reflection_band_in_nm=[400.0, 488.0],
+    transmission_band_in_nm=[502.0, 700.0],
     angle_of_incidence_in_degrees=45.0,
 )
 dichroic_mirror_model_2 = DichroicMirrorModel(
     name="dichroic_mirror_model_2",
     manufacturer="Mirror Manufacturer",
     model_number="DM-456",
-    description="Dichroic mirror model for red indicator.",
-    cut_on_wavelength_in_nm=525.0,
-    cut_off_wavelength_in_nm=585.0,
-    reflection_band_in_nm=[575.0, 595.0],
-    transmission_band_in_nm=[515.0, 535.0],
+    description="Dichroic mirror model for the red indicator: reflects 560 nm, transmits emission.",
+    cut_on_wavelength_in_nm=580.0,
+    reflection_band_in_nm=[530.0, 570.0],
+    transmission_band_in_nm=[590.0, 700.0],
     angle_of_incidence_in_degrees=45.0,
 )
 dichroic_mirror_1 = DichroicMirror(
@@ -438,8 +453,8 @@ band_optical_filter_model = BandOpticalFilterModel(
     model_number="BOF-123",
     description="Band optical filter model for green indicator",
     filter_type="Bandpass",
-    center_wavelength_in_nm=505.0,
-    bandwidth_in_nm=30.0,  # 505±15nm
+    center_wavelength_in_nm=525.0,
+    bandwidth_in_nm=50.0,  # 525±25nm
 )
 band_optical_filter = BandOpticalFilter(
     name="band_optical_filter",
@@ -465,13 +480,32 @@ edge_optical_filter = EdgeOpticalFilter(
     model=edge_optical_filter_model,
 )
 
-commanded_voltage_series_1 = CommandedVoltageSeries(
-    name="commanded_voltage_series_1", data=[1.0, 2.0, 3.0], frequency=30.0, rate=30.0, unit="volts"
+# Each LED is driven by a sinusoid at its own carrier frequency so that a lock-in amplifier can separate
+# channels that share a photoreceiver. The commands are sampled at 10 kHz.
+command_rate = 10000.0
+command_times = np.arange(int(command_rate)) / command_rate
+commanded_voltage_series_465 = CommandedVoltageSeries(
+    name="commanded_voltage_series_465",
+    description="Commanded voltage of the 465 nm LED.",
+    data=0.5 + 0.5 * np.sin(2 * np.pi * 211.0 * command_times),
+    frequency=211.0,
+    rate=command_rate,
+    unit="volts",
 )
-commanded_voltage_series_2 = CommandedVoltageSeries(
-    name="commanded_voltage_series_2",
-    data=[4.0, 5.0, 6.0],
-    rate=30.0,
+commanded_voltage_series_405 = CommandedVoltageSeries(
+    name="commanded_voltage_series_405",
+    description="Commanded voltage of the 405 nm LED.",
+    data=0.25 + 0.25 * np.sin(2 * np.pi * 531.0 * command_times),
+    frequency=531.0,
+    rate=command_rate,
+    unit="volts",
+)
+commanded_voltage_series_560 = CommandedVoltageSeries(
+    name="commanded_voltage_series_560",
+    description="Commanded voltage of the 560 nm LED.",
+    data=0.5 + 0.5 * np.sin(2 * np.pi * 330.0 * command_times),
+    frequency=330.0,
+    rate=command_rate,
     unit="volts",
 )
 
@@ -481,24 +515,37 @@ fiber_photometry_table = FiberPhotometryTable(
 )
 fiber_photometry_table.add_row(
     location="VTA",
-    excitation_wavelength_in_nm=480.0,
+    excitation_wavelength_in_nm=465.0,
     emission_wavelength_in_nm=525.0,
     indicator=indicator_green,
     optical_fiber=optical_fiber_1,
-    excitation_source=excitation_source_1,
-    commanded_voltage_series=commanded_voltage_series_1,
+    excitation_source=excitation_source_465,
+    commanded_voltage_series=commanded_voltage_series_465,
+    photodetector=photodetector_1,
+    dichroic_mirror=dichroic_mirror_1,
+    emission_filter=band_optical_filter,
+)
+# The isosbestic control shares the fiber, indicator and detection path of the green channel.
+fiber_photometry_table.add_row(
+    location="VTA",
+    excitation_wavelength_in_nm=405.0,
+    emission_wavelength_in_nm=525.0,
+    indicator=indicator_green,
+    optical_fiber=optical_fiber_1,
+    excitation_source=excitation_source_405,
+    commanded_voltage_series=commanded_voltage_series_405,
     photodetector=photodetector_1,
     dichroic_mirror=dichroic_mirror_1,
     emission_filter=band_optical_filter,
 )
 fiber_photometry_table.add_row(
     location="VTA",
-    excitation_wavelength_in_nm=580.0,
-    emission_wavelength_in_nm=610.0,
+    excitation_wavelength_in_nm=560.0,
+    emission_wavelength_in_nm=600.0,
     indicator=indicator_red,
     optical_fiber=optical_fiber_2,
-    excitation_source=excitation_source_2,
-    commanded_voltage_series=commanded_voltage_series_2,
+    excitation_source=excitation_source_560,
+    commanded_voltage_series=commanded_voltage_series_560,
     photodetector=photodetector_2,
     dichroic_mirror=dichroic_mirror_2,
     emission_filter=edge_optical_filter,
@@ -516,11 +563,12 @@ fiber_photometry_lab_meta_data = FiberPhotometry(
     fiber_photometry_indicators=indicators,
 )
 
+rng = np.random.default_rng(seed=0)
 fiber_photometry_response_series = FiberPhotometryResponseSeries(
     name="fiber_photometry_response_series",
-    description="my roi response series",
-    data=np.random.randn(100, 1),
-    unit="n.a.",
+    description="Demodulated photoreceiver output of the 465 nm channel.",
+    data=rng.standard_normal((100, 1)),
+    unit="V",
     rate=30.0,
     fiber_photometry_table_region=fiber_photometry_table_region,
 )
@@ -528,9 +576,12 @@ fiber_photometry_response_series = FiberPhotometryResponseSeries(
 nwbfile.add_device_model(optical_fiber_model)
 nwbfile.add_device(optical_fiber_1)
 nwbfile.add_device(optical_fiber_2)
-nwbfile.add_device_model(excitation_source_model)
-nwbfile.add_device(excitation_source_1)
-nwbfile.add_device(excitation_source_2)
+nwbfile.add_device_model(excitation_source_model_465)
+nwbfile.add_device(excitation_source_465)
+nwbfile.add_device_model(excitation_source_model_405)
+nwbfile.add_device(excitation_source_405)
+nwbfile.add_device_model(excitation_source_model_560)
+nwbfile.add_device(excitation_source_560)
 nwbfile.add_device_model(photodetector_model)
 nwbfile.add_device(photodetector_1)
 nwbfile.add_device(photodetector_2)
@@ -543,8 +594,9 @@ nwbfile.add_device(band_optical_filter)
 nwbfile.add_device_model(edge_optical_filter_model)
 nwbfile.add_device(edge_optical_filter)
 
-nwbfile.add_acquisition(commanded_voltage_series_1)
-nwbfile.add_acquisition(commanded_voltage_series_2)
+nwbfile.add_acquisition(commanded_voltage_series_465)
+nwbfile.add_acquisition(commanded_voltage_series_405)
+nwbfile.add_acquisition(commanded_voltage_series_560)
 nwbfile.add_lab_meta_data(fiber_photometry_lab_meta_data)
 nwbfile.add_acquisition(fiber_photometry_response_series)
 ```
@@ -673,20 +725,20 @@ classDiagram
             ferrule_diameter_in_mm : float
         }
 
-        class FiberInsertion {
+        class StereotacticPosition {
             <<NWBContainer>>
             --------------------------------------
             attributes
             --------------------------------------
-            insertion_position_ap_in_mm : float
-            insertion_position_ml_in_mm : float
-            insertion_position_dv_in_mm : float
-            depth_in_mm : float
-            position_reference : str
-            hemisphere : str
-            insertion_angle_yaw_in_deg : float
-            insertion_angle_pitch_in_deg : float
-            insertion_angle_roll_in_deg : float
+            anatomical_target : str
+            origin : str
+            orientation : str
+            x_in_mm : float
+            y_in_mm : float
+            z_in_mm : float
+            pitch_in_deg : float
+            yaw_in_deg : float
+            roll_in_deg : float
         }
 
         class OpticalFiber {
@@ -698,7 +750,7 @@ classDiagram
             --------------------------------------
             groups
             --------------------------------------
-            fiber_insertion : FiberInsertion
+            fiber_insertion : StereotacticPosition
             --------------------------------------
             links
             --------------------------------------
@@ -737,8 +789,6 @@ classDiagram
             --------------------------------------
             detector_type : str
             wavelength_range_in_nm : float[2]
-            gain : float
-            gain_unit : str
         }
 
         class Photodetector {
@@ -747,6 +797,8 @@ classDiagram
             attributes
             --------------------------------------
             serial_number : str
+            gain : float
+            gain_unit : str
             --------------------------------------
             links
             --------------------------------------
@@ -840,19 +892,12 @@ classDiagram
             attributes
             --------------------------------------
             description : str
-            location : str
-            hemisphere : str
-            reference : str
-            ap_in_mm : float
-            ml_in_mm : float
-            dv_in_mm : float
-            pitch_in_deg : float
-            yaw_in_deg : float
-            roll_in_deg : float
-            stereotactic_rotation_in_deg : float
-            stereotactic_tilt_in_deg : float
             volume_in_uL : float
             injection_date : str
+            --------------------------------------
+            groups
+            --------------------------------------
+            viral_injection_coordinates : StereotacticPosition
             --------------------------------------
             links
             --------------------------------------
@@ -907,7 +952,8 @@ classDiagram
     EdgeOpticalFilter ..> EdgeOpticalFilterModel
 
     %% Component relationships
-    OpticalFiber *--> FiberInsertion
+    OpticalFiber *--> StereotacticPosition
+    ViralVectorInjection *--> StereotacticPosition
     ViralVectorInjection ..> ViralVector
     Indicator ..> ViralVectorInjection
 ```
