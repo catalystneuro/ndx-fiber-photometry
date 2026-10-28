@@ -159,7 +159,7 @@ Beyond the foundational device types, this extension provides specific container
 - Central table organizing the experimental setup for each fiber
 - Each row represents one fiber/channel with its associated devices:
   - `location`: Target brain region
-  - `excitation_wavelength_in_nm`: Optional. Wavelength used for excitation; NaN only for a row recorded with no excitation, such as a dark measurement
+  - `excitation_wavelength_in_nm`: Wavelength used for excitation; NaN only for a row recorded with no excitation, such as a dark measurement
   - `emission_wavelength_in_nm`: Wavelength of emitted fluorescence
   - `indicator`: The fluorescent indicator used
   - `optical_fiber`: The implanted optical fiber

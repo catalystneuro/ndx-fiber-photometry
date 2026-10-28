@@ -54,17 +54,3 @@ class TestFiberPhotometryTable:
         with NWBHDF5IO(path, mode="r") as io:
             read_table = io.read().lab_meta_data["fiber_photometry"].fiber_photometry_table
             np.testing.assert_array_equal(read_table["excitation_wavelength_in_nm"][:], [470.0, np.nan])
-
-    def test_excitation_wavelength_column_is_optional(self):
-        fiber_photometry_table = FiberPhotometryTable(
-            name="fiber_photometry_table", description="fiber photometry table"
-        )
-        fiber_photometry_table.add_row(
-            location="VTA",
-            emission_wavelength_in_nm=525.0,
-            indicator=mock_Indicator(name="indicator_green", viral_vector_injection=None),
-            optical_fiber=mock_OpticalFiber(name="optical_fiber"),
-            excitation_source=mock_ExcitationSource(name="excitation_source_470"),
-            photodetector=mock_Photodetector(name="photodetector"),
-        )
-        assert "excitation_wavelength_in_nm" not in fiber_photometry_table.colnames

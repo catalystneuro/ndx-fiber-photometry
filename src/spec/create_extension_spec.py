@@ -78,7 +78,6 @@ def main():
                 shape=(None,),
                 dims=("num_rows",),
                 neurodata_type_inc="VectorData",
-                quantity="?",
             ),
             NWBDatasetSpec(
                 name="emission_wavelength_in_nm",

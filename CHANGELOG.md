@@ -3,7 +3,7 @@
 ## Features
 
 * Added `ModulatedResponseSeries` and `DeltaFOverFResponseSeries`, which extend `FiberPhotometryResponseSeries` with a required `control_fiber_photometry_table_region` alongside a required `fiber_photometry_table_region`. A raw modulated series and a dF/F series each come from a signal and a control row of the `FiberPhotometryTable`, one of each per column of `data`. [PR #64](https://github.com/catalystneuro/ndx-fiber-photometry/pull/64)
-* Made `excitation_wavelength_in_nm` optional in the `FiberPhotometryTable`. A row recorded with no excitation, such as a dark measurement with the LED off, stores NaN. [PR #64](https://github.com/catalystneuro/ndx-fiber-photometry/pull/64)
+* Documented that `excitation_wavelength_in_nm` is NaN for a row recorded with no excitation, such as a dark measurement with the LED off. [PR #64](https://github.com/catalystneuro/ndx-fiber-photometry/pull/64)
 
 # v0.3.0 (October 15th, 2026)
 
