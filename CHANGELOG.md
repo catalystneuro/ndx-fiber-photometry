@@ -1,3 +1,9 @@
+# Upcoming
+
+## Features
+
+* Documented that `excitation_wavelength_in_nm` is NaN for a row recorded with no excitation, such as a dark measurement with the LED off. [PR #65](https://github.com/catalystneuro/ndx-fiber-photometry/pull/65)
+
 # v0.3.0 (October 15th, 2026)
 
 ## Breaking changes
