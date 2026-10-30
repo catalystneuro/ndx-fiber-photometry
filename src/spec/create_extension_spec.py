@@ -253,6 +253,32 @@ def main():
                 neurodata_type_inc="DynamicTableRegion",
                 quantity="?",
             ),
+            NWBDatasetSpec(
+                name="processing_parameters",
+                doc="JSON-encoded parameters of the processing that produced the data, in the vocabulary of the "
+                "software named by the processing_software attribute.",
+                dtype="text",
+                attributes=[
+                    NWBAttributeSpec(
+                        name="processing_software",
+                        doc="Name of the software that produced the data.",
+                        dtype="text",
+                    ),
+                    NWBAttributeSpec(
+                        name="processing_software_version",
+                        doc="Version of the software that produced the data.",
+                        dtype="text",
+                    ),
+                ],
+                quantity="?",
+            ),
+            NWBDatasetSpec(
+                name="processing_parameters_schema",
+                doc="Self-contained JSON Schema that processing_parameters conforms to. The draft is named by the "
+                "$schema key of the JSON Schema. Requires processing_parameters.",
+                dtype="text",
+                quantity="?",
+            ),
         ],
     )
 

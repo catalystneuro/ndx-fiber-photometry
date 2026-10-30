@@ -30,9 +30,8 @@ FiberPhotometryViruses = get_class("FiberPhotometryViruses", "ndx-fiber-photomet
 FiberPhotometryVirusInjections = get_class("FiberPhotometryVirusInjections", "ndx-fiber-photometry")
 FiberPhotometryIndicators = get_class("FiberPhotometryIndicators", "ndx-fiber-photometry")
 FiberPhotometry = get_class("FiberPhotometry", "ndx-fiber-photometry")
-from .fiber_photometry import FiberPhotometryTable
+from .fiber_photometry import FiberPhotometryTable, FiberPhotometryResponseSeries
 
-FiberPhotometryResponseSeries = get_class("FiberPhotometryResponseSeries", "ndx-fiber-photometry")
 CommandedVoltageSeries = get_class("CommandedVoltageSeries", "ndx-fiber-photometry")
 
 # Remove these functions from the package
