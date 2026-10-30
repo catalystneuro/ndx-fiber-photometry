@@ -72,7 +72,8 @@ def main():
             ),
             NWBDatasetSpec(
                 name="excitation_wavelength_in_nm",
-                doc="Wavelength of excitation light in nanometers.",
+                doc="Wavelength of excitation light in nanometers. NaN only for a row recorded with no excitation, "
+                "such as a dark measurement with the excitation source off.",
                 dtype="float",
                 shape=(None,),
                 dims=("num_rows",),

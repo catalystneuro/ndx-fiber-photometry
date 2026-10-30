@@ -62,7 +62,9 @@ groups:
     - num_rows
     shape:
     - null
-    doc: Wavelength of excitation light in nanometers.
+    doc: Wavelength of excitation light in nanometers. NaN only for a row
+      recorded with no excitation, such as a dark measurement with the
+      excitation source off.
   - name: emission_wavelength_in_nm
     neurodata_type_inc: VectorData
     dtype: float

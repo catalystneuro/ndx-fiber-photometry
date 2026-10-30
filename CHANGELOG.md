@@ -3,6 +3,7 @@
 ## Features
 
 * Added an optional `processing_parameters` dataset to `FiberPhotometryResponseSeries` that stores the parameters of the processing that produced the data as JSON text, with required `processing_software` and `processing_software_version` attributes. The PyNWB constructor takes all three together or none of them. It raises if `processing_parameters` is not valid JSON, and warns when reading a file whose `processing_parameters` is not valid JSON. An optional `processing_parameters_schema` dataset holds a JSON Schema for the parameters. The PyNWB constructor validates `processing_parameters` against it with `jsonschema`, which is now a dependency. It raises on an invalid schema or nonconforming parameters, and warns when reading such a file. [PR #63](https://github.com/catalystneuro/ndx-fiber-photometry/pull/63)
+* Documented that `excitation_wavelength_in_nm` is NaN for a row recorded with no excitation, such as a dark measurement with the LED off. [PR #65](https://github.com/catalystneuro/ndx-fiber-photometry/pull/65)
 
 # v0.3.0 (October 15th, 2026)
 
