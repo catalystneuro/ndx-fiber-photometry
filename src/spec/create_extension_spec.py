@@ -271,6 +271,13 @@ def main():
                 ],
                 quantity="?",
             ),
+            NWBDatasetSpec(
+                name="processing_parameters_schema",
+                doc="Self-contained JSON Schema that processing_parameters conforms to. The draft is named by the "
+                "$schema key of the JSON Schema. Requires processing_parameters.",
+                dtype="text",
+                quantity="?",
+            ),
         ],
     )
 

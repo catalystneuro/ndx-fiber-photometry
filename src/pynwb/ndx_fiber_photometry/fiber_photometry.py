@@ -3,6 +3,8 @@ import warnings
 
 from hdmf.common import DynamicTableRegion
 from hdmf.utils import docval, get_docval, popargs
+from jsonschema import SchemaError, ValidationError
+from jsonschema.validators import validator_for
 from pynwb import TimeSeries, get_class, register_class, register_map
 from pynwb.io.base import TimeSeriesMap
 
@@ -31,6 +33,7 @@ class FiberPhotometryResponseSeries(TimeSeries):
         "processing_parameters",
         "processing_software",
         "processing_software_version",
+        "processing_parameters_schema",
     )
 
     @docval(
@@ -65,6 +68,16 @@ class FiberPhotometryResponseSeries(TimeSeries):
             "doc": "Version of the software that produced the data.",
             "default": None,
         },
+        {
+            "name": "processing_parameters_schema",
+            "type": str,
+            "doc": (
+                "Self-contained JSON Schema that processing_parameters conforms to. The draft is named by the "
+                "$schema key of the JSON Schema. processing_parameters is validated against it. Requires "
+                "processing_parameters."
+            ),
+            "default": None,
+        },
     )
     def __init__(self, **kwargs):
         (
@@ -72,11 +85,13 @@ class FiberPhotometryResponseSeries(TimeSeries):
             processing_parameters,
             processing_software,
             processing_software_version,
+            processing_parameters_schema,
         ) = popargs(
             "fiber_photometry_table_region",
             "processing_parameters",
             "processing_software",
             "processing_software_version",
+            "processing_parameters_schema",
             kwargs,
         )
         processing_fields = (processing_parameters, processing_software, processing_software_version)
@@ -84,19 +99,27 @@ class FiberPhotometryResponseSeries(TimeSeries):
             raise ValueError(
                 "processing_parameters, processing_software and processing_software_version must be given together."
             )
+        if processing_parameters_schema is not None and processing_parameters is None:
+            raise ValueError("processing_parameters_schema requires processing_parameters.")
         if processing_parameters is not None:
             try:
-                json.loads(processing_parameters)
-            except json.JSONDecodeError as error:
-                # Warn while reading a file, so that a file with malformed JSON still opens.
+                parameters = json.loads(processing_parameters)
+                if processing_parameters_schema is not None:
+                    schema = json.loads(processing_parameters_schema)
+                    validator_class = validator_for(schema)
+                    validator_class.check_schema(schema)
+                    validator_class(schema).validate(parameters)
+            except (json.JSONDecodeError, SchemaError, ValidationError) as error:
+                # Warn while reading a file, so that a file with invalid processing parameters still opens.
                 if not self._in_construct_mode:
                     raise
-                warnings.warn(f"processing_parameters of '{kwargs['name']}' is not valid JSON: {error}")
+                warnings.warn(f"processing_parameters of '{kwargs['name']}' failed validation: {error}")
         super().__init__(**kwargs)
         self.fiber_photometry_table_region = fiber_photometry_table_region
         self.processing_parameters = processing_parameters
         self.processing_software = processing_software
         self.processing_software_version = processing_software_version
+        self.processing_parameters_schema = processing_parameters_schema
 
 
 @register_map(FiberPhotometryResponseSeries)

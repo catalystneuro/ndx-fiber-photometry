@@ -211,6 +211,12 @@ groups:
     - name: processing_software_version
       dtype: text
       doc: Version of the software that produced the data.
+  - name: processing_parameters_schema
+    dtype: text
+    doc: Self-contained JSON Schema that processing_parameters conforms to. The
+      draft is named by the $schema key of the JSON Schema. Requires
+      processing_parameters.
+    quantity: '?'
 - neurodata_type_def: CommandedVoltageSeries
   neurodata_type_inc: TimeSeries
   doc: Extends TimeSeries to hold a Commanded Voltage
