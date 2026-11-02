@@ -97,15 +97,33 @@ class ModulatedResponseSeries(FiberPhotometryResponseSeries):
         self.control_fiber_photometry_table_region = control_fiber_photometry_table_region
 
 
+# the control region is optional for dF/F, since the baseline can come from the signal channel alone
+_delta_f_over_f_docval = tuple(
+    (
+        {
+            **argument,
+            "default": None,
+            "doc": argument["doc"] + " Omit it when the baseline comes from the signal channel alone.",
+        }
+        if argument["name"] == "control_fiber_photometry_table_region"
+        else argument
+    )
+    for argument in _series_with_control_docval
+)
+
+
 @register_class("DeltaFOverFResponseSeries", "ndx-fiber-photometry")
 class DeltaFOverFResponseSeries(FiberPhotometryResponseSeries):
-    """Change in fluorescence of the signal relative to a baseline computed from the control (dF/F)."""
+    """Change in fluorescence of the signal relative to a baseline (dF/F), estimated from a control channel or
+    from the signal channel alone.
+    """
 
     __nwbfields__ = ({"name": "control_fiber_photometry_table_region", "child": True},)
 
-    @docval(*_series_with_control_docval)
+    @docval(*_delta_f_over_f_docval)
     def __init__(self, **kwargs):
         control_fiber_photometry_table_region = popargs("control_fiber_photometry_table_region", kwargs)
-        _check_control_region(control_fiber_photometry_table_region, kwargs["fiber_photometry_table_region"])
+        if control_fiber_photometry_table_region is not None:
+            _check_control_region(control_fiber_photometry_table_region, kwargs["fiber_photometry_table_region"])
         super().__init__(**kwargs)
         self.control_fiber_photometry_table_region = control_fiber_photometry_table_region

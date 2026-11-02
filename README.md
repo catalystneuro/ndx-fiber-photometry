@@ -151,9 +151,9 @@ Beyond the foundational device types, this extension provides specific container
 - `control_fiber_photometry_table_region`: Required. Links to the rows of the control channel, such as the isosbestic excitation, one row per column of `data`. Each control row shares its optical fiber and photodetector with the signal row in the same position
 
 **DeltaFOverFResponseSeries**: Extends `FiberPhotometryResponseSeries`
-- Stores the change in fluorescence of the signal channel relative to a baseline estimated from the control channel (dF/F), for example by fitting the isosbestic control to the signal. The `description` says how the baseline was computed
+- Stores the change in fluorescence of the signal channel relative to a baseline (dF/F). The baseline may be estimated from a control channel, for example by fitting the isosbestic control to the signal, or from the signal channel alone, for example from a baseline period. The `description` says how the baseline was computed
 - `fiber_photometry_table_region`: Required. Links to the rows of the signal channel, one row per column of `data`
-- `control_fiber_photometry_table_region`: Required. Links to the rows of the control channel, such as the isosbestic excitation, one row per column of `data`. Each control row shares its optical fiber and photodetector with the signal row in the same position
+- `control_fiber_photometry_table_region`: Optional. Links to the rows of the control channel used to estimate the baseline, such as the isosbestic excitation, one row per column of `data`. Each control row shares its optical fiber and photodetector with the signal row in the same position. Omit it when the baseline comes from the signal channel alone
 
 **FiberPhotometryTable**: Extends `DynamicTable`
 - Central table organizing the experimental setup for each fiber

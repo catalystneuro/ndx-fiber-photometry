@@ -95,10 +95,25 @@ def delta_f_over_f_series(fiber_photometry_table):
 
 
 @pytest.fixture
-def nwbfile_path(tmp_path, nwbfile, modulated_series, delta_f_over_f_series):
+def baseline_delta_f_over_f_series(fiber_photometry_table):
+    return DeltaFOverFResponseSeries(
+        name="baseline_delta_f_over_f_series",
+        description="dF/F of the 465 nm signal, with the median of the first 60 s of the signal as baseline.",
+        data=np.arange(10.0) / 50,
+        unit="n.a.",
+        rate=30.0,
+        fiber_photometry_table_region=fiber_photometry_table.create_fiber_photometry_table_region(
+            region=[0], description="signal"
+        ),
+    )
+
+
+@pytest.fixture
+def nwbfile_path(tmp_path, nwbfile, modulated_series, delta_f_over_f_series, baseline_delta_f_over_f_series):
     nwbfile.add_acquisition(modulated_series)
     ophys_module = nwbfile.create_processing_module(name="ophys", description="Processed fiber photometry.")
     ophys_module.add(delta_f_over_f_series)
+    ophys_module.add(baseline_delta_f_over_f_series)
     path = tmp_path / "control_series.nwb"
     with NWBHDF5IO(path, mode="w") as io:
         io.write(nwbfile)
@@ -159,18 +174,14 @@ class TestDeltaFOverFResponseSeries:
             assert signal_rows["excitation_wavelength_in_nm"].tolist() == [465.0]
             assert control_rows["excitation_wavelength_in_nm"].tolist() == [405.0]
 
-    def test_control_region_is_required(self, fiber_photometry_table):
-        with pytest.raises(TypeError, match="missing argument 'control_fiber_photometry_table_region'"):
-            DeltaFOverFResponseSeries(
-                name="delta_f_over_f_series",
-                description="dF/F of the 465 nm signal.",
-                data=np.arange(10.0) / 100,
-                unit="n.a.",
-                rate=30.0,
-                fiber_photometry_table_region=fiber_photometry_table.create_fiber_photometry_table_region(
-                    region=[0], description="signal"
-                ),
-            )
+    def test_roundtrip_without_control_region(self, nwbfile_path):
+        with NWBHDF5IO(nwbfile_path, mode="r") as io:
+            read_series = io.read().processing["ophys"]["baseline_delta_f_over_f_series"]
+            assert isinstance(read_series, DeltaFOverFResponseSeries)
+            np.testing.assert_array_equal(read_series.data[:], np.arange(10.0) / 50)
+            signal_rows = read_series.fiber_photometry_table_region[:]
+            assert signal_rows["excitation_wavelength_in_nm"].tolist() == [465.0]
+            assert read_series.control_fiber_photometry_table_region is None
 
     def test_signal_region_is_required(self, fiber_photometry_table):
         with pytest.raises(TypeError, match="missing argument 'fiber_photometry_table_region'"):
@@ -187,7 +198,7 @@ class TestDeltaFOverFResponseSeries:
 
 
 def test_file_is_valid(nwbfile_path):
-    assert validate(paths=[str(nwbfile_path)]) == []
+    assert validate(path=str(nwbfile_path)) == []
 
 
 def test_control_region_with_another_name_is_rejected(fiber_photometry_table):
