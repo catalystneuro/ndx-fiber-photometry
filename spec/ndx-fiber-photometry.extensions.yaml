@@ -201,6 +201,41 @@ groups:
     doc: References the row(s) of FiberPhotometryTable that the data come from,
       one row per column of data.
     quantity: '?'
+- neurodata_type_def: ModulatedResponseSeries
+  neurodata_type_inc: FiberPhotometryResponseSeries
+  doc: Raw photodetector output that mixes the fluorescence from the signal and
+    control excitation, before it is separated into one series per excitation.
+  datasets:
+  - name: fiber_photometry_table_region
+    neurodata_type_inc: DynamicTableRegion
+    doc: References the row(s) of FiberPhotometryTable for the signal channel,
+      one row per column of data, in the same order.
+  - name: control_fiber_photometry_table_region
+    neurodata_type_inc: DynamicTableRegion
+    doc: References the row(s) of FiberPhotometryTable for the control channel,
+      such as the isosbestic excitation, one row per column of data, in the same
+      order. Row i shares its optical fiber and photodetector with row i of
+      fiber_photometry_table_region.
+- neurodata_type_def: DeltaFOverFResponseSeries
+  neurodata_type_inc: FiberPhotometryResponseSeries
+  doc: Change in fluorescence of the signal channel relative to a baseline
+    (dF/F). The baseline may be estimated from a control channel, for example by
+    fitting the isosbestic control to the signal, or from the signal channel
+    alone, for example from a baseline period. Describe how the baseline was
+    computed in the description field.
+  datasets:
+  - name: fiber_photometry_table_region
+    neurodata_type_inc: DynamicTableRegion
+    doc: References the row(s) of FiberPhotometryTable for the signal channel,
+      one row per column of data, in the same order.
+  - name: control_fiber_photometry_table_region
+    neurodata_type_inc: DynamicTableRegion
+    doc: References the row(s) of FiberPhotometryTable for the control channel
+      used to estimate the baseline, such as the isosbestic excitation, one row
+      per column of data, in the same order. Row i shares its optical fiber and
+      photodetector with row i of fiber_photometry_table_region. Omit it when
+      the baseline comes from the signal channel alone.
+    quantity: '?'
 - neurodata_type_def: CommandedVoltageSeries
   neurodata_type_inc: TimeSeries
   doc: Extends TimeSeries to hold a Commanded Voltage

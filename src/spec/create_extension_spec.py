@@ -256,6 +256,54 @@ def main():
         ],
     )
 
+    modulated_response_series = NWBGroupSpec(
+        neurodata_type_def="ModulatedResponseSeries",
+        neurodata_type_inc="FiberPhotometryResponseSeries",
+        doc="Raw photodetector output that mixes the fluorescence from the signal and control excitation, before it "
+        "is separated into one series per excitation.",
+        datasets=[
+            NWBDatasetSpec(
+                name="fiber_photometry_table_region",
+                doc="References the row(s) of FiberPhotometryTable for the signal channel, one row per column of "
+                "data, in the same order.",
+                neurodata_type_inc="DynamicTableRegion",
+            ),
+            NWBDatasetSpec(
+                name="control_fiber_photometry_table_region",
+                doc="References the row(s) of FiberPhotometryTable for the control channel, such as the isosbestic "
+                "excitation, one row per column of data, in the same order. Row i shares its optical fiber and "
+                "photodetector with row i of fiber_photometry_table_region.",
+                neurodata_type_inc="DynamicTableRegion",
+            ),
+        ],
+    )
+
+    delta_f_over_f_response_series = NWBGroupSpec(
+        neurodata_type_def="DeltaFOverFResponseSeries",
+        neurodata_type_inc="FiberPhotometryResponseSeries",
+        doc="Change in fluorescence of the signal channel relative to a baseline (dF/F). The baseline may be "
+        "estimated from a control channel, for example by fitting the isosbestic control to the signal, or from "
+        "the signal channel alone, for example from a baseline period. Describe how the baseline was computed in "
+        "the description field.",
+        datasets=[
+            NWBDatasetSpec(
+                name="fiber_photometry_table_region",
+                doc="References the row(s) of FiberPhotometryTable for the signal channel, one row per column of "
+                "data, in the same order.",
+                neurodata_type_inc="DynamicTableRegion",
+            ),
+            NWBDatasetSpec(
+                name="control_fiber_photometry_table_region",
+                doc="References the row(s) of FiberPhotometryTable for the control channel used to estimate the "
+                "baseline, such as the isosbestic excitation, one row per column of data, in the same order. Row i "
+                "shares its optical fiber and photodetector with row i of fiber_photometry_table_region. Omit it "
+                "when the baseline comes from the signal channel alone.",
+                neurodata_type_inc="DynamicTableRegion",
+                quantity="?",
+            ),
+        ],
+    )
+
     commandedvoltage_series = NWBGroupSpec(
         neurodata_type_def="CommandedVoltageSeries",
         neurodata_type_inc="TimeSeries",
@@ -285,6 +333,8 @@ def main():
         fiber_photometry_table,
         fiber_photometry_lab_meta_data,
         fiberphotometryresponse_series,
+        modulated_response_series,
+        delta_f_over_f_response_series,
         commandedvoltage_series,
     ]
 
