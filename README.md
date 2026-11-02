@@ -220,6 +220,7 @@ from ndx_fiber_photometry import (
     FiberPhotometry,
     FiberPhotometryTable,
     FiberPhotometryResponseSeries,
+    ModulatedResponseSeries,
     DeltaFOverFResponseSeries,
     CommandedVoltageSeries,
 )
@@ -584,6 +585,22 @@ fiber_photometry_response_series = FiberPhotometryResponseSeries(
     fiber_photometry_table_region=fiber_photometry_table_region,
 )
 
+# The raw photoreceiver output mixes the 465 nm and 405 nm excitation, so it links to the 465 nm row as its signal
+# and the 405 nm row as its control.
+modulated_response_series = ModulatedResponseSeries(
+    name="modulated_response_series",
+    description="Photoreceiver output with the 465 nm and 405 nm LEDs modulated at different frequencies.",
+    data=rng.standard_normal((1000, 1)),
+    unit="V",
+    rate=1000.0,
+    fiber_photometry_table_region=fiber_photometry_table.create_fiber_photometry_table_region(
+        region=[0], description="signal excitation"
+    ),
+    control_fiber_photometry_table_region=fiber_photometry_table.create_control_fiber_photometry_table_region(
+        region=[1], description="control excitation"
+    ),
+)
+
 # dF/F of the 465 nm signal links to the 465 nm row as its signal and the 405 nm row as its control.
 delta_f_over_f_response_series = DeltaFOverFResponseSeries(
     name="delta_f_over_f_response_series",
@@ -625,6 +642,7 @@ nwbfile.add_acquisition(commanded_voltage_series_405)
 nwbfile.add_acquisition(commanded_voltage_series_560)
 nwbfile.add_lab_meta_data(fiber_photometry_lab_meta_data)
 nwbfile.add_acquisition(fiber_photometry_response_series)
+nwbfile.add_acquisition(modulated_response_series)
 ophys_module = nwbfile.create_processing_module(name="ophys", description="Processed fiber photometry data.")
 ophys_module.add(delta_f_over_f_response_series)
 ```
