@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from pynwb import NWBHDF5IO
+from pynwb import NWBHDF5IO, validate
 from pynwb.testing.mock.file import mock_NWBFile
 from ndx_ophys_devices.testing import (
     mock_ExcitationSource,
@@ -184,3 +184,41 @@ class TestDeltaFOverFResponseSeries:
                     name="control_fiber_photometry_table_region", region=[1], description="control"
                 ),
             )
+
+
+def test_file_is_valid(nwbfile_path):
+    assert validate(paths=[str(nwbfile_path)]) == []
+
+
+def test_control_region_with_another_name_is_rejected(fiber_photometry_table):
+    with pytest.raises(ValueError, match="must be named 'control_fiber_photometry_table_region'"):
+        DeltaFOverFResponseSeries(
+            name="delta_f_over_f_series",
+            description="dF/F of the 465 nm signal.",
+            data=np.arange(10.0) / 100,
+            unit="n.a.",
+            rate=30.0,
+            fiber_photometry_table_region=fiber_photometry_table.create_fiber_photometry_table_region(
+                region=[0], description="signal"
+            ),
+            control_fiber_photometry_table_region=fiber_photometry_table.create_region(
+                name="control", region=[1], description="control"
+            ),
+        )
+
+
+def test_regions_with_different_lengths_are_rejected(fiber_photometry_table):
+    with pytest.raises(ValueError, match="must have the same number of rows"):
+        DeltaFOverFResponseSeries(
+            name="delta_f_over_f_series",
+            description="dF/F of the 465 nm signal.",
+            data=np.arange(10.0) / 100,
+            unit="n.a.",
+            rate=30.0,
+            fiber_photometry_table_region=fiber_photometry_table.create_fiber_photometry_table_region(
+                region=[0, 1], description="signal"
+            ),
+            control_fiber_photometry_table_region=fiber_photometry_table.create_control_fiber_photometry_table_region(
+                region=[1], description="control"
+            ),
+        )

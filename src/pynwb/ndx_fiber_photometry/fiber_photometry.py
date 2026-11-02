@@ -18,18 +18,38 @@ def create_fiber_photometry_table_region(self, **kwargs):
 
 FiberPhotometryTable.create_fiber_photometry_table_region = create_fiber_photometry_table_region
 
+
+@docval(
+    {"name": "region", "type": list, "doc": "the indices of the FiberPhotometryTable"},
+    {"name": "description", "type": str, "doc": "a brief description of what these table entries represent"},
+)
+def create_control_fiber_photometry_table_region(self, **kwargs):
+    region, description = popargs("region", "description", kwargs)
+    name = "control_fiber_photometry_table_region"
+    return super(FiberPhotometryTable, self).create_region(name=name, region=region, description=description)
+
+
+FiberPhotometryTable.create_control_fiber_photometry_table_region = create_control_fiber_photometry_table_region
+
 # the signal and control regions are both required, so they follow the required arguments of TimeSeries
 _series_with_control_docval = (
     *get_docval(FiberPhotometryResponseSeries.__init__, "name", "data", "unit"),
     {
         "name": "fiber_photometry_table_region",
         "type": DynamicTableRegion,
-        "doc": "References the row(s) of FiberPhotometryTable of the signal, one row per column of data.",
+        "doc": (
+            "References the row(s) of FiberPhotometryTable for the signal channel, one row per column of data, "
+            "in the same order."
+        ),
     },
     {
         "name": "control_fiber_photometry_table_region",
         "type": DynamicTableRegion,
-        "doc": "References the row(s) of FiberPhotometryTable of the control, one row per column of data.",
+        "doc": (
+            "References the row(s) of FiberPhotometryTable for the control channel, such as the isosbestic "
+            "excitation, one row per column of data, in the same order. Row i shares its optical fiber and "
+            "photodetector with row i of fiber_photometry_table_region."
+        ),
     },
     *get_docval(
         FiberPhotometryResponseSeries.__init__,
@@ -48,15 +68,31 @@ _series_with_control_docval = (
 )
 
 
+def _check_control_region(control_region, signal_region):
+    if control_region.name != "control_fiber_photometry_table_region":
+        raise ValueError(
+            "The control region must be named 'control_fiber_photometry_table_region', "
+            f"got '{control_region.name}'. Use FiberPhotometryTable.create_control_fiber_photometry_table_region."
+        )
+    if len(control_region.data) != len(signal_region.data):
+        raise ValueError(
+            "fiber_photometry_table_region and control_fiber_photometry_table_region must have the same number of "
+            f"rows, got {len(signal_region.data)} and {len(control_region.data)}."
+        )
+
+
 @register_class("ModulatedResponseSeries", "ndx-fiber-photometry")
 class ModulatedResponseSeries(FiberPhotometryResponseSeries):
-    """Fiber photometry signal recorded while the signal and control excitation were on at the same time."""
+    """Raw photodetector output that mixes the fluorescence from the signal and control excitation, before it is
+    separated into one series per excitation.
+    """
 
     __nwbfields__ = ({"name": "control_fiber_photometry_table_region", "child": True},)
 
     @docval(*_series_with_control_docval)
     def __init__(self, **kwargs):
         control_fiber_photometry_table_region = popargs("control_fiber_photometry_table_region", kwargs)
+        _check_control_region(control_fiber_photometry_table_region, kwargs["fiber_photometry_table_region"])
         super().__init__(**kwargs)
         self.control_fiber_photometry_table_region = control_fiber_photometry_table_region
 
@@ -70,5 +106,6 @@ class DeltaFOverFResponseSeries(FiberPhotometryResponseSeries):
     @docval(*_series_with_control_docval)
     def __init__(self, **kwargs):
         control_fiber_photometry_table_region = popargs("control_fiber_photometry_table_region", kwargs)
+        _check_control_region(control_fiber_photometry_table_region, kwargs["fiber_photometry_table_region"])
         super().__init__(**kwargs)
         self.control_fiber_photometry_table_region = control_fiber_photometry_table_region

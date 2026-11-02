@@ -146,14 +146,14 @@ Beyond the foundational device types, this extension provides specific container
 - `rate`: Sampling rate of the fluorescence measurements
 
 **ModulatedResponseSeries**: Extends `FiberPhotometryResponseSeries`
-- Stores a signal recorded while the signal and control excitation were on at the same time, before demodulation
-- `fiber_photometry_table_region`: Required. Links to the rows of the signal excitation, one row per column of `data`
-- `control_fiber_photometry_table_region`: Required. Links to the rows of the control excitation, one row per column of `data`
+- Stores the photodetector output from one optical fiber that mixes the fluorescence evoked by the signal and control excitation sources, before it is separated into one series per excitation source, for example by lock-in demodulation or by splitting interleaved samples
+- `fiber_photometry_table_region`: Required. Links to the rows of the signal channel, one row per column of `data`
+- `control_fiber_photometry_table_region`: Required. Links to the rows of the control channel, such as the isosbestic excitation, one row per column of `data`. Each control row shares its optical fiber and photodetector with the signal row in the same position
 
 **DeltaFOverFResponseSeries**: Extends `FiberPhotometryResponseSeries`
-- Stores the change in fluorescence of the signal relative to a baseline computed from the control (dF/F)
-- `fiber_photometry_table_region`: Required. Links to the rows of the signal, one row per column of `data`
-- `control_fiber_photometry_table_region`: Required. Links to the rows of the control, one row per column of `data`
+- Stores the change in fluorescence of the signal channel relative to a baseline estimated from the control channel (dF/F), for example by fitting the isosbestic control to the signal. The `description` says how the baseline was computed
+- `fiber_photometry_table_region`: Required. Links to the rows of the signal channel, one row per column of `data`
+- `control_fiber_photometry_table_region`: Required. Links to the rows of the control channel, such as the isosbestic excitation, one row per column of `data`. Each control row shares its optical fiber and photodetector with the signal row in the same position
 
 **FiberPhotometryTable**: Extends `DynamicTable`
 - Central table organizing the experimental setup for each fiber
@@ -594,8 +594,8 @@ delta_f_over_f_response_series = DeltaFOverFResponseSeries(
     fiber_photometry_table_region=fiber_photometry_table.create_fiber_photometry_table_region(
         region=[0], description="signal"
     ),
-    control_fiber_photometry_table_region=fiber_photometry_table.create_region(
-        name="control_fiber_photometry_table_region", region=[1], description="control"
+    control_fiber_photometry_table_region=fiber_photometry_table.create_control_fiber_photometry_table_region(
+        region=[1], description="control"
     ),
 )
 
@@ -990,6 +990,8 @@ classDiagram
     FiberPhotometryResponseSeries ..> FiberPhotometryTable
     ModulatedResponseSeries --|> FiberPhotometryResponseSeries
     DeltaFOverFResponseSeries --|> FiberPhotometryResponseSeries
+    ModulatedResponseSeries ..> FiberPhotometryTable : control_fiber_photometry_table_region
+    DeltaFOverFResponseSeries ..> FiberPhotometryTable : control_fiber_photometry_table_region
 
     %% Device model relationships
     OpticalFiber ..> OpticalFiberModel
